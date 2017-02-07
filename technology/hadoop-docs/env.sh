@@ -1,22 +1,37 @@
 # JAVA
-JAVA_HOME=/xxx
+JAVA_HOME=/path/java
 
 # Hadoop
-export HADOOP_HOME=/xxx
+export HADOOP_HOME=/usr/local/hadoop
+export HADOOP_CONF_DIR=$HADOOP_HOME/conf
+export HADOOP_HDFS_HOME=$HADOOP_HOME
 export HADOOP_HOME_WARN_SUPPRESS=true
 export HADOOP_PREFIX=$HADOOP_HOME
 export HADOOP_MAPRED=$HADOOP_HOME
 export HADOOP_COMMON_HOME=$HADOOP_HOME
 export HADOOP_YARN=$HADOOP_HOME
-export HADOOP_HDFS_HOME=$HADOOP_HOME
+
+
+# Yarn
 export YARN_HOME=$HADOOP_HOME
-export HADOOP_CONF_DIR=$HADOOP_HOME/conf
 export YARN_CONF_DIR=$HADOOP_HOME/conf
 
+
 # HIVE
-export HIVE_HOME=/xxx
+export HIVE_HOME=/usr/local/hive
 export HIVE_CONF_DIR=$HIVE_HOME/conf
 
-# cuda
+
+# Spark
+export SPARK_HOME=/usr/local/spark
+export SPARK_CONF_DIR=$SPARK_HOME/conf
+export SPARK_LIBRARY_PATH=$SPARK_LIBRARY_PATH:$HADOOP_HOME/lib/native
+export SPARK_CLASSPATH=$SPARK_CLASSPATH:$HADOOP_HOME/lib/snappy-java-1.0.4.1.jar
+
+
+# LIBRARY
 export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native:/usr/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib:$LD_LIBRARY_PATH
+export JAVA_LIBRARY_PATH=$JAVA_LIBRARY_PATH:$HADOOP_HOME/lib/native
+
+
 export PATH=/usr/local/cuda/bin:$PATH

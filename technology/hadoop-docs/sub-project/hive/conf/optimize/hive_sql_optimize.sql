@@ -157,8 +157,15 @@ set hive.groupby.mapaggr.checkinterval=100000;
 -- hive table 当指定了表的格式, 如 ORC, 这个参数会被覆盖
 set hive.exec.compress.output=true;
 
+-- 任务中间压缩
+set hive.exec.compress.intermediate=true;
+set hive.intermediate.compression.codec=org.apache.hadoop.io.compress.SnappyCodec;
+set hive.intermediate.compression.type=BLOCK;
+
 -- hive table 默认输出格式, 使用 ORC 格式
 set hive.default.fileformat=ORC;
+
+set
 
 -- hive table 开启索引
 set hive.optimize.index.filter=true;

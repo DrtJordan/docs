@@ -33,10 +33,17 @@
 
   export PATH=$FLUME_HOME/bin:$PATH
 
+
 4. 生效
   source ~/.bashrc
 
 5. 启动脚本
+
+  # 增大内存
+  mv $FLUME_HOME/conf/flume-env.sh.template $FLUME_HOME/conf/flume-env.sh
+  export JAVA_OPTS="-Xms100m -Xmx2000m -Dcom.sun.management.jmxremote"
+
+  # 启动
   ${FLUME_HOME}/bin/flume-ng agent --conf ${FLUME_HOME}/conf/ -f ${FLUME_HOME}/conf/flume.conf -n agentBi0 -Dflume.root.logger=DEBUG,console
 ```
 
@@ -91,13 +98,34 @@ agentBi0.channels = ChAccesslog
 agentBi0.sinks = SinkAccesslog
 
 # set SrcAccessLog
-# 监控类型
-agentBi0.sources.SrcAccessLog.type = spooldir
-# 监控的目录
-agentBi0.sources.SrcAccessLog.spoolDir = /data/log/uba/access_log
-# 指定发送的 channels
-agentBi0.sources.SrcAccessLog.channels = ChAccesslog
-agentBi0.sources.SrcAccessLog.fileHeader = false
+
+# SrcSafeClickLog Source 配置
+agentBi0.sources.SrcSafeClickLog.type = spooldir
+agentBi0.sources.SrcSafeClickLog.spoolDir = /data/log/uba/access_log
+# 忽略文件正则
+agentBi0.sources.SrcSafeClickLog.ignorePattern = ^(.)*\\.tmp$
+# 输入字符编码
+agentBi0.sources.SrcSafeClickLog.inputCharset = UTF-8
+# 反序列化方式
+agentBi0.sources.SrcSafeClickLog.deserializer = LINE
+# 一行最大字数
+agentBi0.sources.SrcSafeClickLog.deserializer.maxLineLength = 204800
+agentBi0.sources.SrcSafeClickLog.deserializer.outputCharset = UTF-8
+# 解码错误政策处理规则, FAIL(失效) || IGNORE(忽略)
+agentBi0.sources.SrcSafeClickLog.decodeErrorPolicy = IGNORE
+# 完成删除文件 immediate | never
+agentBi0.sources.SrcSafeClickLog.deletePolicy = immediate
+# 批处理条数
+agentBi0.sources.SrcSafeClickLog.batchSize = 1000
+# 递归检测目录(必须开启)
+agentBi0.sources.SrcSafeClickLog.recursiveDirectorySearch = true
+# 上传文件的绝对路径(必须开启)
+agentBi0.sources.SrcSafeClickLog.fileHeader = true
+agentBi0.sources.SrcSafeClickLog.fileHeaderKey = file
+# 上传的文件名(必须开启)
+agentBi0.sources.SrcSafeClickLog.basenameHeader = true
+agentBi0.sources.SrcSafeClickLog.basenameHeaderKey = basename
+agentBi0.sources.SrcSafeClickLog.channels = ChAccesslog
 
 
 # set ChAccesslog
@@ -140,8 +168,9 @@ agentBi0.sinks.SinkAccesslog.hdfs.rollInterval = 60
 
 # 写入格式
 agentBi0.sinks.SinkAccesslog.hdfs.writeFormat = Text
-# 文件格式 :  SequenceFile, DataStream(数据不会压缩输出文件) or CompressedStream
+# 文件格式 :  SequenceFile, DataStream(数据不会压缩输出文件) or CompressedStream(压缩输出,需要选择一个压缩/解码器)
 agentBi0.sinks.SinkAccesslog.hdfs.fileType = DataStream
+
 # 批处理达到这个上限, 写到 HDFS
 agentBi0.sinks.SinkAccesslog.hdfs.batchSize = 100
 # hdfs 打开、写、刷新、关闭的超时时间, 毫秒
@@ -412,10 +441,17 @@ agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.processor.maxpenalty = 10000
 #agentBi0.sinks.SinkDwAccesslog1.hdfs.rollCount = 0
 
 
-# 写入格式
+# 写入格式(必须 Text)
 #agentBi0.sinks.SinkDwAccesslog1.hdfs.writeFormat = Text
-# 文件格式 :  SequenceFile, DataStream(数据不会压缩输出文件) or CompressedStream
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.fileType = DataStream
+
+# 不压缩
+# 文件格式 :  SequenceFile, DataStream(数据不会压缩输出文件) or CompressedStream(压缩 Stream)
+#agentBi0.sinks.SinkDwAccesslog1.hdfs.fileType = DataStream  
+
+# (经过测试, 只能在 hdfs dfs -text 中打开, hive 无法识别这种文件,具体原因需要调查)设置压缩方式(当使用 CompressedStream 时,保存文件为压缩格式): gzip, bzip2, lzo, lzop, snappy
+#agentBi0.sinks.SinkAccesslog.hdfs.codeC = snappy
+
+
 # 每个批次刷新到 HDFS上 的 events 数量
 #agentBi0.sinks.SinkDwAccesslog1.hdfs.batchSize = 10000
 # hdfs 打开、写、刷新、关闭的超时时间, 毫秒

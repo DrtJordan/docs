@@ -412,55 +412,65 @@ agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.processor.priority.SinkDwAccesslog0
 agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.processor.priority.SinkDwAccesslog1 = 100
 agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.processor.maxpenalty = 10000
 
+# --- DwAccessLog  配置 End --- #
 
-# SinkDwAccesslog2 To HDFS
-#agentBi0.sinks.SinkDwAccesslog1.type = hdfs
-#agentBi0.sinks.SinkDwAccesslog1.channel = ChDwAccesslog
+```
+
+
+### 6. hdfs sink 参数说明
+
+```sh
+agentBi0.sinks.SinkDwAccesslog1.type = hdfs
+agentBi0.sinks.SinkDwAccesslog1.channel = ChDwAccesslog
 # 写入目录和文件规则
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.path = hdfs://uhadoop-ociicy-master2:8020/flume/dw_access_log/dw_access_log_%Y%m%d
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.filePrefix = dw_access_log
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.fileSuffix = .log
+agentBi0.sinks.SinkDwAccesslog1.hdfs.path = hdfs://uhadoop-ociicy-master2:8020/flume/dw_access_log/dw_access_log_%Y%m%d
+agentBi0.sinks.SinkDwAccesslog1.hdfs.filePrefix = dw_access_log
+agentBi0.sinks.SinkDwAccesslog1.hdfs.fileSuffix = .log
 
 # 写入文件前缀规则
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.inUsePrefix = .
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.inUseSuffix = .tmp
+agentBi0.sinks.SinkDwAccesslog1.hdfs.inUsePrefix = .
+agentBi0.sinks.SinkDwAccesslog1.hdfs.inUseSuffix = .tmp
 #
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.round = true
+agentBi0.sinks.SinkDwAccesslog1.hdfs.round = true
 # 时间上进行”舍弃”的单位，包含：second,minute,hour
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.roundUnit = minute
+agentBi0.sinks.SinkDwAccesslog1.hdfs.roundUnit = minute
 # 时间上进行“舍弃”的值, 2015-10-16 17:38:59 会被舍弃成  17:35, 5 分钟内的时间都被舍弃掉
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.roundValue = 5
+agentBi0.sinks.SinkDwAccesslog1.hdfs.roundValue = 5
 
 # 复制块, 用于控制滚动大小
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.minBlockReplicas=1
+agentBi0.sinks.SinkDwAccesslog1.hdfs.minBlockReplicas=1
 # hdfs 间隔多长将临时文件重命名成最终目标文件, 并新打开一个临时文件来写入数据, 0 则表示不根据时间来滚动文件 (单位秒)
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.rollInterval = 300
+agentBi0.sinks.SinkDwAccesslog1.hdfs.rollInterval = 300
 # hdfs 临时文件达到 rollSize 值, 则滚动成目标文件, 0 则表示不根据临时文件大小来滚动文件(单位：bytes)
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.rollSize = 0
+agentBi0.sinks.SinkDwAccesslog1.hdfs.rollSize = 0
 #events 数据达到该数量时候，将临时文件滚动成目标文件, 0 则表示不根据 events 数据来滚动文件
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.rollCount = 0
+agentBi0.sinks.SinkDwAccesslog1.hdfs.rollCount = 0
 
 
 # 写入格式(必须 Text)
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.writeFormat = Text
+agentBi0.sinks.SinkDwAccesslog1.hdfs.writeFormat = Text
 
 # 不压缩
 # 文件格式 :  SequenceFile, DataStream(数据不会压缩输出文件) or CompressedStream(压缩 Stream)
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.fileType = DataStream  
+agentBi0.sinks.SinkDwAccesslog1.hdfs.fileType = DataStream  
 
-# (经过测试, 只能在 hdfs dfs -text 中打开, hive 无法识别这种文件,具体原因需要调查)设置压缩方式(当使用 CompressedStream 时,保存文件为压缩格式): gzip, bzip2, lzo, lzop, snappy
-#agentBi0.sinks.SinkAccesslog.hdfs.codeC = snappy
+# 设置压缩方式(当使用 CompressedStream 时,保存文件为压缩格式): gzip, bzip2, lzo, lzop, snappy
+agentBi0.sinks.SinkAccesslog.hdfs.codeC = snappy
+
+
+# 这个拦截器写事件输出流的身体没有任何转换或修改, 事件标题将被忽略
+agentDw.sinks.SinkSafeClickLog.sink.serializer = text
+# 换行符追加到每个事件
+agentDw.sinks.SinkSafeClickLog.sink.serializer.appendNewline = true
 
 
 # 每个批次刷新到 HDFS上 的 events 数量
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.batchSize = 10000
+agentBi0.sinks.SinkDwAccesslog1.hdfs.batchSize = 10000
 # hdfs 打开、写、刷新、关闭的超时时间, 毫秒
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.callTimeout = 60000
+agentBi0.sinks.SinkDwAccesslog1.hdfs.callTimeout = 60000
 # 当目前被打开的临时文件在该参数指定的时间（秒）内，没有任何数据写入，则将该临时文件关闭并重命名成目标文件
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.idleTimeout = 0
+agentBi0.sinks.SinkDwAccesslog1.hdfs.idleTimeout = 0
 # 使用本地时间
-#agentBi0.sinks.SinkDwAccesslog1.hdfs.useLocalTimeStamp = true
-
-# --- DwAccessLog  配置 End --- #
+agentBi0.sinks.SinkDwAccesslog1.hdfs.useLocalTimeStamp = true
 
 ```

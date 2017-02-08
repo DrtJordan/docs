@@ -62,11 +62,9 @@
 
 
 5. 部署
-  1) 上传到 dwtest 测试环境
-    scp $DW_GENERAL_LOADER_HOME/scripts/dw_general_loader.jar hadoop@dwtest:/home/hadoop/app/dw_general_loader/scripts/
 
-  2) 上传到 bi3 线上环境
-    scp $DW_GENERAL_LOADER_HOME/scripts/dw_general_loader.jar dwadmin@bi0:/home/dwadmin/bi_server_dir/bi3/data/app/dw_general_loader/scripts/
+   上传到 线上环境
+    scp $DW_GENERAL_LOADER_HOME/run/dw_general_loader.jar hadoop@dw6:/home/hadoop/app/dw_general_loader/run/
 
 
 

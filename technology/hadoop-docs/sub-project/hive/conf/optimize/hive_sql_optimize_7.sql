@@ -114,11 +114,9 @@ set mapreduce.task.io.sort.factor=100;
 
 --- Hive 优化 Start ---
 
--- CombineInputFormat
+-- set mapreduce.input.fileinputformat.split.minsize=1;
 -- 一个 Map 最多同时处理的文件总数大小
 set mapreduce.input.fileinputformat.split.maxsize=1024000000;
-set mapreduce.input.fileinputformat.split.minsize.per.node=1024000000;
-set mapreduce.input.fileinputformat.split.minsize.per.rack=1024000000;
 -- 一个 Reduce 最多同时处理的文件总数大小
 set hive.exec.reducers.bytes.per.reducer=1024000000;
 
@@ -127,14 +125,12 @@ set hive.exec.parallel=true;
 -- 并发数
 set hive.exec.parallel.thread.number=2;
 
--- 开启本地mr(本地模式的参数, 是 and 关系, 都满足才会生效)
+-- 开启本地mr
 set hive.exec.mode.local.auto=true;
 -- 设置local mr的最大输入数据量,当输入数据量小于这个值的时候会采用local  mr的方式(字节) 1024000000
-set hive.exec.mode.local.auto.inputbytes.max=1024000000;
--- 设置local mr的最大task 数量,小于这个数量使用本地模式
-set hive.exec.mode.local.auto.tasks.max=100;
+set hive.exec.mode.local.auto.inputbytes.max=5120000000;
 -- 设置local mr的最大输入文件个数,当输入文件个数小于这个值的时候会采用local mr的方式
-set hive.exec.mode.local.auto.input.files.max=100;
+set hive.exec.mode.local.auto.tasks.max=6;
 
 -- 如果MapJoin中的表都是有序的,使Join操作无需扫描整个表
 set hive.optimize.bucketmapjoin.sortedmerge=true;

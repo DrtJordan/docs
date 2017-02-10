@@ -27,7 +27,7 @@
  - [CBCF](https://www.processon.com/view/link/56d3b2e7e4b0f9ea1683e1e5)
  - [UBCF](https://www.processon.com/view/link/572b224be4b0c3c749748e14)
  - [IBCF](https://www.processon.com/view/link/57397e57e4b06d79095044ad)
-- [安个家 数据部规划](http://www.processon.com/mindmap/566a7d1ee4b0add117b3c531)
+- [安个家 数据部规划](https://www.processon.com/view/link/566a9d10e4b06272891e729b)
 - 安个家 DB 数据抽取
  - [安个家 db 数据抽取](https://www.processon.com/view/link/57d8e4ede4b0e72a8d042d45)
  - [安个家 抽取流程控制](https://www.processon.com/view/link/57e9eb82e4b06bcb4cdf380e)

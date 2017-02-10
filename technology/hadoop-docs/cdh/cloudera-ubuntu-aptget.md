@@ -202,18 +202,32 @@ cd /etc/apt/sources.list.d/
 ``` sh
 *. 登录 hadoop 用户
 
+1. 安装源
 	# 下载源
-	sudo wget 'http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh/cloudera.list' -O /etc/apt/sources.list.d/cloudera.list
+	sudo wget 'http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh/cloudera-chd.list' -O /etc/apt/sources.list.d/cloudera-chd.list
 
 	# 安装 key
 	wget http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh/archive.key -O archive.key
 	sudo apt-key add archive.key
 	apt-get update
 
+
+2. 固定版本问题
   # PS: 若要安装指定的版本, 修改如下参数
   sudo vim /etc/apt/sources.list.d/cloudera.list
-  # 修改 trusty-cdh5 版本号, 所有 trusty 在如下链接中
+
+	# Packages for Cloudera's Distribution for Hadoop, Version 5, on Ubuntu 14.04 amd64
+	#deb [arch=amd64] http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh trusty-cdh5 contrib (修改前)
+	deb [arch=amd64] http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh trusty-cdh5.9 contrib
+	#deb-src http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh trusty-cdh5 contrib  (修改前)
+	deb-src http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh trusty-cdh5.9 contrib
+
+  # 修改 trusty-cdh5 版本号, 所有 trusty 可查看如下链接
 		http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh/dists/
+
+	# 更新源方可生效
+	apt-get update
+
 ```
 
 ### 1. 安装 Flume
@@ -222,6 +236,12 @@ cd /etc/apt/sources.list.d/
 
 ``` sh
 sudo apt-get install flume-ng-agent
+```
+
+### 2. 安装 sqoop
+
+``` sh
+sudo apt-get install sqoop
 ```
 
 

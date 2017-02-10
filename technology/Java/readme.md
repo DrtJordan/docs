@@ -3,6 +3,14 @@
 
 ## * 基本介绍
 
+``` java
+
+if（obj instanceof String)
+
+
+```
+
+
 ### 1、循环
 
 ``` java

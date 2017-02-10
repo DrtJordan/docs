@@ -3,7 +3,7 @@
 ## 说明文档
 - CDH
  - [CDH 说明](cdh/cloudera-info.md)
- - [CDH apt-get 方式安装](cdh/cloudera-ubuntu-packages.md)
+ - [CDH apt-get 方式安装](cdh/cloudera-ubuntu-aptget.md)
  - [CDH tar 源码包方式安装](cdh/cloudera-centos-tar.md)
  - [CDH 升级](cdh/upgrading-cdh.md)  
  - [CDH 硬件](cdh/hardware.md)

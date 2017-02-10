@@ -1,72 +1,5 @@
-CREATE EXTERNAL TABLE IF NOT EXISTS ods.ods_browser_use (
-  `channel` string,
-  `client_ip` string,
-  `mac` string,
-  `install_day` string,
-  `use_day` string,
-  `version` string,
-  `server_time` string,
-  `system_start_time` string,
-  `system_install_time` string,
-  `pc_name` string,
-  `pc_hardware` string,
-  `big_version` String,
-  `kuid` string,
-  `tag` string
-) PARTITIONED BY (type String, p_dt String)
-ROW FORMAT DELIMITED
-  FIELDS TERMINATED BY ','
-  COLLECTION ITEMS TERMINATED BY '\n'
-STORED AS TEXTFILE
-;
 
--- 分区加载外部数据
-ALTER TABLE ods.ods_browser_use ADD IF NOT EXISTS PARTITION  (type = '0',p_dt = ${dealDate}) LOCATION '/ods/browser_use/0/${baseDealDate}';
-ALTER TABLE ods.ods_browser_use ADD IF NOT EXISTS PARTITION  (type = '1',p_dt = ${dealDate}) LOCATION '/ods/browser_use/1/${baseDealDate}';
-ALTER TABLE ods.ods_browser_use ADD IF NOT EXISTS PARTITION  (type = '2',p_dt = ${dealDate}) LOCATION '/ods/browser_use/2/${baseDealDate}';
-
-
-ADD JAR /etc/hive/auxlib/json-serde-1.3.7-jar-with-dependencies.jar;
-
-
-CREATE EXTERNAL TABLE IF NOT EXISTS temp_db.test_safe_click (
-  `common` string,
-  `count` string,
-  `integer` string,
-  `string` string,
-  `ip` string
-)
-ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
-WITH SERDEPROPERTIES (
-  "ignore.malformed.json"="true"
-)
-STORED AS TEXTFILE
-;
-
-hdfs dfs -ls /user/hive/warehouse/temp_db.db/test_safe_click
-
-
-load data local inpath '/data1/log/tmp/2017-01-21-09-1.txt.gz' OVERWRITE into TABLE temp_db.test_safe_click;
-
-
-
-
-load data local inpath '/data1/log/tmp/2017-01-21-09-3.snappy' OVERWRITE into TABLE temp_db.test_safe_click;
-
-
-CREATE TABLE temp_db.test_safe_click_1 STORED AS TEXTFILE AS SELECT * FROM temp_db.test_safe_click;
-
-SELECT * FROM temp_db.test_safe_click limit 1;
-
-
-
-
-
-
-
-
-SELECT * FROM ods.ods_safe_click WHERE p_dt='2017-02-06' AND p_hours = '00' LIMIT 1;
-
+SELECT * FROM ods.ods_inst_click WHERE p_dt='2017-02-09' AND p_hours='00' LIMIT 10;
 
 SELECT get_json_object(common,'$.a0356')  FROM ods.ods_safe_click WHERE p_dt='2017-02-06' AND p_hours = '00' LIMIT 1
 FROM (
@@ -123,3 +56,22 @@ SELECT p_dt,
         count(*) AS cn
 FROM ods.ods_browser_click
 GROUP BY p_dt,p_hours
+
+
+
+./index.py \
+--service extract \
+--module extract_run \
+--par '{"dbServer":"dw","sourceDb":"temp_db","sourceTb":"jason_test_1","targetDb":"db_sync","targetTb":"temp_db__jason_test_1","extractType":"1","extractTool":"2","mapReduceNum":"1"}'
+
+
+
+/usr/lib/sqoop/bin/sqoop import --connect "jdbc:mysql://172.16.19.51:3306/temp_db?useUnicode=true&tinyInt1isBit=false&characterEncoding=utf-8" --username "dw_service" --password "dw_service_818" --table "jason_test_1" --hive-table "db_sync.temp_db__jason_test_1" --hive-import --map-column-hive "channel=String,client_ip=String,mac=String,install_day=String,use_day=String,version=String,server_time=String,system_start_time=String,system_install_time=String,pc_name=String,pc_hardware=String,big_version=String,kuid=String,tag=String,type=String,p_dt=String" --fields-terminated-by '\001' --hive-delims-replacement '%n&' --lines-terminated-by '\n' --input-null-string '\\N' --input-null-non-string '\\N' --null-string '\\N' --null-non-string '\\N' --outdir "/home/hadoop/app/dw_etl/tmp/sqoop_outdir" --target-dir "/tmp/sqoop/db_sync.temp_db__jason_test_1" --delete-target-dir --m 1
+
+
+/usr/lib/sqoop/bin/sqoop import --connect "jdbc:mysql://172.16.19.51:3306/temp_db?useUnicode=true&tinyInt1isBit=false&characterEncoding=utf-8" --username "dw_service" --password "dw_service_818"
+
+--query 'SELECT * FROM temp_db.jason_test_1 WHERE $CONDITIONS LIMIT 1' \
+--query "SELECT * FROM temp_db.jason_test_1 WHERE $CONDITIONS LIMIT 1 "
+
+--hive-table "db_sync.temp_db__jason_test_1" --hive-import --map-column-hive "channel=String,client_ip=String,mac=String,install_day=String,use_day=String,version=String,server_time=String,system_start_time=String,system_install_time=String,pc_name=String,pc_hardware=String,big_version=String,kuid=String,tag=String,type=String,p_dt=String" --fields-terminated-by '\001' --hive-delims-replacement '%n&' --lines-terminated-by '\n' --input-null-string '\\N' --input-null-non-string '\\N' --null-string '\\N' --null-non-string '\\N' --outdir "/home/hadoop/app/dw_etl/tmp/sqoop_outdir" --target-dir "/tmp/sqoop/db_sync.temp_db__jason_test_1" --delete-target-dir --m 1

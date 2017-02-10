@@ -83,8 +83,16 @@ public class Test2 {
         //循环
         for(Map.Entry<Integer,NewsEntity> entry : map_2.entrySet()) {
           System.out.println(entry.getKey());
-          System.out.println(entry.getValue().getNewsname());//答应出对象中的值
+          System.out.println(entry.getValue().getNewsname());//打印出对象中的值
         }
+
+
+        // 自定义 Object 的 Map
+        Map<String,Object> map_3 = new HashMap<String, Object>();
+        for(Map.Entry<String, Object> entry : map_3.entrySet()) {
+            resultMap.put(entry.getKey(), entry.getValue());
+        }
+        
 
         //4、LinkedHashMap
         Map<Integer,String> map_list = new LinkedHashMap<Integer,String>();
@@ -170,7 +178,7 @@ public class Test3 {
 
         // 遍历 List
         for (int i =0; i <= listResult.size()-1; i ++) {
-          String col = rs.get(i)
+          String col = rs.get(i);
           System.out.println(col);
         }
 

@@ -6,7 +6,7 @@
 
 ###  常用
 
-```
+``` sh
 sqoop import
 
 --connect "jdbc:mysql://${mysql_host}:3306/${mysql_database}?useUnicode=true&tinyInt1isBit=false&characterEncoding=utf-8" \

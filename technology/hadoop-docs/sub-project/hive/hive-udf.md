@@ -483,6 +483,22 @@ FROM
 
 ```
 
+### 4. 字符串 array 转换为 array 格式
+
+``` sql
+
+SELECT
+  '["2345Explorer.exe","2345RTProtect.exe"]' AS string_data,
+
+  regexp_replace('["2345Explorer.exe","2345RTProtect.exe"' , '[\\[|\\]|\"]+' , '') AS string_array,
+
+  split(
+    regexp_replace('["2345Explorer.exe","2345RTProtect.exe"' , '[\\[|\\]|\"]+' , ''), ','
+  ) AS array
+
+
+```
+
 
 ## 六、自定义 jar 和 function
 

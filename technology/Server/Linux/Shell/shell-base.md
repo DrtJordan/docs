@@ -388,6 +388,10 @@ map 数组
       echo $m_date;
   done
 
+获取两个小时前日期
+  date -d '-2 hours'
+  $(date -d "-2 hours" +"%Y-%m-%d")
+
 ```
 
 ## * String 处理

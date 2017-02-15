@@ -64,7 +64,7 @@
 5. 部署
 
    上传到 线上环境
-    scp $DW_GENERAL_LOADER_HOME/run/dw_general_loader.jar hadoop@dw6:/home/hadoop/app/dw_general_loader/run/
+    scp $DW_GENERAL_LOADER_HOME/run/dw_general_loader.jar hadoop@dw6:/home/hadoop/app/dw_general_loader/run/dw_general_loader_new.jar
 
 
 

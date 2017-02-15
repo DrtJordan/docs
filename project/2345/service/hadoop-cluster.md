@@ -10,6 +10,16 @@ dw_service
 dw_service_818
 
 
+只读
+readonly
+readonly_818
+
+
+GRANT SELECT ON dm_db.* TO 'readonly'@'%' IDENTIFIED BY 'readonly_818' WITH GRANT OPTION;
+flush privileges;
+
+
+
 CREATE DATABASE `dw_service` /*!40100 DEFAULT CHARACTER SET utf8 */;
 GRANT ALL PRIVILEGES ON dw_service.* TO 'dw_service'@'%' IDENTIFIED BY 'dw_service_818' WITH GRANT OPTION;
 flush privileges;

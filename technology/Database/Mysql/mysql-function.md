@@ -17,7 +17,6 @@
   substring(str, pos, len)
   select substring('sqlstudy.com', 4);
 
-
 3. CONCAT('a','b','c')
   组合字符串
 ```
@@ -58,6 +57,15 @@
 
   当天日期
   select date_format(now(),'%Y-%m-%d')
+
+
+6. 表分区格式: p_dt = '2017-02-18', p_hours = '11', 对分区进行时间范围查询时
+-- 组合分区成为一个日期格式
+WHERE concat(p_dt, ' ', p_hours, ':00', ':00')
+  -- 定位 1 个小时前日期格式
+  BETWEEN from_unixtime(unix_timestamp("2017-02-17 11:00:00")-3600,'yyyy-MM-dd HH:mm:ss')
+  -- 定位当前小时日期格式
+  AND concat('2017-02-17', ' ', '11', ':00', ':00')
 
 ```
 

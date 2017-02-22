@@ -63,7 +63,7 @@
 -- 组合分区成为一个日期格式
 WHERE concat(p_dt, ' ', p_hours, ':00', ':00')
   -- 定位 1 个小时前日期格式
-  BETWEEN from_unixtime(unix_timestamp("2017-02-17 11:00:00")-3600,'yyyy-MM-dd HH:mm:ss')
+  BETWEEN from_unixtime(unix_timestamp("2017-02-17 11:00:00")-3600,'%Y-%m-%d %h:%i:%s')
   -- 定位当前小时日期格式
   AND concat('2017-02-17', ' ', '11', ':00', ':00')
 

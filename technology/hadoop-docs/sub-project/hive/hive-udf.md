@@ -516,7 +516,6 @@ SELECT
 
 ## 六、自定义 jar 和 function
 
-
 ### 1. 临时函数
 
 ``` sql
@@ -550,5 +549,40 @@ DROP FUNCTION  IF  EXISTS function_name;
 -- 这种方式不要用, 因为会注册到 元数据库的 FUNCS 和 FUNC_RU 表中
 CREATE  FUNCTION parse_user_agent AS 'com.angejia.dw.hive.udf.useragent.ParseUserAgent' USING JAR 'hdfs://Ucluster/user/jars/dw_hive_udf-1.0-SNAPSHOT-spark.jar';
 CREATE  FUNCTION get_page_info AS 'com.angejia.dw.hive.udf.pageinfo.CalculatePageInfo' USING JAR 'hdfs://Ucluster/user/jars/dw_hive_udf-1.0-SNAPSHOT-spark.jar';
+
+```
+
+
+## 七、变量和命令行
+
+``` sql
+
+SET –v; 查看所有变量
+
+1. 自定义变量
+
+  ${hiveconf:varname}
+
+  SET name=lucy;
+  SET name;   // name=lucy
+
+  SELECT '${hiveconf:name}';
+
+
+2. 读取 shell 中 export 的变量
+
+  ${env:varname}
+
+  SELECT '${env:FINEBI_HOME}';
+
+
+3. source FILE <filepath> 在交互Shell中执行一个脚本
+
+
+4. dfs <dfs command> 在交互 Shell 中执行 hadoop fs 命令
+  dfs -du -s /tmp/;
+
+
+5. ! <command> 在交互Shell中执行Linux操作系统命令并打印出结果
 
 ```

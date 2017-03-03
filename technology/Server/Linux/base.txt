@@ -649,7 +649,7 @@ tock.stdtime.gov			//时间服务器
 
 			 		###组管理员命令###
 				iii)	gpasswd -a wade1 testgroup		//添加用户wade1到组中
-				iiii) gpasswd -d wade1 testgroup		//组中删除用户wade1
+				iiii) gpasswd -d wade1 testgroup		//组中移除用户wade1
 
 		6) 实际案例： 让组内的用户可以修改彼此的文件，要设置SGID，如chmod 2770 (422)
 

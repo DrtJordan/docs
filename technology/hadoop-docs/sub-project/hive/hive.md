@@ -92,7 +92,7 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
   看下面的详细说明
 
 7) 重命名表 student to student2
-  alter TABLE student rename to student2;
+  ALTER TABLE student rename to student2;
 
 8) 列操作
   -- 增加列

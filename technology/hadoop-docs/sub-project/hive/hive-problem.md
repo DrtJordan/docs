@@ -7,10 +7,9 @@
 - hive table 在做出导出文件的时候，最好也指定好字段和行的分隔符
 - hive table 有时会使用 sqoop 导入导出数据，注意查看表结构，分隔符指定好给 sqoop
 
-
 ## 二、HQL 问题
 
-### 1、报错找不到类
+### 1. 报错找不到类
 
 ```
 问题:
@@ -33,7 +32,7 @@
 ```
 
 
-### 2、SerDe 支持 json
+### 2. SerDe 支持 json
 
 - 下载第三方json的jar包、挂载
 - 资源文档：https://code.google.com/p/hive-json-serde/wiki/GettingStarted
@@ -59,7 +58,7 @@ LOAD DATA LOCAL INPATH "test.json" OVERWRITE INTO TABLE test_json;
 ```
 
 
-### 3、第三方类库需要在 beeline 生效
+### 3. 第三方类库需要在 beeline 生效
 
 ``` xml
 问题 :
@@ -80,7 +79,7 @@ LOAD DATA LOCAL INPATH "test.json" OVERWRITE INTO TABLE test_json;
 	sudo service hiveserver restart
 ```
 
-### 4、RegexSerDe 支持正则表达式
+### 4. RegexSerDe 支持正则表达式
 
 ```
 问题:
@@ -104,9 +103,40 @@ In Hive 0.10.0 and earlier, no distinction is made between partition columns and
 In Hive 0.13.0 and later, the configuration parameter hive.display.partition.cols.separately lets you use the old behavior, if desired (HIVE-6689). For an example, see the test case in the patch for HIVE-6689.
 ```
 
-## 2、hive1.1版本load data问题
+## 2. hive1.1版本load data问题
 
 ```
 LOAD DATA INPATH ‘filepath’ INTO TABLE xxx, 语句，filepath中的文件如果是（_）或者（.）开头的，将不会被load
 * 同样，LOAD DATA INPATH ‘/filepath/filename’ INTO TABLE xxx, 语句，filename如果是（_）或者（.）开头的，也不会被load
+```
+
+
+## 三、Hive 和 HiveServer2 配置问题
+
+### 1. HiveServer2 使用一段时间后会连接超时，等待时间长
+
+- 解决
+
+``` sh
+Error when releasing lock 原因可能是 hiveserver2 内存不足，GC或者full GC时间过长
+
+1. zookeeper 的会话超期
+Caused by: org.apache.hadoop.hive.ql.lockmgr.LockException: org.apache.zookeeper.KeeperException$SessionExpiredException: KeeperErrorCode = Session expired for /hive_zookeeper_namespace/default/LOCK-SHARED-0000000000
+
+2. 紧接着出现OOM异常
+ ERROR thrift.ProcessFunction (ProcessFunction.java:process(41)) - Internal error processing ExecuteStatement
+ java.lang.OutOfMemoryError: Java heap space
+
+目前解决办法：
+1. 把hive-env.sh
+ export HADOOP_HEAPSIZE=2048 调整 export HADOOP_HEAPSIZE=3096
+
+2. hadoop-env.sh
+ export HADOOP_CLIENT_OPTS="-Xmx6144M -XX:MaxPermSize=512M -Djava.net.preferIPv4Stack=true $HADOOP_CLIENT_OPTS"
+
+
+调整配置之后重启服务
+ sudo service hive-metastore restart
+ sudo service hive-server2 restart
+
 ```

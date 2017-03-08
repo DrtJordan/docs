@@ -25,3 +25,10 @@ CONCAT("{",
   '"kj_07":"', COALESCE(get_json_object(base_log.count, "$.kj_07"), 0), '",',
   '"kj_09":"', COALESCE(get_json_object(base_log.count, "$.kj_09"), 0), '"'
 "}") AS start_type,
+
+-- 自定义日期 UDF
+date_format('${dealDate} ${dealHours}',"yyyy-MM-dd HH","yyyy-MM-dd HH", '-', 3600)
+
+-- 指定日期前
+SELECT date_sub('2017-02-16', 14);
+SELECT date_sub('2017-02-16', interval 14 day);

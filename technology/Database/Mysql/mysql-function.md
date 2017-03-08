@@ -56,7 +56,10 @@
   WHERE date(p_dt) = date_format(date_sub(now(), interval 1 day),'%Y-%m-%d')
 
   当天日期
-  select date_format(now(),'%Y-%m-%d')
+    select date_format(now(),'%Y-%m-%d')
+
+  指定日期 14 天前日期  
+  SELECT date_sub('2017-02-16', interval 14 day);
 
 
 6. 表分区格式: p_dt = '2017-02-18', p_hours = '11', 对分区进行时间范围查询时

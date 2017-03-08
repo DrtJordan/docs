@@ -300,13 +300,24 @@ LIMIT 1;
 
 ``` sql
 
-1. 表分区格式: p_dt = '2017-02-18', p_hours = '11', 对分区进行时间范围查询时
--- 组合分区成为一个日期格式
-WHERE concat(p_dt, ' ', p_hours, ':00', ':00')
+1. 对分区进行时间范围查询时
+
+ 表分区格式: p_dt = '2017-02-18', p_hours = '11',
+
+ -- 组合分区成为一个日期格式
+ WHERE concat(p_dt, ' ', p_hours, ':00', ':00')
   -- 定位 1 个小时前日期格式
   BETWEEN from_unixtime(unix_timestamp("2017-02-17 11:00:00")-3600,'yyyy-MM-dd HH:mm:ss')
   -- 定位当前小时日期格式
   AND concat('2017-02-17', ' ', '11', ':00', ':00')
+
+
+
+2.  date_format 自定义的日期 UDF
+
+ 表分区格式: p_dt = '2017-02-18', p_hours = '11',
+
+ WHERE concat(p_dt, ' ', p_hours) BETWEEN date_format('2017-02-18 11',"yyyy-MM-dd HH","yyyy-MM-dd HH", '-', 3600) AND '2017-02-18 11'
 
 ```
 

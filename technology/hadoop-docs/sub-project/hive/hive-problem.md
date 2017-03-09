@@ -127,12 +127,12 @@ Caused by: org.apache.hadoop.hive.ql.lockmgr.LockException: org.apache.zookeeper
  ERROR thrift.ProcessFunction (ProcessFunction.java:process(41)) - Internal error processing ExecuteStatement
  java.lang.OutOfMemoryError: Java heap space
 
-目前解决办法：
-1. 把hive-env.sh
- export HADOOP_HEAPSIZE=2048 调整 export HADOOP_HEAPSIZE=3096
+	目前解决办法：
+	1. 把hive-env.sh
+	 export HADOOP_HEAPSIZE=2048 调整 export HADOOP_HEAPSIZE=3096
 
-2. hadoop-env.sh
- export HADOOP_CLIENT_OPTS="-Xmx6144M -XX:MaxPermSize=512M -Djava.net.preferIPv4Stack=true $HADOOP_CLIENT_OPTS"
+	2. hadoop-env.sh
+	 export HADOOP_CLIENT_OPTS="-Xmx6144M -XX:MaxPermSize=512M -Djava.net.preferIPv4Stack=true $HADOOP_CLIENT_OPTS"
 
 
 调整配置之后重启服务

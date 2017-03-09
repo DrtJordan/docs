@@ -1,20 +1,22 @@
 -- 缓冲区用于序列文件的大小, KB
 set io.file.buffer.size=131072;
 
+
 --- MapReduce 任务环境优化 Start ---
 
 -- task 任务 JVM 内存设置
 set mapred.child.java.opts=-Xmx6144M;
 
+
 -- 运行 map 任务的 JVM 环境内存,需要根据具体环境设置, 可以指定 -XX:-UseGCOverheadLimit
-set mapreduce.map.java.opts=-Xmx2048M;
+set mapreduce.map.java.opts=-Xmx6144M;
 -- 运行 reduce 任务的 JVM 环境内存,需要根据具体环境设置, 一般为 mapreduce.map.java.opts 2 倍
-set mapreduce.reduce.java.opts=-Xmx4096M;
+set mapreduce.reduce.java.opts=-Xmx8192M;
 
 
--- map | reduce task 任务内存上限
-set mapreduce.map.memory.mb=2048;
-set mapreduce.reduce.memory.mb=4096;
+-- map | reduce task 任务内存上限(设置太小 map 或者 reduce 强制停止)
+set mapreduce.map.memory.mb=6144;
+set mapreduce.reduce.memory.mb=8192;
 
 -- map | reduce task 最大任务上限
 set mapreduce.tasktracker.map.tasks.maximum=6;

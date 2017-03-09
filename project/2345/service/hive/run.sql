@@ -32,3 +32,14 @@ date_format('${dealDate} ${dealHours}',"yyyy-MM-dd HH","yyyy-MM-dd HH", '-', 360
 -- 指定日期前
 SELECT date_sub('2017-02-16', 14);
 SELECT date_sub('2017-02-16', interval 14 day);
+
+
+SET hive.exec.mode.local.auto=false;
+DROP TABLE IF EXISTS temp_db.dm_product_mac__ie_pinyin;
+CREATE TABLE IF NOT EXISTS temp_db.dm_product_mac__ie_pinyin AS
+SELECT
+  ie.mac
+FROM temp_db.dm_product_mac__ie AS ie
+INNER JOIN temp_db.dm_product_mac__pinyin AS pinyin
+  ON ie.mac = pinyin.mac
+;

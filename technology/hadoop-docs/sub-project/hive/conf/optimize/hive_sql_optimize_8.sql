@@ -5,7 +5,7 @@ set io.file.buffer.size=131072;
 --- MapReduce 任务环境优化 Start ---
 
 -- task 任务 JVM 内存设置
-set mapred.child.java.opts=-Xmx8192M;
+set mapred.child.java.opts=-Xmx6144M;
 
 
 -- 运行 map 任务的 JVM 环境内存,需要根据具体环境设置, 可以指定 -XX:-UseGCOverheadLimit
@@ -14,14 +14,9 @@ set mapreduce.map.java.opts=-Xmx6144M;
 set mapreduce.reduce.java.opts=-Xmx8192M;
 
 
--- map | reduce task 任务内存上限(设置太小 map 或者 reduce 强制停止), AM 分配给 map|reduce Container 的内存大小
+-- map | reduce task 任务内存上限(设置太小 map 或者 reduce 强制停止)
 set mapreduce.map.memory.mb=6144;
 set mapreduce.reduce.memory.mb=8192;
-
--- map | reduce task 任务 cpu
-set mapreduce.map.cpu.vcores=2;
-set mapreduce.reduce.cpu.vcores=2;
-
 
 -- map | reduce task 最大任务上限
 set mapreduce.tasktracker.map.tasks.maximum=6;
@@ -32,6 +27,10 @@ set mapreduce.tasktracker.reduce.tasks.maximum=6;
 set mapreduce.job.ubertask.enable=true;
 set mapreduce.job.ubertask.maxmaps=6;
 set mapreduce.job.ubertask.maxreduces=1;
+
+-- map | reduce task 任务 cpu
+set mapreduce.map.cpu.vcores=1;
+set mapreduce.reduce.cpu.vcores=1;
 
 
 -- map | reduce 任务推测
@@ -100,7 +99,7 @@ set mapreduce.output.fileoutputformat.compress.codec=org.apache.hadoop.io.compre
 -- (mapreduce.task.io.sort.mb * mapreduce.reduce.shuffle.parallelcopies) * mapreduce.reduce.shuffle.input.buffer.percent < mapred.child.java.opts
 set mapreduce.reduce.shuffle.parallelcopies=5;
 -- Reduce 复制阶段,复制到 reduceTask 的堆内存上限阀值(如果 reduce 内存溢出,调整这里的比例到 0.1)
-set mapreduce.reduce.shuffle.input.buffer.percent=0.5;
+set mapreduce.reduce.shuffle.input.buffer.percent=0.8;
 
 -- Reduce 合并阶段的堆内存上限阀值
 set mapreduce.reduce.shuffle.merge.percent=0.66;
@@ -135,9 +134,9 @@ set hive.exec.mode.local.auto=true;
 -- 设置local mr的最大输入数据量,当输入数据量小于这个值的时候会采用local  mr的方式(字节) 1024000000
 set hive.exec.mode.local.auto.inputbytes.max=1024000000;
 -- 设置local mr的最大task 数量,小于这个数量使用本地模式
-set hive.exec.mode.local.auto.tasks.max=10;
+set hive.exec.mode.local.auto.tasks.max=100;
 -- 设置local mr的最大输入文件个数,当输入文件个数小于这个值的时候会采用local mr的方式
-set hive.exec.mode.local.auto.input.files.max=10;
+set hive.exec.mode.local.auto.input.files.max=100;
 
 -- 如果MapJoin中的表都是有序的,使Join操作无需扫描整个表
 set hive.optimize.bucketmapjoin.sortedmerge=true;

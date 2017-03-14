@@ -34,7 +34,10 @@ SELECT date_sub('2017-02-16', 14);
 SELECT date_sub('2017-02-16', interval 14 day);
 
 
+SET hive.exec.parallel=false;
 SET hive.exec.mode.local.auto=false;
+
+
 DROP TABLE IF EXISTS temp_db.dm_product_mac__ie_pinyin;
 CREATE TABLE IF NOT EXISTS temp_db.dm_product_mac__ie_pinyin AS
 SELECT

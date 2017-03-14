@@ -151,13 +151,14 @@
 
   $HADOOP_HOME/conf/yarn-default.xml
 
-  (1) NodeManager -> ResourceManager 申请 最小/最大 内存数 (一个任务)
-    yarn.scheduler.minimum-allocation-mb=1024  :  Container 请求的最小内存(M),如果小于这个值,会按照这个值分配
-    yarn.scheduler.maximum-allocation-mb=8192  :  Container 请求的最大内存(M),如果大于这个值,会按照这个值分配
+  (1) NodeManager -> ResourceManager 申请 最小/最大 内存数 (一个任务), 可为容器请求的最大物理内存数量
+    yarn.scheduler.minimum-allocation-mb=1024  :  最小可申请内存量，默认是1024
+    yarn.scheduler.maximum-allocation-mb=25600  :  最大可申请内存量，默认是 8096
 
-  (2) NodeManager -> ResourceManager 申请 最小/最大 CPU 核数 (一个任务)
-    yarn.scheduler.minimum-allocation-vcores=1   : Container 请求的最小 CPU 核数,如果小于这个值,会按照这个值分配
-    yarn.scheduler.maximum-allocation-vcores=32  : Container 请求的最大 CPU 核数,如果大于这个值,会按照这个值分配
+
+  (2) NodeManager -> ResourceManager 申请 最小/最大 CPU 核数 (一个任务), 容器可以请求的虚拟 CPU 内核的最大数量
+    yarn.scheduler.minimum-allocation-vcores=1   : 最小可申请CPU数，默认是1
+    yarn.scheduler.maximum-allocation-vcores=8   : 最大可申请CPU数，默认是 4
 
 
 2) 启动 NodeManager (NodeManager 节点启动)
@@ -165,11 +166,11 @@
 
    $HADOOP_HOME/conf/yarn-default.xml
 
-   (1) ResourceManager -> Container 分配的 最大 内存数 (一个任务)
-      yarn.nodemanager.resource.memory-mb=8192 :  NodeManager 可以给 Container 使用的内存总量上限(M) ,只需给系统保留 2G 或者 4G 的容量给系统
+   (1) 注册节点时到集群的, 的最大 内存, 只需给系统保留 2G 或者 4G 的容量给系统
+      yarn.nodemanager.resource.memory-mb=25600 : 节点最大可用内存, 25 G
 
-   (2) ResourceManager -> Container 分配的 最大 CPU 核数 (一个任务)
-      yarn.nodemanager.resource.cpu-vcores=4  :  NodeManager 可以给 Container 使用的 CPU 核数上限,写 CPU 总核数
+   (2) 注册节点时到集群的，的最大 CPU
+      yarn.nodemanager.resource.cpu-vcores=8  :  节点最最大可用 CPU 数
 
 
 3) 启动 proxyserver  web 代理服务器

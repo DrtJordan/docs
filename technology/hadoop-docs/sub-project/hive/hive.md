@@ -266,6 +266,11 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 
   ANALYZE TABLE db_name.tb_name partition(p_dt='2016-04-01') COMPUTE STATISTICS noscan;
 
+
+26) LOCKS 查看表锁
+  S 共享锁
+  X 互斥锁
+  SHOW LOCKS dm_db.dm_product_browser_visit_type_day extended;
 ```
 
 

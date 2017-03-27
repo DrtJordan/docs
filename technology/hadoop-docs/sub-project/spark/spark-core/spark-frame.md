@@ -42,7 +42,7 @@ Worker : 多个 Worker 来管理计算节点的创建 Executor 并行处理任�
   (2) 每个 Application 拥有独立的一组 Executors
 
 - Executor[ɪg'zekjʊtə;] 执行器
-  (1) 在 worker node 上执行任务的组件
+  (1) 在 worker|NodeManager node 上执行任务的组件
     启动线程池运行任务
 
 - SparkContext 上下文

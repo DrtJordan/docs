@@ -11,7 +11,7 @@ StartScheduler 入口函数
      |--- 在 zookeeper 获取互斥锁 /dw_scheduler/locks
 |--- SchdulerWorkerFactory 创建调度 worker 工厂, 用来控制调度的所有启动流程
      |--- JobExecutorPool 创建 Job 并发控制池 , 使用 java.util.concurrent 并发控制模块实现, 使用集合 executorMap<Integer, JobExecutor>
-          |--- 开启线程池 ExecutorService ,具体 slotCount 数由配置决定
+          |--- 开启线程池 ExecutorService , 创建一个线程池, 具体 slotCount 数由配置决定
           |--- 对线程池中的 executorMap<Integer, JobExecutor> 执行任务队列, 设置、新增、kill 等操作
           |--- JobExecutor 具体执行单个任务的封装
                |--- 执行单个任务的流程控制: 生成信号文件、失败后的重跑处理机制, 任务执行完成后, 对执行任务队列的控制 executorMap<Integer, JobExecutor>  

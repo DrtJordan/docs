@@ -14,35 +14,30 @@
 
 --hive-table "db_sync.temp_db__jason_test_1" --hive-import --map-column-hive "channel=String,client_ip=String,mac=String,install_day=String,use_day=String,version=String,server_time=String,system_start_time=String,system_install_time=String,pc_name=String,pc_hardware=String,big_version=String,kuid=String,tag=String,type=String,p_dt=String" --fields-terminated-by '\001' --hive-delims-replacement '%n&' --lines-terminated-by '\n' --input-null-string '\\N' --input-null-non-string '\\N' --null-string '\\N' --null-non-string '\\N' --outdir "/home/hadoop/app/dw_etl/tmp/sqoop_outdir" --target-dir "/tmp/sqoop/db_sync.temp_db__jason_test_1" --delete-target-dir --m 1
 
--- 启动方式
-CONCAT("{",
-  '"kj_01":"', COALESCE(get_json_object(base_log.count, "$.kj_01"), 0), '",',
-  '"kj_02":"', COALESCE(get_json_object(base_log.count, "$.kj_02"), 0), '",',
-  '"kj_03":"', COALESCE(get_json_object(base_log.count, "$.kj_03"), 0), '",',
-  '"kj_04":"', COALESCE(get_json_object(base_log.count, "$.kj_04"), 0), '",',
-  '"kj_05":"', COALESCE(get_json_object(base_log.count, "$.kj_05"), 0), '",',
-  '"kj_06":"', COALESCE(get_json_object(base_log.count, "$.kj_06"), 0), '",',
-  '"kj_07":"', COALESCE(get_json_object(base_log.count, "$.kj_07"), 0), '",',
-  '"kj_09":"', COALESCE(get_json_object(base_log.count, "$.kj_09"), 0), '"'
-"}") AS start_type,
 
--- 自定义日期 UDF
+
+
+
+
+-------------------------------------------------------------------------
+--                    日期范围 START
+-------------------------------------------------------------------------
+
+-- HIVE 自定义日期, 精确到秒 UDF
 date_format('${dealDate} ${dealHours}',"yyyy-MM-dd HH","yyyy-MM-dd HH", '-', 3600)
 
--- 指定日期前
-SELECT date_sub('2017-02-16', 14);
-SELECT date_sub('2017-02-16', interval 14 day);
+-- HIVE 日期范围
+p_dt BETWEEN date_sub('${dealDate}', 14) AND '${dealDate}'
 
+-- MYSQL 指定日期范围
+p_dt BETWEEN date_sub('${dealDate}', interval 14 day) AND '${dealDate}'
+
+-- MYSQL 当日范围数据
+p_dt BETWEEN date_format(date_sub(now(), interval 14 day),'%Y-%m-%d') AND date_format(now(),'%Y-%m-%d')
+
+-------------------------------------------------------------------------
+--                    日期范围 END
+-------------------------------------------------------------------------
 
 SET hive.exec.parallel=false;
 SET hive.exec.mode.local.auto=false;
-
-
-DROP TABLE IF EXISTS temp_db.dm_product_mac__ie_pinyin;
-CREATE TABLE IF NOT EXISTS temp_db.dm_product_mac__ie_pinyin AS
-SELECT
-  ie.mac
-FROM temp_db.dm_product_mac__ie AS ie
-INNER JOIN temp_db.dm_product_mac__pinyin AS pinyin
-  ON ie.mac = pinyin.mac
-;

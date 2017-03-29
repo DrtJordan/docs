@@ -3,11 +3,13 @@
 ## 一、了解 Hadoop 生态的中的 Hive
 
 ### 1、简介
+
 - 分布式存储大型数据集的查询和管理
 - hive 通过类 sql 的 hql 语句转化为 hadoop 的 map reduce 程序，然后去 hadoop hdfs 中查询后返回结果
 - hive 是对 map reduce 的一层封装
 
 ### 2、历史
+
 - 起源自 facebook 由 Jeff Hammerbacher 领导的团队
 
 - 构建在 Hadoop 上的数据仓库框架
@@ -15,8 +17,6 @@
 - 设计的目的是让 Java 技能较弱的分析师可以通过类 SQL 查询海量数据
 
 - 2008 年 facebook 把 hive 项目贡献给 Apache
-
-
 
 
 ## 二、Hive 组件与体系架构
@@ -52,14 +52,14 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 ### 1、三种安装模式
 
 * 1) 内嵌模式
-元数据保持在内嵌的 Derby 数据库中，一次只能有一个连接会话。
+  元数据保持在内嵌的 Derby 数据库中，一次只能有一个连接会话。
 * 2) 本地独立模式
     在本地安装 Mysql , 把元数据放到 Mysql 中
 * 3) 远程模式
-元数据放到远程的 Mysql 数据库中
+  元数据放到远程的 Mysql 数据库中
 
 
-### 2、我们采用 icloudera manager 部署
+### 2、我们采用 cloudera manager 部署
 
 ## 四、操作 Hive
 
@@ -74,19 +74,19 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 
 ``` sql
 1) 显示所有数据库
-  show databases;
+  SHOW DATABASES;
 
 2) 使用指定数据库
-  use x_database;
+  use x_DATABASE;
 
 3) 显示所有表
-  show TABLEs;
+  SHOW TABLEs;
 
 4) 删除表
-  drop TABLE xxx;
+  DROP TABLE xxx;
 
 5) 删除数据库
-  drop database xxx;
+  DROP DATABASE xxx;
 
 6) 创建表
   看下面的详细说明
@@ -114,7 +114,7 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 
 10) 分区信息
   查看分区
-  show partitions student;
+  SHOW PARTITIONs student;
 
   添加分区
   ALTER TABLE
@@ -136,16 +136,16 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
   CREATE TABLE empty_TABLE_name LIKE TABLE_name;
 
 13) 查看数据库结构
-  DESC database dbname;
+  DESC DATABASE dbname;
 
 14) 查看创建表语句
-  show CREATE TABLE tb_name;
+  SHOW CREATE TABLE tb_name;
 
 15) 创建数据指定文件路径,注意加引号
   CREATE DATABASE db_name  LOCATION '/user/hive/uba_log';
 
 16) 查询数据保存到文件中
-  hive -e "SELECT * FROM access_log.access_log_20150326 WHERE hostname='api.angejia.com' limit 1" >> /tmp/log.log
+  hive -e "SELECT * FROM access_log.access_log_20150326 WHERE hostname='api.angejia.com' LIMIT 1" >> /tmp/log.log
 
 17) 通过 sql 通过文件执行，把结果输出到文件中
   bin/hive -f sql.q >> /tmp/log.log
@@ -184,7 +184,7 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
       会对输入做全局排序，因此只有一个reducer
 
     问题：
-      1、在hive.mapred.mode = strict 模式下 必须指定 limit 否则执行会报错
+      1、在hive.mapred.mode = strict 模式下 必须指定 LIMIT 否则执行会报错
       2、原因： 在order by 状态下所有数据会到一台服务器进行reduce操作也即只有一个reduce，如果在数据量大的情况下会出现无法输出结果的情况
 
 
@@ -196,7 +196,7 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
     问题:
       1、如果用sort by进行排序，并且设置 (mapred.reduce.tasks>1)， 则sort by只保证每个reducer的输出有序，不保证全局有序
       2、sort by 的数据只能保证在同一 reduce 中的数据可以按指定字段排序
-      3、使用sort by 你可以指定执行的reduce 个数 （set mapred.reduce.tasks=<number>）,对输出的数据再执行归并排序，即可以得到全部结果。
+      3、使用sort by 你可以指定执行的reduce 个数 （SET mapred.reduce.tasks=<number>）,对输出的数据再执行归并排序，即可以得到全部结果。
 
 
   distribute by
@@ -259,12 +259,12 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 
 25) 统计(分析和描述)
   统计表的分区状态
-  ANALYZE TABLE [TABLEName] partition([p_dt]) COMPUTE STATISTICS noscan;
+  ANALYZE TABLE [TABLEName] PARTITION([p_dt]) COMPUTE STATISTICS noscan;
 
   1. 案例
-  ANALYZE TABLE db_name.tb_name partition(p_dt) COMPUTE STATISTICS noscan;
+  ANALYZE TABLE db_name.tb_name PARTITION(p_dt) COMPUTE STATISTICS noscan;
 
-  ANALYZE TABLE db_name.tb_name partition(p_dt='2016-04-01') COMPUTE STATISTICS noscan;
+  ANALYZE TABLE db_name.tb_name PARTITION(p_dt='2016-04-01') COMPUTE STATISTICS noscan;
 
 
 26) LOCKS 查看表锁
@@ -325,7 +325,7 @@ CREATE TABLE employees(
 2) 创建分区表 (ds 为分区字段)
 CREATE TABLE student_index(
   sid int , sname string
-  ) partitioned by (ds string)
+  ) PARTITIONed by (ds string)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\001'
 COLLECTION ITEMS TERMINATED BY '\n'
@@ -335,7 +335,7 @@ STORED AS TEXTFILE;
 3) 创建二级分区表 (teacher、nickname 为分区字段,加上备注)
 CREATE TABLE classmem_index_1(
   student string,age int
-) partitioned by(
+) PARTITIONed by(
     teacher string comment 'the teacher',
     nickname string comment 'the nickname'
 )
@@ -424,7 +424,7 @@ ROW FORMAT SERDE
 CREATE EXTERNAL TABLE student_index(
   sid int ,
   sname string
-) partitioned by (ds string)
+) PARTITIONed by (ds string)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\001'
 COLLECTION ITEMS TERMINATED BY '\n'
@@ -448,10 +448,10 @@ hive表默认的分隔符是'\001'
 
 ``` sql
 *** 执行本地导入，OVERWRITE 表示覆盖
-  hive> load data local inpath '/root/student_two.txt' OVERWRITE into TABLE student;
+  hive> LOAD DATA LOCAL INPATH '/root/student_two.txt' OVERWRITE INTO TABLE student;
 
 向分区表导入数据(ds为分区字段名称，ds=111 表示把匹配111的数据，导入到当前表目录的一个文件中)
-  load data local inpath '/home/hadoop/data/student_index.log' OVERWRITE into TABLE student_index partition(ds='111');
+  LOAD DATA LOCAL INPATH '/home/hadoop/DATA/student_index.log' OVERWRITE INTO TABLE student_index PARTITION(ds='111');
 
   查看 dfs 文件接口
   hive> dfs -ls /user/hive/warehouse/jason_test.db/wyp;
@@ -460,18 +460,18 @@ hive表默认的分隔符是'\001'
 #### 3.2、HDFS上导入数据到Hive表
 ``` sql
 *** hdfs 导入
-  hive> load data inpath '/home/wyp/add.txt' OVERWRITE into TABLE wyp;
+  hive> LOAD DATA INPATH '/home/wyp/add.txt' OVERWRITE INTO TABLE wyp;
 
 ```
 
 #### 3.3、从别的表中查询出相应的数据并导入到 Hive 表中
 ``` sql
 1) *** 如果需要分区插入设置线下
-  hive> set hive.exec.dynamic.partition.mode=nonstrict;
+  hive> SET hive.exec.dynamic.PARTITION.mode=nonstrict;
 
 2)*** 其他表导入数据(其中 age 是动态的分区)
-  hive> INSERT into TABLE test
-  partition (age)
+  hive> INSERT INTO TABLE test
+  PARTITION (age)
   SELECT id, name,tel, age FROM wyp;
 
 ```
@@ -484,24 +484,24 @@ hive表默认的分隔符是'\001'
 * （2）导出到 HDFS 中
 * （3）导出到 Hive 的另一个表中
 
-#### 4.1、导出到本地文件系统 <INSERT local directory>
+#### 4.1、导出到本地文件系统 <INSERT LOCAL directory>
 
 ``` sql
-row format delimited
+row format deLIMITed
 FIELDS TERMINATED BY '\001' 字段分隔符是 '\001'
 COLLECTION ITEMS TERMINATED BY '\n' 行分隔符是 '\n'
 
 语法：
-INSERT OVERWRITE local directory <to_file_dir>
-<row format delimited>
+INSERT OVERWRITE LOCAL directory <to_file_dir>
+<row format deLIMITed>
 <FIELDS TERMINATED BY '\001'>
 <COLLECTION ITEMS TERMINATED BY '\n'>
 <fields>
 <FROM_TABLE_name>
 
 命令：
-INSERT OVERWRITE local directory 'to_file_dir'
-row format delimited
+INSERT OVERWRITE LOCAL directory 'to_file_dir'
+row format deLIMITed
 FIELDS TERMINATED BY '\001'
 COLLECTION ITEMS TERMINATED BY '\n'
 SELECT fields FROM FROM_TABLE_name;
@@ -509,18 +509,18 @@ SELECT fields FROM FROM_TABLE_name;
 
 #### 4.2、导出到 HDFS 中
 
-#### 4.3、导出到 Hive TABLE 的另一个表中 <INSERT into TABLE>
+#### 4.3、导出到 Hive TABLE 的另一个表中 <INSERT INTO TABLE>
 
 ``` sql
 语法：
-INSERT into TABLE
+INSERT INTO TABLE
 <to_TABLE_name>
-<partition (age='25')>
+<PARTITION (age='25')>
 <fields>
 <FROM_TABLE_name>
 
 命令：
-INSERT into TABLE uba_web_visit_log_template_20150331
+INSERT INTO TABLE uba_web_visit_log_template_20150331
 SELECT * FROM uba_web_visit_log_20150331;
 
 
@@ -536,8 +536,8 @@ SELECT * FROM uba_web_visit_log_20150331;
 一个表，就对应一个表名对应的文件目录。
 
 2) 外部表 关键字 EXTERNAL
-内部表 : 在drop的时候会从HDFS上删除数据，
-外部表 : 在drop的时候会从HDFS不会删除。
+内部表 : 在DROP的时候会从HDFS上删除数据，
+外部表 : 在DROP的时候会从HDFS不会删除。
 
 EXTERNAL 关键字可以让用户创建一个外部表，在建表的同时指定一个指向实际数据的路径（LOCATION），Hive 创建内部表时，会将数据移动到数据仓库指向的路径；若创建外部表，仅记录数据所在的路径，不对数据的位置做任何改变。在删除表的时候，内部表的元数据和数据会被一起删除，而外部表只删除元数据，不删除数据。具体sql如下
 
@@ -558,7 +558,7 @@ CREATE EXTERNAL TABLE `test_1`(
 #### 5.2、注意事项
 
 ``` sql
-Hive不支持一条一条的用INSERT语句进行插入操作，也不支持update的操作。数据是以load的方式，加载到建立好的表中。数据一旦导入，则不可修改。要么drop掉整个表，要么建立新的表，导入新的数据。
+Hive不支持一条一条的用INSERT语句进行插入操作，也不支持update的操作。数据是以LOAD的方式，加载到建立好的表中。数据一旦导入，则不可修改。要么DROP掉整个表，要么建立新的表，导入新的数据。
 
 数据类型
 TINYINT

@@ -28,7 +28,7 @@
 
 Thrift 服务器：提供了可以远程访问其他进程的功能，也提供使用 JDBC 和 ODBC 访问 hive 的功能，这些都是基于 Thirft 实现的
 
-元数据库 (MetaStore) "Derby,Mysql" 等
+元数据库 (MetAStore) "Derby,Mysql" 等
 
 解析器 : 输入 SQL 映射为 MapReduce 的 job
 
@@ -124,7 +124,7 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
   )
   删除分区
   ALTER TABLE
-    dw_db.dw_summary_broker_basis_info_daily
+    dw_db.dw_summary_broker_bASis_info_daily
   DROP IF EXISTS PARTITION (
     p_dt = '2015-06-28'
   );
@@ -153,16 +153,12 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 18) CASE 字句
   CASE
     WHEN
-      a.account_type = 1
-    THEN
-      'broker'
+      a.account_type = 1 THEN 'broker'
     WHEN
-      a.account_type = 2
-    THEN
-      'agcy'
+      a.account_type = 2 THEN 'agcy'
     ELSE
       'CCC'
-  END as start_and_end
+  END AS start_and_end
 
 19) JOIN
   LEFT JOIN 返回左边所有符合 WHERE 语句的记录，右表匹配不上的的字段值用 NULL 代替
@@ -194,9 +190,9 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
       sort by 不是全局排序，其在数据进入(reducer前完成排序)
 
     问题:
-      1、如果用sort by进行排序，并且设置 (mapred.reduce.tasks>1)， 则sort by只保证每个reducer的输出有序，不保证全局有序
+      1、如果用sort by进行排序，并且设置 (mapred.reduce.tASks>1)， 则sort by只保证每个reducer的输出有序，不保证全局有序
       2、sort by 的数据只能保证在同一 reduce 中的数据可以按指定字段排序
-      3、使用sort by 你可以指定执行的reduce 个数 （SET mapred.reduce.tasks=<number>）,对输出的数据再执行归并排序，即可以得到全部结果。
+      3、使用sort by 你可以指定执行的reduce 个数 （SET mapred.reduce.tASks=<number>）,对输出的数据再执行归并排序，即可以得到全部结果。
 
 
   distribute by
@@ -242,7 +238,7 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 
 
 22) 字段类型转换
-  WHERE cast(aa AS float) < 1000;
+  WHERE cASt(aa AS float) < 1000;
 
 
 23) DESCRIBE
@@ -253,9 +249,9 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 
 24) TBLPROPERTIES 表级属性，如是否外部表，表注释等
 
-  SHOW TBLPROPERTIES dw_temp_angejia.jason_test_member;
+  SHOW TBLPROPERTIES dw_temp_angejia.jASon_test_member;
 
-    transient_lastDdlTime 最后创建修改表时间
+    transient_lAStDdlTime 最后创建修改表时间
 
 25) 统计(分析和描述)
   统计表的分区状态
@@ -292,7 +288,7 @@ CREATE TABLE employees(
     -- 映射
     address STRUCT<street:STRING,city:STRING,state:STRING,zip:INT>
 )
-  --必须写在下面的子句之前（stored as 除外）
+  --必须写在下面的子句之前（stored AS 除外）
   ROW FORMAT DELIMITED
   --Hive 将使用 ^A 做为列分隔符
   FILEDS TERMINATED BY '\001'
@@ -333,7 +329,7 @@ STORED AS TEXTFILE;
 
 
 3) 创建二级分区表 (teacher、nickname 为分区字段,加上备注)
-CREATE TABLE classmem_index_1(
+CREATE TABLE clASsmem_index_1(
   student string,age int
 ) PARTITIONed by(
     teacher string comment 'the teacher',
@@ -454,7 +450,7 @@ hive表默认的分隔符是'\001'
   LOAD DATA LOCAL INPATH '/home/hadoop/DATA/student_index.log' OVERWRITE INTO TABLE student_index PARTITION(ds='111');
 
   查看 dfs 文件接口
-  hive> dfs -ls /user/hive/warehouse/jason_test.db/wyp;
+  hive> dfs -ls /user/hive/warehouse/jASon_test.db/wyp;
 ```
 
 #### 3.2、HDFS上导入数据到Hive表

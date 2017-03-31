@@ -15,14 +15,14 @@ CREATE TABLE `demo_test` (
   `im_type` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '导入方式',
   `is_snapshot` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否快照',
   `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
-  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建日期',
+  `CREATE_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建日期',
   PRIMARY KEY (`id`),
   KEY `idx_qy` (`db_name`,`tb_name`,`is_delete`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
 * 复制表
-	create table t2 like t1;							//创建表复制t1数据结构
+	CREATE TABLE t2 like t1;							//创建表复制t1数据结构
 	insert into t2 select * from t1;				//把t1表数据放入t2表中
 
 
@@ -39,8 +39,8 @@ CREATE TABLE `demo_test` (
 		ADD t_2 varchar(255) NOT NULL DEFAULT '' AFTER t_1;
 	删除字段
 		ALTER TABLE `user_movement_log`
-			drop column `Gatewayid`,
-			drop column `Gatewayi2`;
+			DROP column `Gatewayid`,
+			DROP column `Gatewayi2`;
 
 
 
@@ -53,7 +53,7 @@ CREATE TABLE `demo_test` (
 
 ```sql
 	- 主键联合索引，不允许重复
-	PRIMARY KEY (`date_index`,`class_id`,`city_id`,`item_id`),
+	PRIMARY KEY (`date_INDEX`,`class_id`,`city_id`,`item_id`),
 
 	- 索引
 	KEY `idx_item_id` (`item_id`),
@@ -62,33 +62,46 @@ CREATE TABLE `demo_test` (
 	KEY `idx_class_item` (`class_id`,`item_id`)
 
 
+  //创建表时的索引
+  	CREATE TABLE `cms_topic_tags` (
 
-  		//创建表时的索引
-  			CREATE TABLE `cms_topic_tags` (
-  			  `id` int(10) NOT NULL AUTO_INCREMENT,
-  			  `city_id` int(10) NOT NULL DEFAULT '0' COMMENT '城市',
-  			   PRIMARY KEY (`id`),
-  			   KEY `city_id` (`city_id`,`identifier`(25))	//联合索引
-  			   KEY `identifier` (`identifier`(25))		//单个字段的索引建议 用跟字段名相同的名字 ,25表示索引的长度。字符串
-  			) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8
+  	  `id` int(10) NOT NULL AUTO_INCREMENT,
 
-  			//添加索引
-  			创建表时
-  			create index 索引名 on 表名（字段名1，字段名2）
-  			create index idx_ac_st on app_users(account(11),is_del)
-  			已经有表的
-  			alter table 表名 add index 索引名 (字段1,字段2) ;//普通和联合索引
-  			alter table 表名 add unique (字段) ;		//唯一索引
-  			alter table 表名 add primary key (字段) ;	//主键索引
-  			如：
-  			alter table  `app_user_advertisement` ADD INDEX idx_aaa(  `users_id` ) 添加索引
-  			alter table  `app_users` ADD UNIQUE (`account`)
+  	  `city_id` int(10) NOT NULL DEFAULT '0' COMMENT '城市',
 
+       -- 主键索引
+       PRIMARY KEY (`id`),
 
-  			//删除索引
-  			alter table 表名 drop index 索引名;
-  			或者
-  			drop index 索引名 on 表名 ;
+       -- //联合索引
+  	   KEY `city_id` (`city_id`,`identifier`(25))
+
+       -- 单个字段的索引建议 用跟字段名相同的名字 ,25表示索引的长度。字符串
+  	   KEY `id` (`id`(25))		
+  	) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8
+
+  //创建表时, 添加索引
+
+  	CREATE INDEX 索引名 ON 表名（字段名1，字段名2）
+    
+  	CREATE INDEX idx_ac_st ON app_users(account(11),is_del)
+
+  //修改表时, 增加索引
+    -- 普通和联合索引
+  	ALTER TABLE 表名 add INDEX 索引名 (字段1,字段2) ;
+
+    -- 唯一索引
+  	ALTER TABLE 表名 add UNIQUE (字段) ;		
+
+    -- 主键索引        
+  	ALTER TABLE 表名 add PRIMARY KEY (字段) ;	     
+
+    -- 案例
+  	ALTER TABLE  `app_user_advertisement` ADD INDEX idx_aaa(  `users_id` ) 添加索引
+  	ALTER TABLE  `app_users` ADD UNIQUE (`account`)
+
+  //删除索引
+  	ALTER TABLE 表名 DROP INDEX 索引名;
+  	DROP INDEX 索引名 ON 表名 ;
 ```
 
 

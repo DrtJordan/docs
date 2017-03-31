@@ -11,9 +11,9 @@
 
 
 3、获取表中所有字段名
-		select COLUMN_NAME from information_schema.COLUMNS
-		where table_name = 'your_table_name'
-		and table_schema = 'your_db_name';
+		SELECT COLUMN_NAME from information_schema.COLUMNS
+		WHERE table_name = 'your_table_name'
+		AND table_schema = 'your_db_name';
 
 4、查看表结构
 		SHOW FULL FIELDS FROM oa_case_pics
@@ -76,21 +76,21 @@
 			HAVING SUM(OrderPrice)>1500
 
 	distinct 对 user_id 的记录只取一条
-	select distinct(user_id),app_name from dw_stage.dw_app_access_log;
+	SELECT distinct(user_id),app_name from dw_stage.dw_app_access_log;
 
 
 11、获取字段详细信息
-		SELECT
-	 column_name AS `列名`,
-	 data_type   AS `数据类型`,
-	 character_maximum_length  AS `字符长度`,
-	 numeric_precision AS `数字长度`,
-	 numeric_scale AS `小数位数`,
-	 is_nullable AS `是否允许非空`,
-	 CASE WHEN extra = 'auto_increment'
-	   THEN 1 ELSE 0 END AS `是否自增`,
-	 column_default  AS  `默认值`,
-	 column_comment  AS  `备注`
+	SELECT
+		 column_name AS `列名`,
+		 data_type   AS `数据类型`,
+		 character_maximum_length  AS `字符长度`,
+		 numeric_precision AS `数字长度`,
+		 numeric_scale AS `小数位数`,
+		 is_nullable AS `是否允许非空`,
+		 CASE WHEN extra = 'auto_increment'
+		   THEN 1 ELSE 0 END AS `是否自增`,
+		 column_default  AS  `默认值`,
+		 column_comment  AS  `备注`
 	FROM
 	 Information_schema.columns
 	WHERE

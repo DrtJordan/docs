@@ -8,14 +8,14 @@
 
 1. substring_index(str,delim,count) 字符串截取
   截取第二个 '.' 之前的所有字符。
-  select substring_index('www.sqlstudy.com.cn', '.', 2);
+  SELECT substring_index('www.sqlstudy.com.cn', '.', 2);
 
   截取第二个 '.' （倒数）之后的所有字符。
-  select substring_index('www.sqlstudy.com.cn', '.', -2);
+  SELECT substring_index('www.sqlstudy.com.cn', '.', -2);
 
 2. substring(str, pos) 字符串截取
   substring(str, pos, len)
-  select substring('sqlstudy.com', 4);
+  SELECT substring('sqlstudy.com', 4);
 
 3. CONCAT('a','b','c')
   组合字符串
@@ -47,8 +47,8 @@
   str_to_date(substring_index('30 9 * * *',' ',2),'%i %h') as schedule_seconds
 
 4. 时间转换
-  select time_to_sec('01:00:05'); -- 3605
-  select sec_to_time(3605); -- '01:00:05'
+  SELECT time_to_sec('01:00:05'); -- 3605
+  SELECT sec_to_time(3605); -- '01:00:05'
 
 5. 日期
   一天前日期
@@ -56,7 +56,7 @@
   WHERE date(p_dt) = date_format(date_sub(now(), interval 1 day),'%Y-%m-%d')
 
   当天日期
-    select date_format(now(),'%Y-%m-%d')
+    SELECT date_format(now(),'%Y-%m-%d')
 
   指定日期 14 天前日期  
   SELECT date_sub('2017-02-16', interval 14 day);

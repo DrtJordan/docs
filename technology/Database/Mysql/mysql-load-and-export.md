@@ -28,7 +28,7 @@ mysql -utest -ptest test -v -f < ./test.sql
   mysqldump -h[host] -u[account] -p[password] [db_name] [table_name]] > ./table_name.sql
 
 4) 导出 test 到文件
-    mysql -h10.10.2.91 -uhadoop -pangejia888 -s -e "select * FROM test.performance_mb limit 10" > ./tablename
+    mysql -h10.10.2.91 -uhadoop -pangejia888 -s -e "SELECT * FROM test.performance_mb limit 10" > ./tablename
 ```
 
 
@@ -36,12 +36,12 @@ mysql -utest -ptest test -v -f < ./test.sql
 
 ``` sql
 
-select
+SELECT
   p.TypeName,
   c.*
-from
+FROM
   ajk_communitys as c
-left join
+LEFT JOIN
   ajk_commtype as p
 ON
   c.CityId = p.CityId
@@ -49,7 +49,7 @@ WHERE
   p.CityId IN ('19','27')
 AND
   p.parentid = '0'
-into outfile '/tmp/communitys6.txt'
+INTO outfile '/tmp/communitys6.txt'
 fields terminated by '\t'
 optionally enclosed by '"'
 escaped by '"'
@@ -58,12 +58,12 @@ lines terminated by '\n'
 
 
 
-select
+SELECT
   *
-from
+FROM
  test.performance_mb
 LIMIT 10
-into outfile '/tmp/performance_mb_2.txt'
+INTO outfile '/tmp/performance_mb_2.txt'
 fields terminated by '\t'
 optionally enclosed by '"'
 escaped by '"'

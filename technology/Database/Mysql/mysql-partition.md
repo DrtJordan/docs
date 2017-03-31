@@ -5,7 +5,7 @@
 
 #### 1、是否支持分区技术：5.1以后的版本
 
-```
+```sql
 1) mysql>show plugins;																//查看支持的插件
 		partition | ACTIVE																	//表示支持
 
@@ -55,7 +55,7 @@
 - 使用环境：如按照店铺类型、用户类型、酒店类型等，其中一个字段进行分区，固定的有限的分区。
 
 
-```
+```sql
 range分区
 mysql>create table t_range(
 	id int(11),
@@ -77,7 +77,7 @@ mysql>create table t_range(
 - 注意：
   - 对于innodb和myisam引擎，一条语句插入多条记录的时候，如果中间有值不能插入，innodb会全部回滚，myisam在错误值之前的数据可以插入到表中。
 
-```
+```sql
 list分区
 mysql>create table t_list(
 	a int(11),
@@ -98,7 +98,7 @@ partition p1 values in (2,4,6,8,0)
  - hash的分区函数页需要返回一个<<<整数值>>>。partitions子句中的值是一个非负整数，不加的partitions子句的话，默认为分区数为1。
 
 
-```
+```sql
 hash分区
 mysql>create table t_hash(
 　a int(11),
@@ -115,7 +115,7 @@ partitions 4;		//表示分配到4张表存储
 
 ### 三、测试环境
 
-```
+```sql
 mysql> -- 查看表创建的过程
 show create table table_name;
 

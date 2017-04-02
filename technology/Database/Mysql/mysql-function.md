@@ -46,20 +46,31 @@
   案例，把调度日期转换正常时间
   str_to_date(substring_index('30 9 * * *',' ',2),'%i %h') as schedule_seconds
 
+
 4. 时间转换
+  -- 时间 -> 秒
   SELECT time_to_sec('01:00:05'); -- 3605
+
+  -- 秒 -> 时间
   SELECT sec_to_time(3605); -- '01:00:05'
 
-5. 日期
+  -- 获取当前日期
+  SELECT NOW();
+
+  -- 当天日期格式化
+  DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%s')
+
+  -- 日期增减, 获取指定日期 14 天前的日期
+  date_sub('2017-02-16', interval 14 day)
+
+
+5. 日期应用
   一天前日期
-  WHERE p_dt = date_format(date_sub(now(), interval 1 day),'%Y-%m-%d')
-  WHERE date(p_dt) = date_format(date_sub(now(), interval 1 day),'%Y-%m-%d')
+  WHERE p_dt = date_sub(DATE_FORMAT(NOW(), '%Y-%m-%d'), interval 1 day)
+  WHERE date(p_dt) = date_sub(DATE_FORMAT(NOW(), '%Y-%m-%d'), interval 1 day)
 
-  当天日期
-    SELECT date_format(now(),'%Y-%m-%d')
-
-  指定日期 14 天前日期  
-  SELECT date_sub('2017-02-16', interval 14 day);
+  -- 当前日期 14 天前和 当天范围
+  WHERE p_dt BETWEEN date_sub(DATE_FORMAT(NOW(), '%Y-%m-%d'), interval 14 day) AND date_format(now(),'%Y-%m-%d')
 
 
 6. 表分区格式: p_dt = '2017-02-18', p_hours = '11', 对分区进行时间范围查询时

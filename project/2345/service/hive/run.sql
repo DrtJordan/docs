@@ -33,7 +33,9 @@ p_dt BETWEEN date_sub('${dealDate}', 14) AND '${dealDate}'
 p_dt BETWEEN date_sub('${dealDate}', interval 14 day) AND '${dealDate}'
 
 -- MYSQL 当日范围数据
-p_dt BETWEEN date_format(date_sub(now(), interval 14 day),'%Y-%m-%d') AND date_format(now(),'%Y-%m-%d')
+p_dt BETWEEN date_sub(DATE_FORMAT(NOW(), '%Y-%m-%d'), interval 14 day) AND date_format(now(),'%Y-%m-%d')
+
+
 
 -------------------------------------------------------------------------
 --                    日期范围 END

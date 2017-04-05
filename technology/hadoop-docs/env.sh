@@ -30,6 +30,11 @@ export SPARK_LIBRARY_PATH=$SPARK_LIBRARY_PATH:$HADOOP_HOME/lib/native
 export SPARK_CLASSPATH=$SPARK_CLASSPATH:$HADOOP_HOME/lib/snappy-java-1.0.4.1.jar
 
 
+# HBASE
+export HBASE_HOME=/usr/lib/hbase
+export HBASE_CONF_DIR=$HBASE_HOME/conf
+
+
 # SQOOP_HOME
 export SQOOP_HOME=/usr/local/spark
 export SPARK_CONF_DIR=$SQOOP_HOME/conf

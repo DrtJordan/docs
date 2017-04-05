@@ -1,4 +1,4 @@
-# Hive 与 Hbase 整合
+# SparkSQL 与 Hbase 整合
 
 ## 一、环境
 
@@ -36,7 +36,7 @@
     $HBASE_HOME/lib/guava-12.0.1.jar
     $HBASE_HOME/lib/zookeeper-3.4.5-cdh5.4.4.jar
     $HBASE_HOME/lib/hbase-client-1.0.0-cdh5.4.4.jar
-    
+
     Spark-SQL-on-HBase-1.0.0.jar
 
 

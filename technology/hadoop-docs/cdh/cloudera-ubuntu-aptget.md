@@ -214,7 +214,7 @@ cd /etc/apt/sources.list.d/
 
 2. 固定版本问题
   # PS: 若要安装指定的版本, 修改如下参数
-  sudo vim /etc/apt/sources.list.d/cloudera.list
+  sudo vim /etc/apt/sources.list.d/cloudera-chd.list
 
 	# Packages for Cloudera's Distribution for Hadoop, Version 5, on Ubuntu 14.04 amd64
 	#deb [arch=amd64] http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh trusty-cdh5 contrib (修改前)
@@ -239,6 +239,12 @@ sudo apt-get install flume-ng-agent
 ```
 
 ### 2. 安装 sqoop
+
+``` sh
+sudo apt-get install sqoop
+```
+
+### 3. 安装 HBase
 
 ``` sh
 sudo apt-get install sqoop

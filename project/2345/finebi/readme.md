@@ -1,1 +1,0 @@
-$FINEBI_HOME/FineBI &

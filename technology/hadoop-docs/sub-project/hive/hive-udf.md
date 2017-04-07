@@ -568,32 +568,51 @@ CREATE  FUNCTION get_page_info AS 'com.angejia.dw.hive.udf.pageinfo.CalculatePag
 
 ``` sql
 
-SET –v; 查看所有变量
+1. 普通变量 --define OR --hivevar
 
-1. 自定义变量
+  --define OR --hivevar
 
-  ${hiveconf:varname}
+  hive --hivevar a=123 --hivevar b=456 -f ./test.sql
+
+  test.sql 写入数据:
+  SELECT '${hivevar:a}';
+  SELECT '${b}';
+
+
+2. hiveconf 变量
+
+  hiveconf 的命名空间指的是 hive-site.xml 下面的配置变量值
+
+
+  SET –v; 查看所有的 hiveconf
 
   SET name=lucy;
   SET name;   // name=lucy
 
+  ${hiveconf:name}
+
   SELECT '${hiveconf:name}';
 
 
-2. 读取 shell 中 export 的变量
+3. env, export 的变量
+
+  指环境变量，包括Shell环境下的变量信息，如 HADOOP_HOME 之类的
 
   ${env:varname}
 
   SELECT '${env:FINEBI_HOME}';
 
 
-3. source FILE <filepath> 在交互Shell中执行一个脚本
+4. system 的命名空间是系统的变量，包括JVM的运行环境
 
 
-4. dfs <dfs command> 在交互 Shell 中执行 hadoop fs 命令
+5. source FILE <filepath> 在交互Shell中执行一个脚本
+
+
+6. dfs <dfs command> 在交互 Shell 中执行 hadoop fs 命令
   dfs -du -s /tmp/;
 
 
-5. ! <command> 在交互Shell中执行Linux操作系统命令并打印出结果
+6. ! <command> 在交互Shell中执行Linux操作系统命令并打印出结果
 
 ```

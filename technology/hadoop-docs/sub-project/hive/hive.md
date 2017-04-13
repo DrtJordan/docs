@@ -114,7 +114,9 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 
 10) 分区信息
   查看分区
-  SHOW PARTITIONs student;
+  SHOW PARTITIONS db.tb;
+
+  SHOW PARTITIONS db.tb PARTITION(p_dt='2017-04-08');
 
   添加分区
   ALTER TABLE

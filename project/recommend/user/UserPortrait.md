@@ -50,6 +50,12 @@ hbase 创建用户画像
    --kafka-consumer-gid "userPortrait"  >> /data/log/recommend/UserPortrait 2>&1  &
 
 
+--num-executors 控制数量, 1.3 之后可以用
+--conf "spark.dynamicAllocation.enabled=true"
+--conf "spark.shuffle.service.enabled=true"
+动态控制
+
+
 * hive 映射表
 
 CREATE EXTERNAL TABLE real_time.user_portrait(
@@ -67,7 +73,7 @@ WITH SERDEPROPERTIES (
   "hbase.columns.mapping" = "needs:actionNeeds,tags:city,tags:district,tags:block,tags:community,tags:bedrooms,tags:price")
 TBLPROPERTIES (
   "hbase.table.name" = "userPortrait")
-
+;
 
 
 drop table dw_user_sd;

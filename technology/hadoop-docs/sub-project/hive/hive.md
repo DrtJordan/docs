@@ -112,6 +112,12 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 9) 查看表结构
   DESC student;
 
+  -- 查看表结构信息(表目录/格式等详信息)
+  DESC formatted table;
+
+  -- 查看表的分区详细信息(表分区目录/格式等详信息)
+  DESC formatted tablePARTITION(p_a='a',p_b='b');
+
 10) 分区信息
   查看分区
   SHOW PARTITIONS db.tb;

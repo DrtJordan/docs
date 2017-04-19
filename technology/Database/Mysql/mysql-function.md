@@ -100,3 +100,20 @@ CAST(xxx AS 类型) , CONVERT(xxx,类型)，类型必须用下列的类型：
   整数 : SIGNED     
   无符号整数 : UNSIGNED
 ```
+
+
+## 四、聚合函数
+
+``` sql
+
+-- GROUP_CONCAT 方法, 聚合行成列
+SELECT
+  class_name,
+  -- 组合字段
+  GROUP_CONCAT(class_val separator ',') AS part_names,
+FROM TBALE_NAME
+GROUP BY
+  class_name
+;
+
+```

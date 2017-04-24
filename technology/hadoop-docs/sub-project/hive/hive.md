@@ -116,11 +116,13 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
   DESC formatted table;
 
   -- 查看表的分区详细信息(表分区目录/格式等详信息)
-  DESC formatted tablePARTITION(p_a='a',p_b='b');
+  DESC formatted table PARTITION(p_a='a',p_b='b');
 
 10) 分区信息
   查看分区
   SHOW PARTITIONS db.tb;
+
+  SHOW PARTITIONS db.tb PARTITION(p_dt);
 
   SHOW PARTITIONS db.tb PARTITION(p_dt='2017-04-08');
 
@@ -257,7 +259,7 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 
 24) TBLPROPERTIES 表级属性，如是否外部表，表注释等
 
-  SHOW TBLPROPERTIES dw_temp_angejia.jASon_test_member;
+  SHOW TBLPROPERTIES db_name.tb_name;
 
     transient_lAStDdlTime 最后创建修改表时间
 
@@ -274,7 +276,7 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 26) LOCKS 查看表锁
   S 共享锁
   X 互斥锁
-  SHOW LOCKS dm_db.dm_product_browser_visit_type_day extended;
+  SHOW LOCKS db_name.tb_name extended;
 ```
 
 

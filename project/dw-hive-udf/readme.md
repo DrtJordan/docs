@@ -34,10 +34,7 @@
   jar-with-dependencies 尾部这个表示, 把所有依赖都打入到这个 jar 包中了, 生产环境中, 必须使用全部依赖打包
 
   Hive UDF 上传:
-    hdfs dfs -put -f $DW_HIVE_UDF_HOME/target/dw_hive_udf-1.0-SNAPSHOT-jar-with-dependencies.jar /user/jars/dw_hive_udf-1.0-SNAPSHOT-hive.jar
-
-  Spark UDF 上传:
-    hdfs dfs -put -f $DW_HIVE_UDF_HOME/target/dw_hive_udf-1.0-SNAPSHOT-jar-with-dependencies.jar /user/jars/dw_hive_udf-1.0-SNAPSHOT-spark.jar
+    hdfs dfs -put -f $DW_HIVE_UDF_HOME/target/dw_hive_udf-1.0-jar-with-dependencies.jar /user/jars/dw_hive_udf-1.0-SNAPSHOT-hive.jar
 
   下载到本地:
     hdfs dfs -get /user/jars/dw_hive_udf-1.0-SNAPSHOT-spark.jar /data/app/jars/dw_hive_udf-1.0-SNAPSHOT-spark.jar
@@ -48,9 +45,8 @@
 ## 二、Hive UDF 案例
 
 ``` sh
-
 1. 解析 userId
-  ADD JAR /path/dw_hive_udf-1.0-SNAPSHOT-spark.jar;
+  ADD JAR /path/dw_hive_udf-1.0.jar
   CREATE  TEMPORARY  FUNCTION  parse_mobile_token as 'com.angejia.dw.hive.udf.parse.ParseMobileToken';
 
   SELECT parse_mobile_token("6CST8Fkf2b5WSX+GMWeuLw+FCbhHLVT1g6yBgKimgqZITrjEjCHhY6UPimpvNEqcc64ebrd632aiF/nTNClZJQbBClboFqyu+1E4iEAmSUU=","user_id");

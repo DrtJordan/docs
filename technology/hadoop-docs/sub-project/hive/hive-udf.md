@@ -387,8 +387,8 @@ from
     row_list
   FROM
     array_test_1 AS t_1
-  -- 列转行成为行显示
-  lateral view
+  -- 列转行成为行显示, OUT 表示如果列为 Null, 也展示
+  lateral view [OUT]
     -- 分割成数组, 会把数组映射到每一行中
     -- 如果是字符串可以用: split 分割字符为数组(如果是 ; 分号会报错,需要转义 \073, 或者 \;)
     explode (数组列) now_row_list AS row_list;

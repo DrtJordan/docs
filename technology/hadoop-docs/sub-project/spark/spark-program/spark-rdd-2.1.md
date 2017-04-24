@@ -1,10 +1,27 @@
-# Spark 2.x 升级
+# Spark 2.0
 
 ## 一、Spark 2.0 新增特性
 
+### * 统一了数据集 RDD/DataFrame/Dataset
+
+- RDD 不可变, 非结构化
+  - 流媒体, 文本流
+
+- DataFrame: 不可变, 结构化列式存储
+ - 每行用 JVM object 弱类型存储
+ - DataFrame 是 Dataset 的子集, DataFrame = Dataset[Row]
+
+- Dataset 不可变,结构化列式存储
+ - 强类型, 编译时就进行类型检查
+ - 每行用 JVM object 强类型存储, 如 Scala case 或 Java class
+ - Dataset 通过 Encoder 实现了自定义的序列化格式, 无需解序列化. Tungsten 对 Dataset 进行持续优化
+
+- 领域特定语言(DSL)
+
+
 ### 1. Spark SQL, DataFrames and Datasets 改变
 
-- 数据框（DataFrame）/ Dataset（数据集）API的统一
+- 数据帧（DataFrame）/ Dataset（数据集）API的统一
  - DataFrame 是 Dataset[Row] 的别名, Dataset[Row] 返回的是一个 DataFrame 对象, 现在高度抽象化了
  - `DataFrames 只是行(row) 数据集的类型别名了(typealias)`
 
@@ -20,9 +37,10 @@
  - 操作视图、DLL
 
 - Catalyst 查询优化器模块
- - Spark SQL 使用 Catalyst 优化所有的查询, 如 Spark Sql 和 dataframe dsl, 优化后的查询比直接使用 RDD 要快很多
+ - Spark SQL 使用 Catalyst 优化所有的查询, 如 Spark Sql 和 DataFrame DSL, 优化后的查询比直接使用 RDD 要快很多
  - Catalyst 是个单独的模块类库, 是个基于规则优化的模块, 这个框架中的每个规则都是针对某个特定情况来优化的.
  - 可以自定义优化规则模块, Spark 官方也会不断优化 Catalyst 模块, 而不需要用户特定去优化
+
 
 ### 2. Structured Streaming 结构持久化的 Streaming
 

@@ -34,9 +34,9 @@
 
 
 4) 为什么会内存益出
-  a) 这一部分内存用于存放 Class 和 Meta 的信息，Class 在被 Load的 时候被放入 PermGen space 区域，它和存放 Instance 的 Heap 区域不同。
+  a) 这一部分内存用于存放 Class 和 Meta 的信息，Class 在被 Load 的时候被放入 PermGen Space 区域，它和存放 Instance 的 Heap 区域不同。
 
-  b）GC(Garbage Collection) 内存回收, 不会在主程序运行期对 PermGen space 进行清理，所以如果你的 APP 会 LOAD 很多CLASS 的话,就很可能出现PermGen space错误。
+  b）GC(Garbage Collection) 内存回收, 不会在主程序运行期对 PermGen Space 进行清理，所以如果你的 APP 会 LOAD 很多 CLASS 的话,就很可能出现 PermGen space 错误。
     这种错误常见在 web 服务器对 JSP 进行 pre compile 的时候。  
 
 ```

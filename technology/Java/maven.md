@@ -2,8 +2,10 @@
 
 - POM (Project Object Model)
   - 定义项目的类型、名字，管理依赖关系，定制插件的行为等等
+
 - Maven 插件
   - mvn archetype:generate (archetype:generate)就是其中一个插件
+
 - Maven 生命周期、阶段
   - mvn 生命周期
 
@@ -26,7 +28,17 @@
     6. deploy             将最终的包复制到远程仓库，与其它开发者和项目共享。
     ```
 - Maven 依赖管理
+
 - Maven 库
+
+- Maven 工程类型
+ - war 网站工程
+ - jar 工程
+ - pom 聚合工程
+  - 父工程使用 pom 工程
+  - 定义依赖的 jar 版本
+  - maven 插件
+  - maven 仓库源
 
 ## 一、安装与配置
 

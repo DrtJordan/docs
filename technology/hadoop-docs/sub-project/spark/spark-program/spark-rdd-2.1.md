@@ -11,7 +11,7 @@
  - 每行用 JVM object 弱类型存储
  - DataFrame 是 Dataset 的子集, DataFrame = Dataset[Row]
 
-- Dataset 不可变,结构化列式存储
+- Dataset 不可变, 结构化列式存储
  - 强类型, 编译时就进行类型检查
  - 每行用 JVM object 强类型存储, 如 Scala case 或 Java class
  - Dataset 通过 Encoder 实现了自定义的序列化格式, 无需解序列化, 从而无需受限于 JVM. 可自己管理内存。 Tungsten 对 Dataset 进行持续优化

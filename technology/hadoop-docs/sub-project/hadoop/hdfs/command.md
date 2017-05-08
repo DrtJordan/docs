@@ -85,6 +85,10 @@
   hadoop archive -archiveName [归档名.har] -p [需要归档的父目录] [归档的文件] [归档存放目录]
   例如:
   hadoop archive -archiveName foo.har -p /user/hive/dw_db_temp/jason_test_1 000000_* /user/hive/dw_db_temp/jason_test_1
+
+
+19) hadoop checknative -a
+  查看 native 
 ```
 
 

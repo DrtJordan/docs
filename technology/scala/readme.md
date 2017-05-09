@@ -1,6 +1,14 @@
 # Scala
 
-## 一、基础部分
+## 应用
+
+``` java
+
+// 退出
+sys.exit()
+```
+
+## 一、基础
 
 ### `1. 数据类型对象 (没有原始类型)`
 
@@ -300,11 +308,13 @@ val ds = {
 ### `1. 函数与表达式`
 
 ``` java
+
 1. scala 开头的包,可以省去 scala 前缀
+
 // import scala.math._  =  import math._
 // math.sqrt(2)  =  scala.math.sqrt(2)
   import scala.math._
-  math.sqrt(2)
+  math.sqrt(2);
 
 
 2. 定义函数
@@ -522,7 +532,7 @@ val ds = {
 
 
 6. Scala 部分应用函数 (当被调用的时候才初始化)
-  import java.util.Date
+  import java.util.Date;
 
   object Test {
 
@@ -580,10 +590,10 @@ object Test {
 
 ``` java
 1. 定义固定长度数组
-  import Array._
+  import Array._;
 
   // 存放 10 个元素,初始化值为 null
-  val arr = new Array[Int](10)
+  val arr = new Array[Int](10);
   var arr : Array[Int] = new Array[Int](10)
 
   // 定义数组, Array[String]  这是根据推断机制推断出来的
@@ -598,7 +608,7 @@ object Test {
 
 
 2. 变长数组: 数组缓冲(ArrayBuffer) 不定长数组
-  import scala.collection.mutable.ArrayBuffer
+  import scala.collection.mutable.ArrayBuffer;
   // 定义缓冲数组
   val inventoryIds: ArrayBuffer[String] = new ArrayBuffer[String]()
 
@@ -693,8 +703,8 @@ object Test {
 
 ``` java
 1. 定义 Map: 不可变
-  import scala.collection.immutable.Map
-  import scala.collection.immutable.HashMap
+  import scala.collection.immutable.Map;
+  import scala.collection.immutable.HashMap;
 
   // 三种定义 空值 Map 写法
   val map = Map()

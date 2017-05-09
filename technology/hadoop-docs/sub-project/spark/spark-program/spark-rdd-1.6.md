@@ -36,7 +36,7 @@ ps: 写法
       conf.setAppName("AppName")
       conf.setMaster("local[2]")
 
-      val sc = new SparkContext(conf)
+  val sc = new SparkContext(conf)
 
 1. 通过集合创建 RDD
   val list = List("pands","i like pands")

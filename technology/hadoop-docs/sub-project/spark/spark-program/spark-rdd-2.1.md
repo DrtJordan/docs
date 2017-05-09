@@ -7,13 +7,14 @@
 - RDD 不可变, 非结构化
   - 流媒体, 文本流
 
-- DataFrame: 不可变, 结构化列式存储
- - 每行用 JVM object 弱类型存储
- - DataFrame 是 Dataset 的子集, DataFrame = Dataset[Row]
+- PS: DataFrame 和 Dataset 是处理结构化数据的
 
-- Dataset 不可变, 结构化列式存储
- - 强类型, 编译时就进行类型检查
- - 每行用 JVM object 强类型存储, 如 Scala case 或 Java class
+- DataFrame(组织成命名列的数据集, DataFrame 由 Row 的数据集表示), 不可变结构化列式存储
+ - DataFrame 由 Row 的数据集表示
+ - DataFrame 只是 Dataset[Row] 一个类型别名, DataFrame = Dataset[Row]
+
+- Dataset(分布式数据集合), 强类型存储, 可使用（map, flatMap, filter）操作
+ - 每行用 JVM object 强类型存储, 如 `Scala case 模式匹配类` 或 `Java class 类`
  - Dataset 通过 Encoder 实现了自定义的序列化格式, 无需解序列化, 从而无需受限于 JVM. 可自己管理内存。 Tungsten 对 Dataset 进行持续优化
 
 - 领域特定语言(DSL)
@@ -158,3 +159,6 @@
    核心思想是：我们不是一次只处理一行数据，而是将许多行的数据分别组成batches，而且采用列式格式存储；
    然后每个算子对每个batch进行简单的循环来遍历其中的数据。所以每次调用next()函数都会返回一批的元组，这样可以分摊虚函数调用的开销。
    采用了这些措施之后，这些简单的循环也会使得编译器和CPU运行的更加高效。
+
+
+## 三、SPARK SQL API

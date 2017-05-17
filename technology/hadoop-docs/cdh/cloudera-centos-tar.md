@@ -366,7 +366,7 @@ http://dev1.jsonlin.cn:7180
 先让 cloudera-scm-server 启动成功
 netstat -tunlp | grep jave --- 7180
 
-再启动 cloudera-scm-agent jave --- 7180
+再启动 cloudera-scm-agent 
 netstat -tunlp | grep jave --- 7182
 
 一般需要耐心等待几分钟才能看到端口

@@ -1,20 +1,23 @@
 # Cloudera 5.8 Yum 方式安装
 
 - 安装流程
+
 - 1. 首选配置系统环境
-- 2. 安装 Cloudera Manager Server
+
+- 2. 安装 `Cloudera Manager Server`
   - 2.1 配置 yum 源, 执行安装流程
   - 2.2 配置 SCM 数据库
   - 2.3 启动 Cloudera Manager Server 服务(监控报错日志)
   - 2.4 打开 http://hostname:7180 端口, 跳过所有安装步骤, 直接添加 Cloudera Management Service 服务
-- 3. 安装 Cloudera Manager Agent (不要使用 Cloudera Manager Server 安装  Cloudera Manager Agent)
-  - 3.1 配置 yum 源, 执行安装流程
-  - 3.2 修改配置 Cloudera Manager Agent 服务指向 Cloudera Manager Server 服务所在的 host
-  - 3.3 启动 Cloudera Manager Agent 服务(监控报错日志)
-- 4. Cloudera Manager Server 和 Cloudera Manager Agent 安装完成后再配置集群
-- 5. 向集群添加主机
-  - 5.1 Cloudera Manager Agent 正常向 Cloudera Manager Server 汇报后
-  - 5.2 管理界面, 点击添加主机到集群中
+
+- 4. Cloudera Manager Agent -> `Cloudera Manager Server 注册节点`
+  - 4.1 配置 yum 源, 执行安装流程
+  - 4.2 修改配置 Cloudera Manager Agent 服务指向 Cloudera Manager Server 服务所在的 host, 配置文件 /etc/cloudera-scm-agent/config.ini 的 server_host -> Cloudera Manager Server
+  - 4.3 手动启动 Cloudera Manager Agent 服务(监控报错日志)
+  - 4.4 注意第一次 Agent 注册到 Server 节点是没有 CDH 版本的, 需要在 Server 管理界面添加已经注册的主机(分发 CDH 版本的)
+  - 4.5 Cloudera Manager Server 7180 -> 主机管理界面, 点击添加主机到集群中(选中已注册的节点), 这个时候才会有 CDH 版本信息
+
+- 5. CDH 组件 -> Cloudera Manager Server 和 Cloudera Manager Agent 安装完成后再配置 Hadoop 组件
 
 ## * 系统环境配置
 
@@ -28,13 +31,14 @@
   %wheel  ALL=(ALL)       NOPASSWD: ALL
 
   1) 方法 1
-    # 创建cm部署用户
     userdel cloudera-scm
+
+    # 创建cm部署用户
     groupadd -r cloudera-scm
     #  分配到 组
     useradd -m -s /bin/bash -g  cloudera-scm cloudera-scm
     # 追加用户到 sudo 组
-    usermod -G 	wheel cloudera-scm
+    usermod -G wheel cloudera-scm
 
 
     # 创建hadoop用户
@@ -66,11 +70,21 @@
 
 
 3. 关闭防火墙
+  // Centos 6
   service iptables stop
   chkconfig iptables off
 
   service ip6tables stop
   chkconfig ip6tables off
+
+  // Centos 7
+  systemctl stop firewalld
+  systemctl disable firewalld
+
+
+3.1 设置 HOSTNAME 与 域名统一
+  vim /etc/sysconfig/network
+  HOSTNAME=dw[N]  根据实际情况填写
 
 
 4. 关闭 selinux
@@ -80,32 +94,50 @@
   vi /etc/selinux/config
   SELINUX=disabled
 
+
 5. 安装 scp
   yum -y install openssh-clients
 
+
 6. ssh key  
   # 生成 key
-  sssh-keygen
+  ssh-keygen
 
   # 分配
   ssh-copy-id -i ~/.ssh/id_rsa.pub username@hostname
+
 ```
+
 
 ### 2. 系统属性
 
 ``` sh
 1. 禁用大透明页
-  cat /sys/kernel/mm/redhat_transparent_hugepage/defrag
-    [always] never 表示已启用透明大页面压缩。
-    always [never] 表示已禁用透明大页面压缩。
 
-  如果启用, 请关闭
-  echo 'never' > /sys/kernel/mm/redhat_transparent_hugepage/defrag
+  1.1 Centos 6:
+    cat /sys/kernel/mm/redhat_transparent_hugepage/defrag   
+      [always] never 表示已启用透明大页面压缩。
+      always [never] 表示已禁用透明大页面压缩。
 
-  加入开机启动中
-  vim /etc/rc.local
-  # 禁用大透明页
-  echo 'never' > /sys/kernel/mm/redhat_transparent_hugepage/defrag
+    如果启用, 请关闭
+    echo 'never' > /sys/kernel/mm/redhat_transparent_hugepage/defrag
+
+    加入开机启动中
+    vim /etc/rc.local
+    # 禁用大透明页
+    echo 'never' > /sys/kernel/mm/redhat_transparent_hugepage/defrag
+
+  1.2 Centos 7:
+    cat /sys/kernel/mm/transparent_hugepage/defrag    
+
+    如果启用, 请关闭
+    echo 'never' >  /sys/kernel/mm/transparent_hugepage/defrag    
+
+    加入开机启动中
+    vim /etc/rc.local
+    # 禁用大透明页
+    echo 'never' >  /sys/kernel/mm/transparent_hugepage/defrag   
+
 
 2. vm.swappiness Linux 内核参数
   # 默认为 60 , 用于控制将内存页交换到磁盘的幅度, 介于 0-100 之间的值；值越高，内核寻找不活动的内存页并将其交换到磁盘的幅度就越大。
@@ -207,6 +239,8 @@ export PATH=${JAVA_HOME}/bin:$PATH
 
 ## 二、安装 Cloudera Manager Agent
 
+- 请参照 安装流程 4
+
 ``` sh
 * 登录 cloudera-scm 账号
 
@@ -252,11 +286,18 @@ export PATH=${JAVA_HOME}/bin:$PATH
 4. 从 cm 拉取 /opt/cloudera/parcel-repo 中的 CDH 软件包, 或者官网拉去
   scp cloudera-scm@dw0:/opt/cloudera/parcel-repo/* /opt/cloudera/parcel-repo/
 
+
 *. 注册可能遇到的问题
 
   1. 时间与 cm 相差太多导致无法 agent 无法向 cm 注册
 
   2. host 与 ip 设置错误
+    查看主机与 host 与 ip
+    python -c 'import socket; print socket.getfqdn(), socket.gethostbyname(socket.getfqdn())'
+
+  3. Failed to connect to previous supervisor.
+    一般这种情况不用处理, 只要能 agent 能注册到 server, 并且 agent 在 server 是绿颜色的心态即可
+    参照安装步骤 4
 
 ```
 
@@ -328,6 +369,7 @@ sudo rm -rf /var/run/cloudera-manager-server
 # agent
 sudo rm -rf /var/lib/cloudera-scm-agent
 sudo rm -rf /var/run/cloudera-scm-agent
+sudo rm -rf /run/cloudera-scm-agent
 ```
 
 ## * 常见问题

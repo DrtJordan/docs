@@ -149,9 +149,18 @@
 二、网络命令
 	1、目录
 		注：主机名：Internet中为域名。局域网中为某台计算机的名字
-		1) /etc/sysconfig/network-scripts/ifcfg-eth0			//IP的参数设置
+		1) 网络配置
+			Centos 6:
+			/etc/sysconfig/network-scripts/ifcfg-eth0
+			service network start 启动网络
+			ifcofig 查看网络
+
+			Centos 7:
+			/etc/sysconfig/network-scripts/ifcfg-en xxx 版本
+			systemctl restart network.service  启动网络
+			ip address show  查看网络
+
 			设置 ONBOOT 为 : yes
-			service network start 	启动网络
 
 			DEVICE        设备名，不要自己乱改，和文件ifcfg-ethX里的ethX要一致
 			BROADCAST     广播地址

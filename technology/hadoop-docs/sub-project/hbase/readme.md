@@ -30,7 +30,7 @@ version
   disable 'member'
   snapshot 'member', 'member_Snapshot'  // 快照一份
   clone_snapshot 'member_Snapshot', 'member_20160518' // 克隆到目标表
-  delete_snapshot 'member_Snapshot' // 删除快招表
+  delete_snapshot 'member_Snapshot' // 删除快照表
 
 * 查看所有表 :
   list

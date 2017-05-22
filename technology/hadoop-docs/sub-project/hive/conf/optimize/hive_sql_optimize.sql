@@ -118,12 +118,14 @@ set mapreduce.task.io.sort.factor=100;
 --- Hive 优化 Start ---
 
 -- CombineInputFormat
--- 一个 Map 最多同时处理的文件总数大小
+-- 一个 Map 最多同时处理的文件总数大小(控制 map 数量)
 set mapreduce.input.fileinputformat.split.maxsize=1024000000;
 set mapreduce.input.fileinputformat.split.minsize.per.node=1024000000;
 set mapreduce.input.fileinputformat.split.minsize.per.rack=1024000000;
--- 一个 Reduce 最多同时处理的文件总数大小
+-- 一个 Reduce 最多同时处理的文件总数大小(控制 reduce 数量)
 set hive.exec.reducers.bytes.per.reducer=1024000000;
+-- 根据自定义数字, 配置当前任务的 reduce 数量
+-- SET mapreduce.job.reduces=10;
 
 -- 开启并发
 set hive.exec.parallel=true;

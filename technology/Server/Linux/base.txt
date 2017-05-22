@@ -1470,6 +1470,7 @@ tock.stdtime.gov			//时间服务器
 			yum install ntp
 			ntpdate -d time.nist.gov
 			ntpdate -d pool.ntp.org
+			ntpdate cn.pool.ntp.org
 
 			ntpq -c version 查看版本
 

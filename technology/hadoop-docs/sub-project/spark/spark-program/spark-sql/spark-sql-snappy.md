@@ -24,16 +24,19 @@ export PATH=$SPARK_HOME/bin:$PATH
 
 # 启动配置
 spark-sql --jars file://$HADOOP_HOME/lib/snappy-java-1.0.4.1.jar,file:///etc/hive/auxlib/json-serde-1.3.7-jar-with-dependencies.jar \
---conf spark.master=local[2] \
---conf spark.submit.deployMode=client \
---conf spark.eventLog.enabled=true \
---conf spark.driver.cores=2 \
---conf spark.driver.memory=4g \
---conf spark.executor.cores=2 \
---conf spark.executor.memory=4g \
---conf spark.eventLog.dir=hdfs://dw2:8020/tmp/spark \
+--name spark-sql-server \
+--master yarn \
+--deploy-mode client \
+--driver-cores 2 \
+--driver-memory 4g \
+--executor-cores 2 \
+--executor-memory 4g \
+--num-executors 2 \
+--conf spark.eventLog.enabled=false \
+--conf spark.eventLog.dir=hdfs://dw1:8020/tmp/spark \
 --conf spark.serializer=org.apache.spark.serializer.KryoSerializer \
 --conf spark.io.compression.codec=org.apache.spark.io.SnappyCompressionCodec \
+--conf net.topology.script.file.name=/etc/hadoop/conf.cloudera.yarn/topology.py \
 --conf spark.sql.parquet.compression.codec=snappy
 
 
@@ -52,3 +55,21 @@ SELECT common FROM ods.ods_browser_click WHERE p_dt='2017-05-07' AND p_hours='00
 ## 二、问题
 
 在 spark.master=yarn 模式下支持不好, 主要问题表现在子节点无法获取到 $HADOOP_HOME/lib/native 类库
+
+
+
+spark-sql \
+--name spark-sql-server \
+--master yarn \
+--deploy-mode client \
+--driver-cores 2 \
+--driver-memory 4g \
+--executor-cores 2 \
+--executor-memory 4g \
+--num-executors 2 \
+--conf spark.eventLog.enabled=false \
+--conf spark.eventLog.dir=hdfs://dw1:8020/tmp/spark \
+--conf spark.serializer=org.apache.spark.serializer.KryoSerializer \
+--conf spark.io.compression.codec=org.apache.spark.io.SnappyCompressionCodec \
+--conf net.topology.script.file.name=/etc/hadoop/conf.cloudera.yarn/topology.py \
+--conf spark.sql.parquet.compression.codec=snappy

@@ -80,6 +80,16 @@
     以逗号分隔的名称服务
     如 Ucluster
 
+
+3) 服务端配置
+  dfs.namenode.handler.count  NameNode 服务线程数。用于处理客户端 RPC 请求
+
+  dfs.datanode.handler.count  DataName 服务线程数。用于接收请求，处理业务命令
+
+  dfs.namenode.avoid.read.stale.datanode（true）避开从脏 DN 上读数据。脏 DN 指在一个指定的时间间隔内没有收到心跳信息。脏 DN 将被移到可以读取(写入)节点列表的尾端。
+
+  dfs.namenode.avoid.write.stale.datanode（true） 是为了避免向脏 DN 写数据
+
 ```
 
 ### 4、接口服务

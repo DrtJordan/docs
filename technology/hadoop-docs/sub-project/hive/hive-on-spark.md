@@ -14,7 +14,7 @@ set hive.enable.spark.execution.engine=true;
 
 set spark.master=yarn;
 set spark.submit.deployMode=client;
-set spark.eventLog.enabled=true;
+set spark.eventLog.enabled=false;
 
 set spark.driver.cores=2;
 set spark.driver.memory=5g;

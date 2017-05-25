@@ -9,7 +9,6 @@ $SPARK_HOME/conf/spark-defaults.conf
 ```
 spark.master  yarn
 spark.submit.deployMode client
-spark.eventLog.enabled  true
 
 spark.driver.cores  4
 spark.driver.memory  8g
@@ -17,14 +16,26 @@ spark.driver.memory  8g
 spark.executor.cores 4
 spark.executor.memory 8g
 
+spark.eventLog.enabled  false
 spark.eventLog.dir hdfs://dw2:8020/tmp/spark
 
 spark.serializer org.apache.spark.serializer.KryoSerializer
 ```
 
-### 2. hive-site.xml
 
-ln -s $HIVE_HOME/conf/hive-site.xml $SPARK_HOME/conf/hive-site.xml
+### 2. 配置文件
+
+hive-site.xml
+>ln -s $HIVE_HOME/conf/hive-site.xml $SPARK_HOME/conf/hive-site.xml
+
+
+core-site.xml
+>ln -s $HIVE_HOME/conf/core-site.xml $SPARK_HOME/conf/core-site.xml
+
+
+yarn-site.xml
+>ln -s $HIVE_HOME/conf/yarn-site.xml $SPARK_HOME/conf/yarn-site.xml
+
 
 ``` xml
 <!-- 设置 metastore thrift 地址 -->
@@ -34,13 +45,8 @@ ln -s $HIVE_HOME/conf/hive-site.xml $SPARK_HOME/conf/hive-site.xml
 </property>
 ```
 
-### 3. yarn-site.xml
 
-ln -s $HADOOP_HOME/conf/yarn-site.xml $SPARK_HOME/conf/hive-site.xml
-
-
-
-### 4. 配置优化
+### 3. 配置优化
 
 - Spark SQL 已经使用了 Catalyst 查询优化器模块, 优化过了, 所以可以提供给我们的优化参数不多
 

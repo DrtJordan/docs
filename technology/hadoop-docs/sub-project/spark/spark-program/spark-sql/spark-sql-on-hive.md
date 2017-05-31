@@ -82,11 +82,12 @@ yarn-site.xml
 spark-sql \
 --master yarn \
 --deploy-mode client \
---name spark-sql-test \
+--name spark-sql-service \
 --driver-cores 2 \
 --driver-memory 4096M \
---num-executors 2 \
+--executor-cores 1 \
 --executor-memory 2048M \
+--num-executors 3 \
 --jars file:///etc/hive/auxlib/dw_hive_udf-1.0.jar,file:///etc/hive/auxlib/json-serde-1.3.7-jar-with-dependencies.jar
 
 
@@ -94,11 +95,12 @@ spark-sql \
 spark-sql \
 --master yarn \
 --deploy-mode client \
---name spark-sql-test \
---driver-cores 1 \
---driver-memory 1024M \
---num-executors 1 \
---executor-memory 1024M \
+--name spark-sql-service \
+--driver-cores 2 \
+--driver-memory 4096M \
+--executor-cores 1 \
+--executor-memory 2048M \
+--num-executors 3 \
 --conf spark.driver.extraJavaOptions="-DJAVA_LIBRARY_PATH=/opt/cloudera/parcels/CDH/lib/hadoop/lib/native:$LD_LIBRARY_PATH" \
 --jars file:///etc/hive/auxlib/dw_hive_udf-1.0.jar,file:///etc/hive/auxlib/json-serde-1.3.7-jar-with-dependencies.jar
 
@@ -119,21 +121,25 @@ spark-sql \
     $SPARK_HOME/sbin/start-thriftserver.sh \
     --master yarn \
     --deploy-mode client \
-    --name spark-sql-test \
+    --name spark-sql-service \
     --driver-cores 2 \
     --driver-memory 4096M \
-    --num-executors 2 \
+    --executor-cores 1 \
     --executor-memory 2048M \
+    --num-executors 3 \
     --jars file://path/xxx.jar,file://path/xxx.jar \
     --hiveconf hive.server2.thrift.port=10002
 
   (2) yarn-cluster模式, 集群模式目前不支持
     ./sbin/start-thriftserver.sh \
     --master yarn \
-    --deploy-mode cluster \
-    --name spark-sql \
+    --deploy-mode client \
+    --name spark-sql-service \
     --driver-cores 2 \
-    --driver-memory 500M \
+    --driver-memory 4096M \
+    --executor-cores 1 \
+    --executor-memory 2048M \
+    --num-executors 3 \
     --hiveconf hive.server2.thrift.port=10002
 
 2. standalone 模式
@@ -159,11 +165,12 @@ spark-sql \
   $SPARK_HOME/sbin/start-thriftserver.sh \
   --master yarn \
   --deploy-mode client \
-  --name spark-sql-client-2.x \
+  --name spark-sql-service \
   --driver-cores 2 \
-  --driver-memory 2048M \
-  --num-executors 2 \
+  --driver-memory 4096M \
+  --executor-cores 1 \
   --executor-memory 2048M \
+  --num-executors 3 \
   --jars file://$HIVE_HOME/lib/hive-json-serde.jar,file://$HIVE_HOME/lib/hive-contrib.jar,file://$HIVE_HOME/lib/hive-serde.jar \
   --hiveconf hive.server2.thrift.port=10002 \
   --conf spark.sql.hive.thriftServer.singleSession=false \
@@ -172,7 +179,8 @@ spark-sql \
   --conf spark.sql.autoBroadcastJoinThreshold=268435456 \
   --conf spark.sql.shuffle.partitions=12 \
   --conf spark.broadcast.compress=true \
-  --conf spark.io.compression.codec=org.apache.spark.io.SnappyCompressionCodec
+  --conf spark.io.compression.codec=org.apache.spark.io.SnappyCompressionCodec \
+  --conf spark.sql.parquet.compression.codec=snappy
 
 连接
   $SPARK_HOME/bin/beeline -u jdbc:hive2://hostname:10002/default -nhadoop -phadoop

@@ -299,6 +299,23 @@ export PATH=${JAVA_HOME}/bin:$PATH
     一般这种情况不用处理, 只要能 agent 能注册到 server, 并且 agent 在 server 是绿颜色的心态即可
     参照安装步骤 4
 
+  4. cdh No extant cgroups 错误
+    /var/run/cloudera-scm-agent 和  /var/lib/cloudera-scm-agent 目录权限
+
+    sudo chown cloudera-scm:cloudera-scm -R /var/lib/cloudera-scm-agent
+    sudo chown cloudera-scm:cloudera-scm -R /var/run/cloudera-scm-agent
+
+  5. 排查思路
+    1) 检查 hostname、/etc/hosts、 主机 IP 是否正确
+
+    2) 是否关闭防火墙和 Selinux, 当前服务器和目标服务器
+
+    3) Agent 本身配置问题
+      /etc/cloudera-scm-agent/config.ini
+
+    4) 检查各个节点的系统日期
+
+
 ```
 
 

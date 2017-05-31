@@ -99,7 +99,7 @@ create /dw_scheduler/testlocks "调度系统Test分布式启动锁"
     $DW_SCHEDULER_AGENT_HOME/scripts/scheduler_restart.sh
 
    4）监控日志 (根据配置文件路径决定)
-    tail -f /var/log/schedule_log/schedule_info.log
+    tail -f /var/log/schedule_log/scheduler_run_log/schedule_info.log
 
    5) 查看是否启动
     netstat -tunlp | grep 39800

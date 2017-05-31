@@ -7,7 +7,7 @@
 $SPARK_HOME/conf/spark-defaults.conf
 
 ```
-spark.master  yarn
+spark.master yarn
 spark.submit.deployMode client
 
 spark.driver.cores  4
@@ -41,7 +41,7 @@ yarn-site.xml
 <!-- 设置 metastore thrift 地址 -->
 <property>
   <name>hive.metastore.uris</name>
-  <value>thrift://uhadoop-ociicy-master1:9083,thrift://uhadoop-ociicy-master2:9083</value>
+  <value>thrift://hostname1:9083,thrift://hostname2:9083</value>
 </property>
 ```
 
@@ -72,8 +72,40 @@ yarn-site.xml
 ```
 
 
+## 二、SparkSQL 客户端模式
 
-## 二、thrift-server 服务
+``` sh
+-- 重要 spark-env.sh 需要配置环境变量
+  export SPARK_YARN_USER_ENV ="JAVA_LIBRARY_PATH=$JAVA_LIBRARY_PATH,LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+
+-- 普通加载模式
+spark-sql \
+--master yarn \
+--deploy-mode client \
+--name spark-sql-test \
+--driver-cores 2 \
+--driver-memory 4096M \
+--num-executors 2 \
+--executor-memory 2048M \
+--jars file:///etc/hive/auxlib/dw_hive_udf-1.0.jar,file:///etc/hive/auxlib/json-serde-1.3.7-jar-with-dependencies.jar
+
+
+-- 配置参数加载模式
+spark-sql \
+--master yarn \
+--deploy-mode client \
+--name spark-sql-test \
+--driver-cores 1 \
+--driver-memory 1024M \
+--num-executors 1 \
+--executor-memory 1024M \
+--conf spark.driver.extraJavaOptions="-DJAVA_LIBRARY_PATH=/opt/cloudera/parcels/CDH/lib/hadoop/lib/native:$LD_LIBRARY_PATH" \
+--jars file:///etc/hive/auxlib/dw_hive_udf-1.0.jar,file:///etc/hive/auxlib/json-serde-1.3.7-jar-with-dependencies.jar
+
+```
+
+
+## 三、SparkSQL thrift-server 服务
 
 - 开启 thrift-server 服务
 - [spark thrift-jdbcodbc-serve 文档](http://spark.apache.org/docs/latest/sql-programming-guide.html#running-the-thrift-jdbcodbc-server)

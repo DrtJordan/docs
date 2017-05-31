@@ -1467,10 +1467,35 @@ tock.stdtime.gov			//时间服务器
 			c) date -s 13:16:00				//修改系统时间
 
 		3) 同步网络时区
-			yum install ntp
-			ntpdate -d time.nist.gov
-			ntpdate -d pool.ntp.org
-			ntpdate cn.pool.ntp.org
+			Centos 下安装：
+				yum install ntp 安装
+				chkconfig ntpd on 开机启动
+				chkconfig --list ntpd
+				yum install ntp
+
+			配置文件启动
+				vim /etc/ntp.conf
+
+				#允许本机的所有操作
+				restrict 127.0.0.1
+				restrict -6 ::1
+
+				# 拒绝客户端的所有操作
+				restrict default kod nomodify notrap nopeer noquery
+
+				# 设置常用的同步服务器(master专属) ntp.sjtu.edu.cn
+				server cn.pool.ntp.org prefer
+
+				sudo service ntpd start
+
+			手动同步日期：
+				ntpdate -d time.nist.gov
+				ntpdate -d pool.ntp.org
+				ntpdate cn.pool.ntp.org
+
+			自动同步:
+				crontab -e
+				*/5 * * * * /usr/sbin/ntpdate monitor.50bang.org && /sbin/hwclock -w
 
 			ntpq -c version 查看版本
 
@@ -1478,6 +1503,8 @@ tock.stdtime.gov			//时间服务器
 		watch -n1 ls -lh 			//每隔一秒监控指令输出状态，动态
 
 	3、sudo cat /var/log/messages 	//查看系统日志
+
+		ll /var/spool/mail/hadoop  系统账号日志
 
 	4、查询
 		查询字符串在文件出现的位置
@@ -1507,7 +1534,6 @@ tock.stdtime.gov			//时间服务器
 
 	3. 版本号
 		cat /etc/redhat-release
-
 
 	4. 主机名
 		cat /etc/hostname

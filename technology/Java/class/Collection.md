@@ -92,7 +92,7 @@ public class Test2 {
         for(Map.Entry<String, Object> entry : map_3.entrySet()) {
             resultMap.put(entry.getKey(), entry.getValue());
         }
-        
+
 
         //4、LinkedHashMap
         Map<Integer,String> map_list = new LinkedHashMap<Integer,String>();
@@ -174,7 +174,7 @@ public class Test3 {
         Map<String, String> mapRowData = new HashMap<String, String>();
 
         // 初始化 list 的值
-        List<String> listFields =  Arrays.asList("id","name");
+        List<String> listFields = Arrays.asList("id","name");
 
         // 遍历 List
         for (int i =0; i <= listResult.size()-1; i ++) {

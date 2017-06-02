@@ -53,6 +53,9 @@ version
   disable 'member' // 禁用
   drop 'member'
 
+* 删除列
+  delete 'member','1','列族:列'
+
 * 检测一个表是否存在 :
   exists 'member'
 

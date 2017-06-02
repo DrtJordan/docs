@@ -107,7 +107,8 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
   -- 修改列的数据类型
   ALTER TABLE TABLE_name CHANGE [COLUMN] col_old_name col_new_name column_type [COMMENT col_comment] [FIRST|AFTER column_name]
     如：
-    ALTER TABLE property__property CHANGE status status INT;
+    ALTER TABLE TABLE_name CHANGE status status INT;
+
 
 9) 查看表结构
   DESC student;
@@ -118,6 +119,14 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
   -- 查看表的分区详细信息(表分区目录/格式等详信息)
   DESC formatted table PARTITION(p_a='a',p_b='b');
 
+9.1) 表属性修改操作
+
+  -- 修改表 SERDEPROPERTIES 信息
+  ALTER TABLE table SET SERDEPROPERTIES('hbase.columns.mapping'='XXX');
+
+  -- 修改表 TBLPROPERTIES 信息
+  ALTER TABLE table SET TBLPROPERTIES('a'='XXX');
+
 10) 分区信息
   查看分区
   SHOW PARTITIONS db.tb;
@@ -127,17 +136,10 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
   SHOW PARTITIONS db.tb PARTITION(p_dt='2017-04-08');
 
   添加分区
-  ALTER TABLE
-    sem_log.sem_baidu_log
-  ADD IF NOT EXISTS PARTITION (
-    p_dt = '2015-07-13'
-  )
+  ALTER TABLE table ADD IF NOT EXISTS PARTITION (p_dt = '2015-07-13')
+
   删除分区
-  ALTER TABLE
-    dw_db.dw_summary_broker_bASis_info_daily
-  DROP IF EXISTS PARTITION (
-    p_dt = '2015-06-28'
-  );
+  ALTER TABLE table DROP IF EXISTS PARTITION (p_dt = '2015-06-28');
 
 11) 截断表 (貌似无用)
   RUNCATE TABLE student;

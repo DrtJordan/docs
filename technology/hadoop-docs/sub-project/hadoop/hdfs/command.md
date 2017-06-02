@@ -2,6 +2,9 @@
 
 ## 一. 用户命令
 
+- hdfs://cluster/
+- hdfs://hostname:8020/
+
 ``` json
 1) 列出文件列表
   hdfs dfs –ls [文件目录]
@@ -88,7 +91,7 @@
 
 
 19) hadoop checknative -a
-  查看 native 
+  查看 native
 ```
 
 

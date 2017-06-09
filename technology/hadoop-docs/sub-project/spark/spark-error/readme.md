@@ -48,13 +48,7 @@ Caused by: java.lang.NoSuchMethodError: org.apache.hadoop.hbase.client.RpcRetryi
 1. 设置 ~/.bashrc
 # Environment variables required by hadoop
 export HADOOP_HOME_WARN_SUPPRESS=true
-export HADOOP_HOME=/usr/local/hadoop
-export HADOOP_PREFIX=$HADOOP_HOME
-export HADOOP_MAPRED_HOME=$HADOOP_HOME
-export HADOOP_YARN_HOME=$HADOOP_HOME
-export HADOOP_COMMON_HOME=$HADOOP_HOME
-export HADOOP_HDFS_HOME=$HADOOP_HOME
-export YARN_HOME=$HADOOP_HOME
+export HADOOP_HOME=/usr/lib/hadoop
 export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
 

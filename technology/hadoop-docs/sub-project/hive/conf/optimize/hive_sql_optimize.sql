@@ -120,7 +120,9 @@ set mapreduce.task.io.sort.factor=100;
 -- CombineInputFormat
 -- 一个 Map 最多同时处理的文件总数大小(控制 map 数量)
 set mapreduce.input.fileinputformat.split.maxsize=1024000000;
+-- 节点中可以处理的最小的文件大小
 set mapreduce.input.fileinputformat.split.minsize.per.node=1024000000;
+--  机架中可以处理的最小的文件大小
 set mapreduce.input.fileinputformat.split.minsize.per.rack=1024000000;
 -- 一个 Reduce 最多同时处理的文件总数大小(控制 reduce 数量)
 set hive.exec.reducers.bytes.per.reducer=1024000000;

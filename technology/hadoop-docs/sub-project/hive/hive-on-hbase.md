@@ -73,6 +73,18 @@
 
 
 
-2. hive 创建 HBase 表
+2. 优化参数(具体原理详见 hive on hbase  原理 URL 文档)
+
+--- 提到插入效率，原理：提高 Map 数量, 具体根据 HDFS 文件调整
+-- 一个 Map 最多同时处理的文件总数大小(控制 map 数量)
+set mapreduce.input.fileinputformat.split.maxsize=10240000;
+-- 节点中可以处理的最小的文件大小
+set mapreduce.input.fileinputformat.split.minsize.per.node=10240000;
+--  机架中可以处理的最小的文件大小
+set mapreduce.input.fileinputformat.split.minsize.per.rack=10240000;
+
+--- 提高查询效率， 关闭任务推测，一个 map 对应 hbase 表的一个 region
+SET mapreduce.map.speculative=false;
+SET mapreduce.reduce.speculative=false;
 
 ```

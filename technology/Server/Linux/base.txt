@@ -1514,15 +1514,15 @@ tock.stdtime.gov			//时间服务器
 		jmap -heap pid
 
 
-十五、 Centos 升级
+十五、 Centos6.x 升级 Centos7.x
 
 	1. 网络
 		1.1 ifconig 被 ip 替代
-		ip address show 显示 ip 地址
-		ip route show 显示路由
+			ip address show 显示 ip 地址
+			ip route show 显示路由
 
   	1.2. netstat 被 ss 替代
-		 ss -ant
+			ss -ant
 
 		1.3 解决：yum install net-tools 安装扩展工具
 
@@ -1535,7 +1535,10 @@ tock.stdtime.gov			//时间服务器
 	3. 版本号
 		cat /etc/redhat-release
 
+
 	4. 主机名
 		cat /etc/hostname
 
+
 	5. /etc/init.d
+		systemctl enable httpd.service 启动服务, 替代 chkconfig --add httpd

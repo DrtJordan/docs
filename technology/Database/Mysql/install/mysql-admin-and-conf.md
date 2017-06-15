@@ -12,6 +12,26 @@
 
 -- 查看变量配置
   show variables like "%lower_case_table_names%";
+
+-- 查看 Mysql 最大连接数
+  show variables like '%max_connections%';
+
+  # 永久生效 my.cnf
+  max_connections=300
+
+  # 当前进程生效
+  set global max_connections=300
+
+-- 服务相应用户最大连接数
+  show global status like 'Max_used_connections';
+
+  #  max_max_connections 合理设置范围(Max_used_connections 连接比例值要占 max_connections 10% 以上, 如果没有则表示 max_connections 设置过高)
+  Max_used_connections / max_connections * 100% , 结果要在 10% 以上
+
+
+-
+   service mysqld reload
+
 ```
 
 ## 二、配置模板

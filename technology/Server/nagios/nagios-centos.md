@@ -2,6 +2,7 @@
 
 ## 一、nagios-core 安装
 
+- 版本 4.x
 - 监控网络服务（SMTP，POP3，HTTP，NNTP，PING等）
 - 监控主机资源（处理器负载，磁盘使用情况等）
 - 简单的插件设计，允许用户轻松开发自己的服务检查
@@ -94,9 +95,9 @@
 ```
 
 
-
-
 ## 二、nagios-core-plugins 安装
+
+- 版本 2.x
 
 ``` sh
 1. Prerequisites 安装条件
@@ -129,6 +130,8 @@
 
 ## ndoutils - 插件安装
 
+- 版本 2.x
+
 - NDOMOD
  - 接收 Program Logic、Frogram Data 数据, 或者监控信息，输出到: 标准文件、Unix 域套接字或者 TCP 套接字
 - NDO2DB
@@ -156,39 +159,17 @@
     make
     make all
 
-3. 安装数据库
-  1) 登录 Mysql 创建数据库
-    CREATE DATABASE nagios /*!40100 DEFAULT CHARACTER SET utf8 */;
-    GRANT ALL PRIVILEGES ON nagios.* TO 'nagios'@'%' IDENTIFIED BY 'nagios' WITH GRANT OPTION;
-
-  2) 安装数据库
-    cd db
-    ./installdb -h dw0 -u nagios -p nagios -d nagios
-
-4. 配置模块 ndomod 代理模块(发送数据)
+3. 配置模块 ndomod 代理模块(转发数据)
   1) 复制 ndomod 模块, 4x.0 表示 nagios-core 是 4.x 版本, 具体根据 core 定义
     cp -v src/ndomod-4x.o  /usr/local/nagios/bin/
     chown nagios:nagios /usr/local/nagios/bin/ndomod-4x.o
 
   2) 复制 ndomod 配置文件
     mkdir -p /usr/local/nagios/etc/ndoutils
-    cp config/ndomod.cfg-sample /usr/local/nagios/etc/ndoutils/ndomod.cfg
+    cp -v config/ndomod.cfg-sample /usr/local/nagios/etc/ndoutils/ndomod.cfg
     chown nagios:nagios /usr/local/nagios/etc/ndoutils/ndomod.cfg
 
-  3) 加载到 nagios.cfg 配置中在系统生效
-    vim /usr/local/nagios/etc/nagios.cfg
-
-    # ndoutils ndomod 模块, 设置同一行
-    broker_module=/usr/local/nagios/bin/ndomod-4x.o config_file=/usr/local/nagios/etc/ndoutils/ndomod.cfg
-
-    # 开启代理
-    event_broker_options=-1
-
-  4) 复制依赖
-    cp -v src/{file2sock,log2ndo} /usr/local/nagios/bin
-    chown nagios:nagios /usr/local/nagios/bin/{file2sock,log2ndo}
-
-5. 配置 ndo2db 模块(连接 Mysql)
+4. 配置 ndo2db 模块(接收数据保存到 MySQL)
   1) 复制 ndo2db 模块, 4x 表示 nagios-core 是 4.x 版本
     cp -v src/ndo2db-4x /usr/local/nagios/bin/
     chown nagios:nagios /usr/local/nagios/bin/ndo2db-4x
@@ -211,8 +192,29 @@
     db_user=nagios
     db_pass=nagios
 
-6. 配置 ndomod -> ndo2db, ndomod 发送数据到的地址和端口 ndo2db
-  1) ndomod 发送数据
+5. 安装数据库
+  1) 登录 Mysql 创建数据库
+    CREATE DATABASE nagios /*!40100 DEFAULT CHARACTER SET utf8 */;
+    GRANT ALL PRIVILEGES ON nagios.* TO 'nagios'@'%' IDENTIFIED BY 'nagios' WITH GRANT OPTION;
+
+  2) 安装数据库
+    cd src/db
+    ./installdb -h dw0 -u nagios -p nagios -d nagios
+
+6. 配置 nagios.cfg 加载 ndomod 模块
+  vim /usr/local/nagios/etc/nagios.cfg
+
+  # ndoutils ndomod 模块, 设置同一行
+  broker_module=/usr/local/nagios/bin/ndomod-4x.o config_file=/usr/local/nagios/etc/ndoutils/ndomod.cfg
+  # 开启代理
+  event_broker_options=-1
+
+7. 复制 file2sock,log2ndo 依赖
+  cp -v src/{file2sock,log2ndo} /usr/local/nagios/bin
+  chown nagios:nagios /usr/local/nagios/bin/{file2sock,log2ndo}
+
+8. 配置 ndomod -> ndo2db, ndomod 发送数据到的地址和端口 ndo2db
+  1) ndomod 发送数据地址
     vim /usr/local/nagios/etc/ndoutils/ndomod.cfg
 
     # 发送到 ndo2db 的地址
@@ -220,7 +222,7 @@
     output=127.0.0.1
     tcp_port=5668
 
-  2）ndo2db 监听数据
+  2）ndo2db 监听接收数据地址
     vim /usr/local/nagios/etc/ndoutils/ndo2db.cfg
 
     # 监听设置
@@ -236,5 +238,13 @@
   # 重启 nagios 服务
   service nagios restart
   tail -f /usr/local/nagios/var/nagios.log
+
+8. 实例 ndomod 实例默认和更改
+  vim /usr/local/nagios/etc/ndoutils/ndomod.cfg
+
+  # 默认组是 default, 大型应用中可能存在多个独立的或分布式布置的 Nagios 服务器.
+  # 这种环境中的每个 Nagios 服务器通常被称为一个 Nagios 实例。
+  # 在多 Nagios 实例的环境中，既可以把所有实例的数据存入到一个数据库，也可以将各实例的数据分别存储。
+  instance_name=dw_groups
 
 ```

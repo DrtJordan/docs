@@ -17,6 +17,9 @@
 2. tar 包方式安装 (如果要折腾的话)
   linx 选择 (Gzipped source tarball) 自己编译
 
+  wget http://www.python.org/ftp/python/2.7.10/Python-2.7.10.tar.xz
+  unxz Python-2.7.10.tar.xz
+
   tar -zxvf Python-version.tgz 解压
 
   cd Python-version 进入
@@ -27,6 +30,48 @@
 
   make install
 
+3. centos 2.6 升级到 2.7
+
+  1) 更新依赖
+    yum -y update
+    yum install epel-release
+    yum install sqlite-devel
+    yum install -y zlib-devel.x86_64
+    yum install -y openssl-devel.x86_64
+
+  2) 下载编译
+    cd /usr/local/src/
+    wget http://www.python.org/ftp/python/2.7.10/Python-2.7.10.tar.xz
+    unxz Python-2.7.10.tar.xz
+    tar -vxf Python-2.7.10.tar
+
+    cd /usr/local/src/Python-2.7.10
+    ./configure --enable-shared --enable-loadable-sqlite-extensions --with-zlib
+
+    make && make install
+
+  3) 备份老系统 python
+    mv /usr/bin/python /usr/bin/python2.6.6
+    ln -s /usr/local/bin/python2.7 /usr/bin/python
+
+  4) yum 却换到老系统中
+    vim /usr/bin/yum
+
+    #!/usr/bin/python
+    替换成
+    #!/usr/bin/python2.6.6
+
+  5) 问题
+    python -V 出现错误 error while loading shared libraries: libpython2.7.so.1.0: cannot open shared object file: No such file or directory
+
+    解决:
+      vim /etc/ld.so.conf
+      # 增加一行
+      /usr/local/lib
+
+    执行:
+      /sbin/ldconfig  
+      /sbin/ldconfig -v
 ```
 
 
@@ -77,7 +122,10 @@
 ``` python
 
 1. apt-get 方式安装
+
   sudo apt-get install python-setuptools
+
+  sudo yum install python-setuptools
 
   1) 操作
     安装包
@@ -104,6 +152,9 @@
 2.Fedora
   sudo yum install python-pip
 
-3.使用
+3.Centos
+  sudo yum install python-pip
+
+4.使用
   sudo pip install pyhs2
 ```

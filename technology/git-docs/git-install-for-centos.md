@@ -20,7 +20,7 @@ export PATH=$GIT_HOME/libexec/git-core:$GIT_HOME/bin:$PATH
 ```
 
 
-# 二
+# 二、编译安装
 
 教程：http://www.2cto.com/os/201207/144198.html
 下载地址：https://www.kernel.org/pub/software/scm/git/git-1.8.5.tar.bz2

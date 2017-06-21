@@ -115,7 +115,7 @@ define command{
 3. services.cfg 配置
 vim /usr/local/nagios/etc/objects/services.cfg
 
-# 定义 check_load 检测
+# 定义 check_load 负载检测
 define service{
         # 必须在 host.cfg 先定义 hostname
         host_name                       HadoopClusterDw0

@@ -87,6 +87,8 @@
 
 ## 二、nagios-core-plugins 安装
 
+### 1. 安装
+
 - 版本 2.x
 
 - 监控网络服务（SMTP，POP3，HTTP，NNTP，PING等）
@@ -127,3 +129,6 @@
 4. 访问
   http://host-name/nagios
 ```
+
+
+### 2. 插件解说

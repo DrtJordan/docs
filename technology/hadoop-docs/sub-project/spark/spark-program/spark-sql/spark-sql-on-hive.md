@@ -46,31 +46,6 @@ yarn-site.xml
 ```
 
 
-### 3. 配置优化
-
-- Spark SQL 已经使用了 Catalyst 查询优化器模块, 优化过了, 所以可以提供给我们的优化参数不多
-
-``` sql
-
-以下的单位是字节: 256 * 1024 * 1024
-
-*. 小文件合并，默认是4M，可以调大点，不然每个小文件就是一个Task ,
-  spark.sql.files.maxPartitionBytes=268435456;
-
-*. 调节每个partition大小，默认 128M，可以适当调大点
-  spark.sql.files.openCostInBytes=268435456;
-
-*. 两个表shuffle，如join。这个最有用，经常使用的。 默认是10M，调成100M，甚至是1G。
-  spark.sql.autoBroadcastJoinThreshold=268435456;
-
-*. 并行度的优化，这要根据自己集群的配置来调节，默认情况下是 200
-  spark.sql.shuffle.partitions=6;
-
-*. 如果开启, 表示所有的 JDBC/ODBC connection 共用用一份 SQL 配置和临时函数注册表
-  spark.sql.hive.thriftServer.singleSession=false;
-
-```
-
 
 ## 二、SparkSQL 客户端模式
 

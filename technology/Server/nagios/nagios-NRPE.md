@@ -80,23 +80,15 @@
 ```
 
 
-### 二、nagios check_nrpe 插件配置和生效
+## 二、nagios check_nrpe 插件配置和生效
+
+
+### 1. 配置 nrpe 插件
+
+- 用作 nagios 调用 check_nrpe 执行远程命令
 
 ``` sh
-1. nrpe.cfg 配置
-vim /usr/local/nagios/etc/nrpe.cfg
-
-command[check_users]=/usr/local/nagios/libexec/check_users -w 5 -c 10
-command[check_load]=/usr/local/nagios/libexec/check_load -w 15,10,5 -c 30,25,20
-command[check_hda1]=/usr/local/nagios/libexec/check_disk -w 20% -c 10% -p /dev/hda1
-command[check_zombie_procs]=/usr/local/nagios/libexec/check_procs -w 5 -c 10 -s Z
-command[check_total_procs]=/usr/local/nagios/libexec/check_procs -w 150 -c 200
-# 以下这种，用于监控mysql 3306端口是否正常
-command[check_mysql]=/usr/local/nagios/libexec/check_tcp -H dw0 -p 3306  
-command[check_tftp]=/usr/local/nagios/libexec/check_tftp -w 1 -c 1   //check_tftp是自己写的shell脚本，放在/usr/local/nagios/libexec/里而已
-
-
-2. commands.cfg 配置
+1. commands.cfg 配置,
 vim /usr/local/nagios/etc/objects/commands.cfg
 
 # 定义 check_nrpe 拆件
@@ -112,17 +104,43 @@ define command{
 }
 
 
-3. services.cfg 配置
-vim /usr/local/nagios/etc/objects/services.cfg
+2. 重启 nrpe
+  /usr/local/nagios/bin/nrpe -c /usr/local/nagios/etc/nrpe.cfg -d
 
-# 定义 check_load 负载检测
+3. 重启 nagios
+  service nagios restart
+
+```
+
+
+### 2. 自定义脚本
+
+- 0(OK)表示状态正常/绿色
+- 1(WARNING)表示出现警告/黄色
+- 2(CRITICAL)表示出现非常严重的错误/红色
+- 3(UNKNOWN)表示未知错误/深黄色。
+
+``` sh
+1. 自定义脚本
+#!/bin/bash
+# 打印入参
+echo $1
+# 打印返回值
+echo "Test: OK Total: test  - concurrent_count|USED=test;200;500;;"
+# 返回执行状态
+$(exit 0)
+
+2. 配置 etc/nrpe.cfg, 添加 NRPE 脚本名称和路径
+command[test]=/usr/local/nagios/libexec/custom/test.sh $ARG1$
+
+3. 定义 etc/objects/services.cfg , check_nrpe 调用 test
 define service{
         # 必须在 host.cfg 先定义 hostname
         host_name                       HadoopClusterDw0
         # nagios 网页上的服务名
-        service_description             HadoopClusterCheckLoad
+        service_description             HadoopClusterTest
         # 检测的间隔
-        check_command                   check_nrpe!check_load
+        check_command                   check_nrpe!test
 
         # 重试次数
         max_check_attempts      3
@@ -140,9 +158,7 @@ define service{
         contact_groups          MonitorGroup
 }
 
+4. 修改了 nrpe.cfg 需要重启服务
 
-4. 生效
-service nagios restart
-
-
+5. 修改了 services.cfg, command.cfg 需要重启服务
 ```

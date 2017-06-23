@@ -131,4 +131,8 @@
 ```
 
 
-### 2. 插件解说
+2. 定义 etc/objects/commands.cfg 命令名称
+define command{
+        command_name    test
+        command_line    $USER1$/custom/test.sh $HOSTADDRESS$
+}

@@ -146,8 +146,8 @@ spark-sql \
   --executor-cores 1 \
   --executor-memory 2048M \
   --num-executors 3 \
-  --jars file://$HIVE_HOME/lib/hive-json-serde.jar,file://$HIVE_HOME/lib/hive-contrib.jar,file://$HIVE_HOME/lib/hive-serde.jar \
   --hiveconf hive.server2.thrift.port=10002 \
+  --jars file://$HIVE_HOME/lib/hive-json-serde.jar,file://$HIVE_HOME/lib/hive-contrib.jar,file://$HIVE_HOME/lib/hive-serde.jar \
   --conf spark.sql.hive.thriftServer.singleSession=false \
   --conf spark.sql.files.maxPartitionBytes=268435456 \
   --conf spark.sql.files.openCostInBytes=268435456 \

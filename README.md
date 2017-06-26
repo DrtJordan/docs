@@ -20,17 +20,17 @@
 
 ### 3、设计图
 
-- [安个家 Log 收集体系](https://www.processon.com/view/link/582d82a9e4b06bc83a12082d)
-- [安个家 应用服务分布](https://www.processon.com/view/link/562894b7e4b070f8ccca5863)
-- [安个家 Flume 日志高可用收集](https://www.processon.com/view/link/5821bbd2e4b0826f839a4309)
-- 安个家推荐系统
+- [Log 收集体系](https://www.processon.com/view/link/582d82a9e4b06bc83a12082d)
+- [应用服务分布](https://www.processon.com/view/link/562894b7e4b070f8ccca5863)
+- [Flume 日志高可用收集](https://www.processon.com/view/link/5821bbd2e4b0826f839a4309)
+- 推荐系统
  - [CBCF](https://www.processon.com/view/link/56d3b2e7e4b0f9ea1683e1e5)
  - [UBCF](https://www.processon.com/view/link/572b224be4b0c3c749748e14)
  - [IBCF](https://www.processon.com/view/link/57397e57e4b06d79095044ad)
-- [安个家 数据部规划](https://www.processon.com/view/link/566a9d10e4b06272891e729b)
-- 安个家 DB 数据抽取
- - [安个家 db 数据抽取](https://www.processon.com/view/link/57d8e4ede4b0e72a8d042d45)
- - [安个家 抽取流程控制](https://www.processon.com/view/link/57e9eb82e4b06bcb4cdf380e)
+- [ 数据部规划](https://www.processon.com/view/link/566a9d10e4b06272891e729b)
+-  DB 数据抽取
+ - [ db 数据抽取](https://www.processon.com/view/link/57d8e4ede4b0e72a8d042d45)
+ - [ 抽取流程控制](https://www.processon.com/view/link/57e9eb82e4b06bcb4cdf380e)
 - 数据平台
  - [Yarn 工作原理图解](https://www.processon.com/view/link/56643e61e4b026a7ca2ac271)
  - [HDFS 工作原理图解](https://www.processon.com/view/link/56629a87e4b01db999f2f337)
@@ -54,7 +54,7 @@
 
 ## 二、[DW 项目工程文档](project/)
 
-- [angejia_logs](project/angejia_log/) (安个家 项目文档)
+- [angejia_logs](project/angejia_log/) ( 项目文档)
 - [uba-docs](project/uba-docs/) (uba 项目文档)
 - [extract_run](project/extract_run/) (抽取脚本 项目文档)
 - [baidu-sem](project/baidu-sem/) (baidu-sem 项目文档)

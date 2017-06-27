@@ -3,7 +3,10 @@
 ## * 基本定义
 
 ```sh
+文件头
+  #!/bin/bash
 
+公共变量
   $HOME 		//当前用户目录
   $PATH			//当前脚本路径地址
   $MAIL			//当前mail目录
@@ -27,6 +30,14 @@
 引入文件
   source 文件.shell
   会把 source 里面执行的 shell 文件，里面的变量变成当前 shell 的全局变量
+
+当前脚本运行路径
+  basepath=$(cd `dirname $0`; pwd)
+
+  解说
+    dirname $0，取得当前执行的脚本文件的父目录
+    cd `dirname $0`，进入这个目录(切换当前工作目录)
+    pwd，显示当前工作目录(cd执行后的)
 
 运算字符串中的 bash 语法
   eval '${NAME}=${VALUE}'

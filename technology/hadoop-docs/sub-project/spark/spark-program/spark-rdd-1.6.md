@@ -554,11 +554,18 @@ export HADOOP_CONF_DIR=XXX
 
 
 -- 提交作业 到 yar
-  ./sbin/start-thriftserver.sh \
+
+  ./bin/spark-submit \
   --master yarn \
-  --deploy-mode cluster \
-  --name spark-sql \
-  --driver-cores 2 \
-  --driver-memory 500M \
-  --hiveconf hive.server2.thrift.port=10002
+  --deploy-mode client \
+  --name app_name \
+  --driver-cores 1 \
+  --driver-memory 1024M \
+  --executor-cores 1 \
+  --executor-memory 1024M \
+  --num-executors 1 \
+  --conf spark.dynamicAllocation.enabled=false \
+  --conf spark.shuffle.service.enabled=false \
+  --class com.xxx.xxx \
+  /path/to/examples.jar 100
 ```

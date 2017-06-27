@@ -137,25 +137,37 @@ spark-sql \
 
 ``` sh
 启动服务
-  $SPARK_HOME/sbin/start-thriftserver.sh \
+
+$SPARK_HOME/sbin/start-thriftserver.sh \
   --master yarn \
   --deploy-mode client \
   --name spark-sql-service \
-  --driver-cores 2 \
-  --driver-memory 4096M \
-  --executor-cores 1 \
-  --executor-memory 2048M \
+  --driver-cores 1 \
+  --driver-memory 2048M \
+  --executor-cores 2 \
+  --executor-memory 4096M \
   --num-executors 3 \
   --hiveconf hive.server2.thrift.port=10002 \
-  --jars file://$HIVE_HOME/lib/hive-json-serde.jar,file://$HIVE_HOME/lib/hive-contrib.jar,file://$HIVE_HOME/lib/hive-serde.jar \
-  --conf spark.sql.hive.thriftServer.singleSession=false \
+  --conf spark.dynamicAllocation.enabled=false \
+  --conf spark.shuffle.service.enabled=false \
+  --conf spark.reducer.maxSizeInFlight=48m \
+  --conf spark.shuffle.compress=true \
+  --conf spark.shuffle.spill.compress=true \
+  --conf spark.broadcast.compress=true \
+  --conf spark.io.compression.codec=org.apache.spark.io.SnappyCompressionCodec \
+  --conf spark.io.compression.snappy.blockSize=32k \
+  --conf spark.kryoserializer.buffer.max=64m \
+  --conf spark.rdd.compress=true \
+  --conf spark.serializer=org.apache.spark.serializer.KryoSerializer \
+  --conf spark.serializer.objectStreamReset=100 \
+  --conf spark.PairRDDFunctions=16 \
   --conf spark.sql.files.maxPartitionBytes=268435456 \
   --conf spark.sql.files.openCostInBytes=268435456 \
   --conf spark.sql.autoBroadcastJoinThreshold=268435456 \
-  --conf spark.sql.shuffle.partitions=12 \
-  --conf spark.broadcast.compress=true \
-  --conf spark.io.compression.codec=org.apache.spark.io.SnappyCompressionCodec \
-  --conf spark.sql.parquet.compression.codec=snappy
+  --conf spark.sql.shuffle.partitions=48 \
+  --conf spark.sql.inMemoryColumnarStorage.compressed=true \
+  --conf spark.sql.inMemoryColumnarStorage.batchSize=10000 \
+  --jars file:///etc/hive/auxlib/dw_hive_udf-1.0.jar,file:///etc/hive/auxlib/json-serde-1.3.7-jar-with-dependencies.jar
 
 连接
   $SPARK_HOME/bin/beeline -u jdbc:hive2://hostname:10002/default -nhadoop -phadoop

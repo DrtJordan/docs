@@ -45,10 +45,12 @@ SET spark.serializer.objectStreamReset=100;
 
 --- 动态分配 Start ---
 
+-- 建议：根据任务动态像 yarn 申请资源, 导致申请资源浪费大量时间。
+
 -- 是否使用动态资源分配，它根据工作负载调整为此应用程序注册的执行程序数量。
-SET spark.dynamicAllocation.enabled=true;
+SET spark.dynamicAllocation.enabled=false;
 -- 使用外部 shuffle, 保存了由 executor 写出的 shuffle 文件所以 executor 可以被安全移除, spark.dynamicAllocation.enabled 为 true, 这个选项才可以为 true
-SET spark.shuffle.service.enabled=true;
+SET spark.shuffle.service.enabled=false;
 -- 如果启用动态分配，并且执行程序已空闲超过此持续时间，则将删除执行程序。
 SET spark.dynamicAllocation.executorIdleTimeout=60s;
 
@@ -75,7 +77,7 @@ SET spark.PairRDDFunctions=16;
 -- 读取文件时单个分区可容纳的最大字节数(128M)。
 SET spark.sql.files.maxPartitionBytes=134217728;
 
--- 调节每个 partition 大小
+-- 调节每个 partition 大小(128M)
 SET spark.sql.files.openCostInBytes=134217728;
 
 -- 一个表在执行 join 操作时能够广播给所有 worker 节点的最大字节大小

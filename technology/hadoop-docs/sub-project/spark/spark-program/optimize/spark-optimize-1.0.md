@@ -13,6 +13,9 @@ SET spark.shuffle.compress=true;
 -- shuffle 过程中对溢出的文件是否压缩
 SET spark.shuffle.spill.compress=true;
 
+-- parallelize 等转换返回的 RDD 中的默认分区数, RDD 并行度, 所有执行器节点上的 core 总数或者 2，以较大者为准
+-- SET spark.default.parallelism=10;
+
 --- Shuffle 行为（Behavior） End ---
 
 
@@ -83,7 +86,7 @@ SET spark.sql.files.openCostInBytes=134217728;
 -- 一个表在执行 join 操作时能够广播给所有 worker 节点的最大字节大小
 SET spark.sql.autoBroadcastJoinThreshold=134217728;
 
--- 配置为连接或聚合操作混洗（shuffle）数据时使用的分区数
+-- 配置为连接或聚合操作混洗（shuffle）数据时使用的分区数, shuffle 的并发度，默认为 200
 SET spark.sql.shuffle.partitions=200;
 
 -- true: 单会话模式. false(默认): 多会话模式, JDBC / ODBC 连接拥有一份自己的 SQL 配置和临时注册表

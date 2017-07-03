@@ -3,6 +3,15 @@
 ## 一、Spark 优化
 
 ``` sql
+
+--- 应用属性 Start ---
+
+SET spark.logConf=true;
+
+
+--- 应用属性 End ---
+
+
 --- Shuffle 行为（Behavior） Start ---
 -- 每个输出都要创建一个缓冲区，这代表要为每一个 Reduce 任务分配一个固定大小的内存, 除非内存很大否则设置小点
 SET spark.reducer.maxSizeInFlight=48m;
@@ -52,6 +61,12 @@ SET spark.serializer.objectStreamReset=100;
 
 -- 是否使用动态资源分配，它根据工作负载调整为此应用程序注册的执行程序数量。
 SET spark.dynamicAllocation.enabled=false;
+-- 每个Application最小分配的executor数
+SET spark.dynamicAllocation.minExecutors=1;
+-- 每个 Application 最大并发分配的 executor 数。  ThriftServer 模式是整个 ThriftServer 同时并发的最大资源数，如果多个用户同时连接，则会被多个用户共享竞争
+SET spark.dynamicAllocation.maxExecutors=30;
+SET spark.dynamicAllocation.schedulerBacklogTimeout=1s;
+SET spark.dynamicAllocation.sustainedSchedulerBacklogTimeout=5s;
 -- 使用外部 shuffle, 保存了由 executor 写出的 shuffle 文件所以 executor 可以被安全移除, spark.dynamicAllocation.enabled 为 true, 这个选项才可以为 true
 SET spark.shuffle.service.enabled=false;
 -- 如果启用动态分配，并且执行程序已空闲超过此持续时间，则将删除执行程序。
@@ -66,6 +81,18 @@ SET spark.dynamicAllocation.executorIdleTimeout=60s;
 SET spark.PairRDDFunctions=16;
 
 --- 执行器优化 End ---
+
+
+--- 调度器优化 Start ---
+-- FAIR 公平调度器, FIFO 先进先出调度器
+SET spark.scheduler.mode=FAIR;
+
+-- 任务推测
+SET spark.speculation=true;
+
+-- 每个人分配的 CPU 核数
+SET spark.task.cpus=1;
+--- 调度器优化 End ---
 
 ```
 

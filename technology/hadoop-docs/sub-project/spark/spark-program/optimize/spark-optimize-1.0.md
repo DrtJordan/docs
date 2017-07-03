@@ -6,7 +6,7 @@
 
 --- 应用属性 Start ---
 
-SET spark.logConf=true;
+SET spark.logConf=false;
 
 
 --- 应用属性 End ---
@@ -57,7 +57,7 @@ SET spark.serializer.objectStreamReset=100;
 
 --- 动态分配 Start ---
 
--- 建议：根据任务动态像 yarn 申请资源, 导致申请资源浪费大量时间。
+-- 注意事项：根据任务动态向 yarn 申请资源, 会导致申请资源浪费大量时间。
 
 -- 是否使用动态资源分配，它根据工作负载调整为此应用程序注册的执行程序数量。
 SET spark.dynamicAllocation.enabled=false;
@@ -84,14 +84,16 @@ SET spark.PairRDDFunctions=16;
 
 
 --- 调度器优化 Start ---
+
 -- FAIR 公平调度器, FIFO 先进先出调度器
 SET spark.scheduler.mode=FAIR;
 
 -- 任务推测
 SET spark.speculation=true;
 
--- 每个人分配的 CPU 核数
+-- 每个任务分配的 CPU 核数
 SET spark.task.cpus=1;
+
 --- 调度器优化 End ---
 
 ```
@@ -124,6 +126,8 @@ SET spark.sql.inMemoryColumnarStorage.compressed=true;
 
 -- 控制列式缓存批量的大小。当缓存数据时，增大批量大小可以提高内存利用率和压缩率，但同时也会带来 OOM（Out Of Memory）的风险。
 SET spark.sql.inMemoryColumnarStorage.batchSize=10000;
+
+--- Spark Sql 调优 END ---
 ```
 
 

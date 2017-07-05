@@ -75,12 +75,6 @@ SET spark.dynamicAllocation.executorIdleTimeout=60s;
 --- 动态分配 End ---
 
 
---- 执行器优化 Start ---
-
--- 并行度级别, 建议为每一个 CPU 核（ core ）分配 2-3 个任务
-SET spark.PairRDDFunctions=16;
-
---- 执行器优化 End ---
 
 
 --- 调度器优化 Start ---
@@ -107,16 +101,16 @@ SET spark.task.cpus=1;
 --- Spark Sql 调优 Start ---
 
 -- 读取文件时单个分区可容纳的最大字节数(128M)。
-SET spark.sql.files.maxPartitionBytes=134217728;
+SET spark.sql.files.maxPartitionBytes=268435456;
 
--- 调节每个 partition 大小(128M)
+-- 调节每个 partition 大小(128M), 小文件合并
 SET spark.sql.files.openCostInBytes=134217728;
 
 -- 一个表在执行 join 操作时能够广播给所有 worker 节点的最大字节大小
 SET spark.sql.autoBroadcastJoinThreshold=134217728;
 
--- 配置为连接或聚合操作混洗（shuffle）数据时使用的分区数, shuffle 的并发度，默认为 200
-SET spark.sql.shuffle.partitions=200;
+-- 连接或聚合操作混洗（shuffle）数据时使用的分区数, shuffle 的并发度，默认为 200。可用来控制输出的文件数量
+SET spark.sql.shuffle.partitions=30;
 
 -- true: 单会话模式. false(默认): 多会话模式, JDBC / ODBC 连接拥有一份自己的 SQL 配置和临时注册表
 SET spark.sql.hive.thriftServer.singleSession=false;

@@ -4,26 +4,9 @@
 
 ### 1. spark-defaults.conf
 
-$SPARK_HOME/conf/spark-defaults.conf
+- 详见配合文件
 
-```
-spark.master yarn
-spark.submit.deployMode client
-
-spark.driver.cores  4
-spark.driver.memory  8g
-
-spark.executor.cores 4
-spark.executor.memory 8g
-
-spark.eventLog.enabled  false
-spark.eventLog.dir hdfs://dw2:8020/tmp/spark
-
-spark.serializer org.apache.spark.serializer.KryoSerializer
-```
-
-
-### 2. 配置文件
+### 2. hive 集成配置
 
 hive-site.xml
 >ln -s $HIVE_HOME/conf/hive-site.xml $SPARK_HOME/conf/hive-site.xml
@@ -148,25 +131,6 @@ $SPARK_HOME/sbin/start-thriftserver.sh \
   --executor-memory 4096M \
   --num-executors 3 \
   --hiveconf hive.server2.thrift.port=10002 \
-  --conf spark.dynamicAllocation.enabled=false \
-  --conf spark.shuffle.service.enabled=false \
-  --conf spark.reducer.maxSizeInFlight=48m \
-  --conf spark.shuffle.compress=true \
-  --conf spark.shuffle.spill.compress=true \
-  --conf spark.broadcast.compress=true \
-  --conf spark.io.compression.codec=org.apache.spark.io.SnappyCompressionCodec \
-  --conf spark.io.compression.snappy.blockSize=32k \
-  --conf spark.kryoserializer.buffer.max=64m \
-  --conf spark.rdd.compress=true \
-  --conf spark.serializer=org.apache.spark.serializer.KryoSerializer \
-  --conf spark.serializer.objectStreamReset=100 \
-  --conf spark.PairRDDFunctions=16 \
-  --conf spark.sql.files.maxPartitionBytes=268435456 \
-  --conf spark.sql.files.openCostInBytes=268435456 \
-  --conf spark.sql.autoBroadcastJoinThreshold=268435456 \
-  --conf spark.sql.shuffle.partitions=48 \
-  --conf spark.sql.inMemoryColumnarStorage.compressed=true \
-  --conf spark.sql.inMemoryColumnarStorage.batchSize=10000 \
   --jars file:///etc/hive/auxlib/dw_hive_udf-1.0.jar,file:///etc/hive/auxlib/json-serde-1.3.7-jar-with-dependencies.jar
 
 连接

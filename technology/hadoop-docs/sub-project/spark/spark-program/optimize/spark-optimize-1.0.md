@@ -40,7 +40,7 @@ SET spark.io.compression.snappy.blockSize=32k;
 
 
 -- Kryo 序列化缓冲区的最大允许大小。
-SET spark.kryoserializer.buffer.max=64m;
+SET spark.kryoserializer.buffer.max=256m;
 -- Kryo 序列化缓冲区的初始大小
 SET spark.kryoserializer.buffer=64k;
 -- 是否压缩序列化的 RDD 分区, 能节省大量空间，但多消耗一些 CPU 时间。

@@ -101,7 +101,7 @@ Sqoop2 比 Sqoop1 的改进
 ```
 1) 导出 mysql sqoop 数据库中 broker 表的结构到 broker.java 文件
 
-sqoop codegen -connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -password test -table broker
+sqoop codegen -connect jdbc:mysql://hostname:3306/sqoop -username test -password test -table broker
 ```
 
 
@@ -112,7 +112,7 @@ sqoop codegen -connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -passw
 
 ```
 1) 把线上的 mysql sqoop 数据库中 broker 表的的结构导入到 hive 中
-sqoop create-hive-table -connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -password test -table broker -hive-table h_broker
+sqoop create-hive-table -connect jdbc:mysql://hostname:3306/sqoop -username test -password test -table broker -hive-table h_broker
 
 ```
 
@@ -121,7 +121,7 @@ sqoop create-hive-table -connect jdbc:mysql://CDH-Manager:3306/sqoop -username t
 
 ```
 1) 直接执行 sql (*时,字段太多会无法显示,可以获取少量字段)
-sqoop eval --connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -password test --query "select * from broker limit 1";
+sqoop eval --connect jdbc:mysql://hostname:3306/sqoop -username test -password test --query "select * from broker limit 1";
 
 ```
 
@@ -130,14 +130,14 @@ sqoop eval --connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -passwor
 从hdfs中导数据到关系数据库中
 
 ```
-sqoop export --connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -password test -table m_broker -export-dir /user/hive/warehouse/jason_test.db/h_broker_2 -input-fields-terminated-by '\001' -input-lines-terminated-by '\n' -input-null-string '\\N' -input-null-non-string '\\N' -outdir /tmp;
+sqoop export --connect jdbc:mysql://hostname:3306/sqoop -username test -password test -table m_broker -export-dir /user/hive/warehouse/jason_test.db/h_broker_2 -input-fields-terminated-by '\001' -input-lines-terminated-by '\n' -input-null-string '\\N' -input-null-non-string '\\N' -outdir /tmp;
 
 
 ***带分隔符***
 -fields-terminated-by 字段'\001'号分割
 -lines-terminated-by '\n' 换行分割
 
-sqoop export --connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -password test -table m_broker -export-dir /user/hive/warehouse/jason_test.db/h_broker_2 -input-fields-terminated-by '\001' -input-lines-terminated-by '\n' -input-null-string '\\N' -input-null-non-string '\\N' -outdir /tmp;
+sqoop export --connect jdbc:mysql://hostname:3306/sqoop -username test -password test -table m_broker -export-dir /user/hive/warehouse/jason_test.db/h_broker_2 -input-fields-terminated-by '\001' -input-lines-terminated-by '\n' -input-null-string '\\N' -input-null-non-string '\\N' -outdir /tmp;
 
 ```
 
@@ -154,12 +154,12 @@ sqoop export --connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -passw
   如 jason_test.h_broker
 
 1) 把关系数据库 sqoop broker 表 导入到 hive h_broker 表中
-sqoop import -connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -password test -table broker -hive-table h_broker -hive-import -split-by user_id -input-null-string '\\N' -input-null-non-string '\\N' -outdir /tmp;
+sqoop import -connect jdbc:mysql://hostname:3306/sqoop -username test -password test -table broker -hive-table h_broker -hive-import -split-by user_id -input-null-string '\\N' -input-null-non-string '\\N' -outdir /tmp;
 
 ***带分隔符***
 -fields-terminated-by 字段'\001'号分割
 -lines-terminated-by '\n' 换行分割
-sqoop import -connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -password test -table broker -hive-table jason_test.h_broker_2 -hive-import -fields-terminated-by '\001' -lines-terminated-by '\n' -input-null-string '\\N' -input-null-non-string '\\N' -outdir /tmp;
+sqoop import -connect jdbc:mysql://hostname:3306/sqoop -username test -password test -table broker -hive-table jason_test.h_broker_2 -hive-import -fields-terminated-by '\001' -lines-terminated-by '\n' -input-null-string '\\N' -input-null-non-string '\\N' -outdir /tmp;
 
 
 
@@ -169,10 +169,10 @@ sqoop import -connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -passwo
 -check-column user_id  用来作为判断的列名，如 user_id
 -last-value 指定自从上次导入后列的最大值（大于该指定的值），如上次导入的最大 ID
 
-sqoop import -connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -password test -table broker -hive-table h_broker -hive-import -split-by user_id -incremental append -check-column user_id -last-value 2000001738 -input-null-string '\\N' -input-null-non-string '\\N'
+sqoop import -connect jdbc:mysql://hostname:3306/sqoop -username test -password test -table broker -hive-table h_broker -hive-import -split-by user_id -incremental append -check-column user_id -last-value 2000001738 -input-null-string '\\N' -input-null-non-string '\\N'
 
 3) 直接累加导入
-sqoop import -connect "jdbc:mysql://CDH-Manager:3306/dw_db?useUnicode=true&characterEncoding=utf-8" -username test -password test -table dw_basis_dimension_filter_ip -hive-table jason_test.dw_basis_dimension_filter_ip -hive-import -fields-terminated-by '\001' -lines-terminated-by '\n' -input-null-string '\\N' -input-null-non-string '\\N' -split-by id -append -input-null-string '\\N' -input-null-non-string '\\N';
+sqoop import -connect "jdbc:mysql://hostname:3306/dw_db?useUnicode=true&characterEncoding=utf-8" -username test -password test -table dw_basis_dimension_filter_ip -hive-table jason_test.dw_basis_dimension_filter_ip -hive-import -fields-terminated-by '\001' -lines-terminated-by '\n' -input-null-string '\\N' -input-null-non-string '\\N' -split-by id -append -input-null-string '\\N' -input-null-non-string '\\N';
 
 
 ```
@@ -184,7 +184,7 @@ sqoop import -connect "jdbc:mysql://CDH-Manager:3306/dw_db?useUnicode=true&chara
 
 ```
 1) 导入关系数据库 sqoop 所有到 hive
-sqoop import-all-tables --connect jdbc:mysql://CDH-Manager:3306/sqoop -username test -password test  -hive-import -input-null-string '\\N' -input-null-non-string '\\N'
+sqoop import-all-tables --connect jdbc:mysql://hostname:3306/sqoop -username test -password test  -hive-import -input-null-string '\\N' -input-null-non-string '\\N'
 
 ***这个参数会出问题，导入数据只显示 hfds 中但不在hive表中***
 -warehouse-dir 与–target-dir不能同时使用，指定数据导入的存放目录，适用于hdfs导入，不适合导入hive目录
@@ -194,11 +194,11 @@ sqoop import-all-tables --connect jdbc:mysql://CDH-Manager:3306/sqoop -username 
 #### 2.7 显示关系数据库信息
 ```
 1) 显示所有数据库
-sqoop list-databases -connect jdbc:mysql://CDH-Manager:3306/ -username test -password test
+sqoop list-databases -connect jdbc:mysql://hostname:3306/ -username test -password test
 
 
 2) 显示 sqoop 数据库中所有的表
-sqoop list-tables -connect jdbc:mysql://CDH-Manager:3306/ -username test -password test
+sqoop list-tables -connect jdbc:mysql://hostname:3306/ -username test -password test
 
 ```
 

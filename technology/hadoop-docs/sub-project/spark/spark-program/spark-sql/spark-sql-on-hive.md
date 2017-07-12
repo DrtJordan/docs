@@ -4,7 +4,7 @@
 
 ### 1. spark-defaults.conf
 
-- 详见配合文件
+- 详见配置文件
 
 ### 2. hive 集成配置
 
@@ -33,14 +33,11 @@ yarn-site.xml
 ## 二、SparkSQL 客户端模式
 
 ``` sh
--- 重要 spark-env.sh 需要配置环境变量
-  export SPARK_YARN_USER_ENV ="JAVA_LIBRARY_PATH=$JAVA_LIBRARY_PATH,LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
-
 -- 普通加载模式
 spark-sql \
 --master yarn \
 --deploy-mode client \
---name spark-sql-service \
+--name spark-sql-service_1 \
 --driver-cores 2 \
 --driver-memory 4096M \
 --executor-cores 1 \

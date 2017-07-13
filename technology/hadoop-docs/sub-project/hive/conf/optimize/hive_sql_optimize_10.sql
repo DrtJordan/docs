@@ -124,9 +124,9 @@ set mapreduce.input.fileinputformat.split.maxsize=1024000000;
 set mapreduce.input.fileinputformat.split.minsize.per.node=1024000000;
 --  机架中可以处理的最小的文件大小
 set mapreduce.input.fileinputformat.split.minsize.per.rack=1024000000;
--- 一个 Reduce 最多同时处理的文件总数大小(控制 reduce 数量), 可用于数据倾斜优化
+-- 一个 Reduce 最多同时处理的文件总数大小(控制 reduce 数量)
 set hive.exec.reducers.bytes.per.reducer=1024000000;
--- 根据自定义数字, 配置当前任务的 reduce 数量, 可用于数据倾斜优化
+-- 根据自定义数字, 配置当前任务的 reduce 数量
 -- SET mapreduce.job.reduces=10;
 
 
@@ -144,31 +144,30 @@ set hive.exec.mode.local.auto.tasks.max=10;
 -- 设置local mr的最大输入文件个数,当输入文件个数小于这个值的时候会采用local mr的方式
 set hive.exec.mode.local.auto.input.files.max=10;
 
--- 如果 MapJoin 中的表都是有序的,使 Join 操作无需扫描整个表
+-- 如果MapJoin中的表都是有序的,使Join操作无需扫描整个表
 set hive.optimize.bucketmapjoin.sortedmerge=true;
 
 
--- (Common Join): 也称为 Reduce Join 或 Shuffle Join, 两边表数据量都很大，把相同 key 的 value 合在一起再去组合, 详见 shuffle 原理,
--- (Map Join): Map 阶段完成 join, 大表对小表应该使用 MapJoin, 小表数据量很小的放到内存中
--- Map Join 触发阈值, 当设置为 true 的时候，hive 会自动获取两张表的数据，判定哪个是小表然后放在内存中, 将 Reduce 端的 Common Join 转化为 Map Join，从而加快大表关联小表的 Join 速度
+-- hive join 实现类型, 是否根据输入小表的大小,将 Reduce 端的 Common Join 转化为 Map Join，从而加快大表关联小表的 Join 速度,
+-- 把小的表加入内存，根据 sql，选择使用 common join 或者 map join
+-- 当查询的表特别大的时候, 把这个关闭
 set hive.auto.convert.join=true;
--- Map Join 触发阈值, 默认 25M
+-- 阀值 25 M
 set hive.mapjoin.smalltable.filesize=25000000;
 
--- 优化 join 阶段数据倾斜, hive 在运行的时候没有办法判断哪个key 会产生多大的倾斜，所以使用这个参数控制倾斜的阈值，如果超过这个值，新的值会发送给那些还没有达到的 reduce
+-- 优化 join 阶段数据倾斜
 set hive.optimize.skewjoin=false;
--- join 的键对应的记录条数超过这个值则会进行分拆
+-- 这个是join 的键对应的记录条数超过这个值则会进行分拆,值根据具体数据量设置
 set hive.skewjoin.key=100000;
-
 
 
 -- 是否在 Map 端进行聚合
 set hive.map.aggr=true;
--- (hive.groupby.skewindata 为 true): 查询计划生成 2 个 MRJob. 可用于数据倾斜优化
--- 第一个 MapJob 输出结果集随机分布到 Reduce 中, 每个 Reduce 做部分聚合操作. Group By Key 被分发到不同的 Reduce 中，从而达到负载均衡的目的
--- 第二个 MapJob 根据预处理的数据结果按照 Group By Key 分布到 Reduce 中（这个过程可以保证相同的 Group By Key 被分布到同一个 Reduce 中），最后完成最终的聚合操作。
+-- 生成的查询计划会有两个 MR Job,第一个 MR Job 中，Map 的输出结果集合会随机分布到 Reduce 中
+-- 每个 Reduce 做部分聚合操作，并输出结果，这样处理的结果是相同的 Group By Key 有可能被分发到不同的 Reduce 中，从而达到负载均衡的目的
+-- 第二个 MR Job 再根据预处理的数据结果按照 Group By Key 分布到 Reduce 中（这个过程可以保证相同的 Group By Key 被分布到同一个 Reduce 中），最后完成最终的聚合操作。
 set hive.groupby.skewindata=false;
--- group 的键对应的记录条数超过这个值则会进行分拆,在 Map 端进行聚合操作的条目数目
+-- 这个是group的键对应的记录条数超过这个值则会进行分拆,在 Map 端进行聚合操作的条目数目
 set hive.groupby.mapaggr.checkinterval=100000;
 
 -- hive 输出写到表中时, 输出内容开启压缩, 压缩格式就是 mapreduce.output.fileoutputformat.compress.codec 参数指定的格式
@@ -185,9 +184,3 @@ set hive.optimize.index.filter=true;
 
 
 SELECT COUNT(*) FROM ods.ods_browser_use;
-
-
-
--- Order by 实现全局排序，一个reduce实现，效率低
--- Sort by 实现部分有序，单个reduce输出的结果是有序的，效率高，通常和DISTRIBUTE BY关键字一起使用（DISTRIBUTE BY关键字 可以指定map 到 reduce端的分发key）
--- CLUSTER BY col1 等价于DISTRIBUTE BY col1 SORT BY col1

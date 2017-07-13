@@ -142,8 +142,8 @@ from
 
 ```sql
 -- (可通过这个语句查看：set hive.exec.dynamic.partition;)
-set hive.exec.dynamic.partition=true;
 set hive.exec.dynamic.partition.mode=nonstrict;
+set hive.exec.dynamic.partition=true;
 -- (如果自动分区数大于这个参数，将会报错)
 set hive.exec.max.dynamic.partitions=100000;
 set hive.exec.max.dynamic.partitions.pernode=100000;

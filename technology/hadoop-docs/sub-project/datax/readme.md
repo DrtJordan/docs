@@ -71,7 +71,7 @@ python bin/datax.py conf/hdfsreader_mysqlwriter.json
         ],
         "setting": {
             "speed": {
-                "channel": ""
+                "channel": "1"
             }
         }
     }

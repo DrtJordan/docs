@@ -62,7 +62,7 @@ declare 定义变量类型
 
 # 批量注释
 :<<BLOCK
-
+123123
 BLOCK
 
 ```
@@ -92,7 +92,6 @@ BLOCK
 
 关闭所有输出
   xxx1.sh xxx2.sh 1>&- 2>&-
-
 
 开启所有输出
   xx1.sh >> a.log 2>&1
@@ -658,10 +657,10 @@ echo $h
 ``` sh
 
 # 命令格式 getopt options optstring parameters
-#  -o D:T:SH  表示短参数
+# -o D:T:SH  表示短参数
 # -l database:,table:,status,help  表示长参数
 # : 表示需要填写 args 的
-# 注意,第一个参数必须 段参数和长参数一起使用
+# 注意: 第一个参数必须 短参数和长参数一起使用
 
 ARGS=`getopt -a -o D:T:SH -l database:,table:,status,help -- "$@"`  
 [ $? -ne 0 ] && usage  

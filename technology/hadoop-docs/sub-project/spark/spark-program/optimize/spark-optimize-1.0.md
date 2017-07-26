@@ -6,24 +6,39 @@
 
 --- 应用属性 Start ---
 
+-- SparkContext 启动时是否把生效的 SparkConf 属性以 INFO 日志打印到日志里
 SET spark.logConf=false;
 
 
 --- 应用属性 End ---
 
 
+--- 执行器行为（Execution Behavior）Start ---
+
+-- 设置每个 stage 的默认 task 数量, 不设置可能会直接影响你的 Spark 作业性能。公式 (num-executors * executor-cores)*3
+SET spark.default.parallelism=18;
+
+--- 执行器行为（Execution Behavior）End ---
+
+
+--- 内存管理（Memory Management） Start ---
+
+
+
+--- 内存管理（Memory Management） End ---
+
+
+
 --- Shuffle 行为（Behavior） Start ---
--- 每个输出都要创建一个缓冲区，这代表要为每一个 Reduce 任务分配一个固定大小的内存, 除非内存很大否则设置小点
-SET spark.reducer.maxSizeInFlight=48m;
+
+-- 每个输出都要创建一个缓冲区，这代表要为每一个 Reduce 任务分配一个固定大小的内存, 除非内存很大否则设置小点, 默认 48m
+SET spark.reducer.maxSizeInFlight=256m;
 
 -- 是否要对 map 输出的文件进行压缩
 SET spark.shuffle.compress=true;
 
 -- shuffle 过程中对溢出的文件是否压缩
 SET spark.shuffle.spill.compress=true;
-
--- parallelize 等转换返回的 RDD 中的默认分区数, RDD 并行度, 所有执行器节点上的 core 总数或者 2，以较大者为准
--- SET spark.default.parallelism=10;
 
 --- Shuffle 行为（Behavior） End ---
 
@@ -37,7 +52,6 @@ SET spark.broadcast.compress=true;
 SET spark.io.compression.codec=org.apache.spark.io.SnappyCompressionCodec;
 -- 在采用 Snappy 压缩编解码器的情况下，Snappy 压缩使用的块大小。减少块大小还将降低采用 Snappy 时的混洗内存使用。
 SET spark.io.compression.snappy.blockSize=32k;
-
 
 -- Kryo 序列化缓冲区的最大允许大小。
 SET spark.kryoserializer.buffer.max=256m;
@@ -90,6 +104,36 @@ SET spark.task.cpus=1;
 
 --- 调度器优化 End ---
 
+
+
+--- Spark UI Start ---
+
+-- 在垃圾回收前，Spark UI 和 API 有多少 Job 可以留存
+SET spark.ui.retainedJobs=300;
+
+-- 在垃圾回收前，Spark UI 和 API 有多少 Stage 可以留存。
+SET spark.ui.retainedStages=300;
+
+-- 在垃圾回收前，Spark UI 和 API 有多少 Task 可以留存。
+SET spark.ui.retainedTasks=500;
+
+-- 在垃圾回收前，Spark UI 和 API 有多少 executor 已经完成。
+SET spark.worker.ui.retainedExecutors=300;
+
+-- 在垃圾回收前，Spark UI 和 API 有多少 driver 已经完成。
+SET spark.worker.ui.retainedDrivers=300;
+
+-- 在垃圾回收前，Spark UI 和 API 有多少 execution 已经完成。
+SET spark.sql.ui.retainedExecutions=300;
+
+-- 在垃圾回收前，Spark UI 和 API 有多少 batch 已经完成。
+SET spark.streaming.ui.retainedBatches=300;
+
+-- 在垃圾回收前，Spark UI 和 API 有多少 dead executors。
+SET spark.streaming.ui.retainedBatches=300;
+
+--- Spark UI End ---
+
 ```
 
 
@@ -120,6 +164,9 @@ SET spark.sql.inMemoryColumnarStorage.compressed=true;
 
 -- 控制列式缓存批量的大小。当缓存数据时，增大批量大小可以提高内存利用率和压缩率，但同时也会带来 OOM（Out Of Memory）的风险。
 SET spark.sql.inMemoryColumnarStorage.batchSize=10000;
+
+-- spark 格式待测试
+SET spark.sql.default.fileformat=orc;
 
 --- Spark Sql 调优 END ---
 ```

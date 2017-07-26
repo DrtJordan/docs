@@ -148,7 +148,7 @@ set hive.exec.mode.local.auto.input.files.max=10;
 set hive.optimize.bucketmapjoin.sortedmerge=true;
 
 
--- (Common Join): 也称为 Reduce Join 或 Shuffle Join, 两边表数据量都很大，把相同 key 的 value 合在一起再去组合, 详见 shuffle 原理,
+-- (Common Join): 也称为 Reduce Join 或 Shuffle Join, 两边表数据量都很大，把相同 key 的 value 合在一起再去组合, 详见 shuffle 原理
 -- (Map Join): Map 阶段完成 join, 大表对小表应该使用 MapJoin, 小表数据量很小的放到内存中
 -- Map Join 触发阈值, 当设置为 true 的时候，hive 会自动获取两张表的数据，判定哪个是小表然后放在内存中, 将 Reduce 端的 Common Join 转化为 Map Join，从而加快大表关联小表的 Join 速度
 set hive.auto.convert.join=true;

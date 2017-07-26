@@ -87,4 +87,5 @@ CREATE TABLE temp_db.dm_safe_day_active_loss_trace AS SELECT * FROM dm_db.dm_saf
 
 
 ~/develop/jason/datax$ python bin/datax.py conf/hdfsreader_mysqlwriter.json -p "-DdbName=temp_db -DtbName=dm_safe_day_active_loss_trace -Dwhere='DELETE FROM temp_db.dm_safe_day_active_loss_trace WHERE monitor_days = 30' -Dcol='{\"index\": 0,\"type\": \"string\"}'"
+
 ```

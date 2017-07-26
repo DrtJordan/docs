@@ -1,15 +1,33 @@
 # MySQL 数据导入导出
 
-- [优秀文章](http://blog.csdn.net/xin_yu_xin/article/details/7574662)
-- [优秀文章](http://blog.chinaunix.net/uid-16844903-id-3411118.html)
-
-
 ## 导入数据
 
 ``` sql
 
 1) 导入 test.sql 数据到 test 数据库
-mysql -utest -ptest test -v -f < ./test.sql
+  mysql -utest -ptest test -v -f < ./test.sql
+
+
+2) LOAD DATA 文件导入表
+参数:
+  --local-infile     显示参数, 用来支持客户端导入数据到远程 Mysql
+  LOAD DATA LOW_PRIORITY LOCAL INFILE;  从本地客户端读取数据, 导入到远程数据库
+
+  CHARACTER SET UTF8 FIELDS TERMINATED BY '\t' ENCLOSED BY '"' LINES TERMINATED BY '\n' (`field_1`,`field_2`,`field_3`);  配置编码格式, 列分隔符，行分隔符
+
+  LOW_PRIORITY : MySQL 等待无人读表时，才导入数据
+
+
+方法1: 登录 mysql 执行
+  mysql --local-infile -hhost -uuser_name -ppass_word
+
+  mysql> LOAD DATA LOW_PRIORITY LOCAL INFILE '/path/test.txt' INTO TABLE db_name.tb_name CHARACTER SET UTF8 (`field_1`,`field_2`,`field_3`);
+   OR
+  mysql> LOAD DATA LOW_PRIORITY LOCAL INFILE '/path/test.txt' INTO TABLE db_name.tb_name CHARACTER SET UTF8 FIELDS TERMINATED BY '\t' ENCLOSED BY '"' LINES TERMINATED BY '\n';  
+
+
+方法2: 通过 -e 参数执行
+  mysql --local-infile -hhost -uuser_name -ppass_word -e "LOAD DATA LOW_PRIORITY LOCAL INFILE '/path/test.txt' INTO TABLE db_name.tb_name CHARACTER SET UTF8"
 
 ```
 

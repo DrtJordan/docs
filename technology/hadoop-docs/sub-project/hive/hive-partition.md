@@ -59,7 +59,7 @@ create table stat_table_1 (
 ) partitioned by (h_date string)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
-COLLECTION ITEMS TERMINATED BY '\n';
+LINES TERMINATED BY '\n';
 
 ```
 
@@ -97,7 +97,7 @@ create table stat_source_1 (
 )
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
-COLLECTION ITEMS TERMINATED BY '\n';
+LINES TERMINATED BY '\n';
 
 
 2) 导入数据到源表
@@ -115,7 +115,7 @@ create table stat_table_2 (
 ) partitioned by (h_date string)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\001'
-COLLECTION ITEMS TERMINATED BY '\n';
+LINES TERMINATED BY '\n';
 
 
 2) 导入查询数据到表中
@@ -178,7 +178,7 @@ create table dynamic_source_1 (
 )
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
-COLLECTION ITEMS TERMINATED BY '\n';
+LINES TERMINATED BY '\n';
 
 
 2) 导入数据到源表
@@ -197,7 +197,7 @@ into table dynamic_source_1;
   ) partitioned by (h_date string)
   ROW FORMAT DELIMITED
   FIELDS TERMINATED BY ','
-  COLLECTION ITEMS TERMINATED BY '\n';
+  LINES TERMINATED BY '\n';
 
 2) 导入数据到动态分区 （批量的）
 

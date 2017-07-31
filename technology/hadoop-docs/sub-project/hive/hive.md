@@ -303,18 +303,18 @@ CREATE TABLE employees(
   --必须写在下面的子句之前（stored AS 除外）
   ROW FORMAT DELIMITED
   --Hive 将使用 ^A 做为列分隔符
-  FILEDS TERMINATED BY '\001'
+  FIELDS TERMINATED BY '\001'
   --表明Hive 将使用 ^B 做为集合元素间分隔符
   COLLECTION ITEMS TERMINATED BY '\002'
   --Hive 将使用 ^C 做为 MAP 的键值之间的分隔符
   MAP KEYS TERMINATED BY '\003'
   --到目录前为止 Hive 对于 lines terminated by 公支持 \n 也就是说行与行之间分隔符只能是 \n
   LINES TERMINATED BY '\n'
-  STORED AS TEXTFILE;   --此句很少被用到
+  STORED AS TEXTFILE;
 
 文本分隔符:
   \n    文本文件的换行符
-  ^A   分隔字段（列），在 CREATE TABLE 语句中可以使用八进制编码（\001）表示
+  ^A    分隔字段（列），在 CREATE TABLE 语句中可以使用八进制编码（\001）表示
   ^B    分隔 ARRAY 或者 STRUCT 中的元素，或用于 MAP 中键值对之间的分隔，使用八进制编码（\002）表示
   ^C    用于 MAP 中键和值之间的分隔，使用八进制编码（\003）表示
 
@@ -326,7 +326,7 @@ CREATE TABLE employees(
   )
   ROW FORMAT DELIMITED
   FIELDS TERMINATED BY '\001'
-  COLLECTION ITEMS TERMINATED BY '\n'
+  LINES TERMINATED BY '\n'
   STORED AS TEXTFILE;
 
 
@@ -336,7 +336,7 @@ CREATE TABLE student_index(
   ) PARTITIONed by (ds string)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\001'
-COLLECTION ITEMS TERMINATED BY '\n'
+LINES TERMINATED BY '\n'
 STORED AS TEXTFILE;
 
 
@@ -349,7 +349,7 @@ CREATE TABLE clASsmem_index_1(
 )
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\001'
-COLLECTION ITEMS TERMINATED BY '\n'
+LINES TERMINATED BY '\n'
 STORED AS TEXTFILE;
 
 
@@ -444,7 +444,7 @@ CREATE EXTERNAL TABLE student_index(
 ) PARTITIONed by (ds string)
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '\001'
-COLLECTION ITEMS TERMINATED BY '\n'
+LINES TERMINATED BY '\n'
 STORED AS TEXTFILE
 -- 指定表的数据源，可写可不写
 LOCATION 'hdfs://NameNode:8020/user/test/student_index';
@@ -506,13 +506,12 @@ hive表默认的分隔符是'\001'
 ``` sql
 row format deLIMITed
 FIELDS TERMINATED BY '\001' 字段分隔符是 '\001'
-COLLECTION ITEMS TERMINATED BY '\n' 行分隔符是 '\n'
-
+LINES TERMINATED BY '\n' 行分隔符是 '\n'
 语法：
 INSERT OVERWRITE LOCAL directory <to_file_dir>
 <row format deLIMITed>
 <FIELDS TERMINATED BY '\001'>
-<COLLECTION ITEMS TERMINATED BY '\n'>
+<LINES TERMINATED BY '\n'>
 <fields>
 <FROM_TABLE_name>
 
@@ -520,7 +519,7 @@ INSERT OVERWRITE LOCAL directory <to_file_dir>
 INSERT OVERWRITE LOCAL directory 'to_file_dir'
 row format deLIMITed
 FIELDS TERMINATED BY '\001'
-COLLECTION ITEMS TERMINATED BY '\n'
+LINES TERMINATED BY '\n'
 SELECT fields FROM FROM_TABLE_name;
 ```
 

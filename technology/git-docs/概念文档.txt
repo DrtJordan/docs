@@ -8,18 +8,18 @@
 //仓库Repository
 	一个仓库包括了所有的版本信息、所有的分支和标记信息.
 	在Git中仓库的每份拷贝都是完整的。仓库让你可以从中取得你的工作副本。
-	
-//提交Commit	
+
+//提交Commit
 	提交代码后，仓库会创建一个新的版本。这个版本可以在后续被重新获得。
 	每次提交都包括作者和提交者，作者和提交者可以是不同的人
-	
+
 //URL
 	URl用来标识一个仓库的位置
-	
+
 //远程仓库
 	远端Git仓库和标准的Git仓库有如下差别：一个标准的Git仓库包括了源代码和历史信息记录。
 	我们可以直接在这个基础上修改代码，因为它已经包含了一个工作副本。
-	但是远端仓库没有包括工作副本，只包括了历史信息。可以使用–bare选项来创建一个这样的仓库。	
+	但是远端仓库没有包括工作副本，只包括了历史信息。可以使用–bare选项来创建一个这样的仓库。
 	git clone --bare . ../zun/rete.git		//克隆本地仓库到rete里
 
 //术语
@@ -34,7 +34,7 @@ branch: 主分支下的一个从分支
 1、使用时配置全局名
 git config  --global user.name "cyndiWade"
 git config  --global user.emal "zhanglin492103904@qq.com"
-git config 	--list							//获取配置文件信息	
+git config 	--list							//获取配置文件信息
 cat ~/.gitconfig
 
 
@@ -69,7 +69,7 @@ git push branch pmt-20352:pmt-20352	//把本地分支仓库，提交到服务器
 				本地仓库：服务器分支仓库
 #当pull的时候
 git pull branch pmt-20352:pmt-20352	//把本地分支仓库，提交到服务器的某个分支仓库
-				服务器分支仓库：本地仓库			
+				服务器分支仓库：本地仓库
 
 //上线rebase检测(用这种)
 git checkout pmt-20352		//进入开发分支
@@ -83,7 +83,7 @@ git pull --rebase origin master	//以上的简短操作。
 git pull --rebase git-branch pmt-21146		//合并开发分支的项目
 
 #解决冲突
-1、git rebase --abort		//回滚所有分支
+1、git rebase --abort		// 重新检测冲突
 
 2、解决冲突
 CONFLICT (content): Merge conflict in app-web/page/taofang/Topic.phtml	//出现这个时
@@ -119,13 +119,13 @@ git log --graph		//查看日志数
 git log --oneline	//查看以前的commit
 
 git show HEAD^ 		//查看当前分支的父级历史记录
-					git show HEAD^^ 表示父级的父级				
+					git show HEAD^^ 表示父级的父级
 //双父级时的处理
 git show HEAD^1		//查看第一个父级
 git show HEAD^2		//查看第二个父级
 
 git diff			//检测修改过的数据与现有.git仓库中的数据是否一致。这个命令只在git add之前使用有效。如果已经add了，那么此命令输出为空 。
-git diff –cached 	//这个命令在git add之后在git commit之前有效。 
+git diff –cached 	//这个命令在git add之后在git commit之前有效。
 
 
 
@@ -134,10 +134,10 @@ git diff –cached 	//这个命令在git add之后在git commit之前有效。
 4、合作开发
 //.git仓库有2种模式：master主分支，branch从分支。
 git branch experimental 		//创建一个试验分支，名称叫experimen
-git branch 						//显示当前都有哪些分支，其中标注*为当前所在分支 
+git branch 						//显示当前都有哪些分支，其中标注*为当前所在分支
 git checkout experimental 		//转移到experimental分支
 git checkout -f  experimental		//强行切换分支
-git commit -a 					//在experimental分支改进完代码之后用commit在此分支中进行提交 
+git commit -a 					//在experimental分支改进完代码之后用commit在此分支中进行提交
 git checkout master 			//转移回master主分支
 git merge experimental 			//经证实分支开发成功，将exerimental分支合并到主分支
 git commit -a 					//彻底完成此次分支合并，即提交master分支
@@ -147,7 +147,7 @@ git branch -d experimental 		//因为experimental分支已提交，所以可安�
 
 
 5、如果分支开发失败：
-git checkout master			
+git checkout master
 git branch -D experimental //由于分支被证明失败，因此使用-D来放弃并删除该分支
 
 
@@ -177,16 +177,3 @@ git blame filename			//谁创建了或者是修改了这个文件
 **********注意事项**********
 1、只要在服务器线上的分支，就不要再次开发了。需要重新建立一个分支。
 2、没有在服务器线上的分支，则可以在原有分支重新更改。
-
-
-
-
-
-
-
-
-
-
-
-
-

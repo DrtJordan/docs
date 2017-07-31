@@ -74,7 +74,7 @@ set mapred.reduce.slowstart.completed.maps=0;
 -- 设置 Map Buffle 环形缓冲区的容量
 set mapreduce.task.io.sort.mb=512;
 
--- Map 排序、溢出写磁盘阶段,buffle 的阀值
+-- Map 排序、溢出写磁盘阶段,buffle 的阀值,
 set mapreduce.map.sort.spill.percent=0.8;
 
 -- Map 合并阶段的,spile 文件时达到,启用 combine
@@ -99,7 +99,8 @@ set mapreduce.output.fileoutputformat.compress.codec=org.apache.hadoop.io.compre
 -- 设置 Reduce 复制阶段的复制 Map 结果的线程数
 -- (mapreduce.task.io.sort.mb * mapreduce.reduce.shuffle.parallelcopies) * mapreduce.reduce.shuffle.input.buffer.percent < mapred.child.java.opts
 set mapreduce.reduce.shuffle.parallelcopies=5;
--- Reduce 复制阶段,复制到 reduceTask 的堆内存上限阀值(如果 reduce 内存溢出,调整这里的比例到 0.1)
+-- Reduce 复制阶段,复制到 reduceTask 的堆内存上限阀值. 可用于数据倾斜优化(如果 reduce 内存溢出,调整这里的比例到 0.1)
+-- mapreduce.reduce.shuffle.input.buffer.percent * mapreduce.reduce.shuffle.parallelcopies 小于等于1，可解决 BoundedByteArrayOutputStream 错误
 set mapreduce.reduce.shuffle.input.buffer.percent=0.5;
 
 -- Reduce 合并阶段的堆内存上限阀值

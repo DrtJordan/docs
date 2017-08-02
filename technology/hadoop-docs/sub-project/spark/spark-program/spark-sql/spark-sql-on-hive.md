@@ -8,25 +8,32 @@
 
 ### 2. hive 集成配置
 
-hive-site.xml
->ln -s $HIVE_HOME/conf/hive-site.xml $SPARK_HOME/conf/hive-site.xml
+``` sh
+1. hive-site.xml
+
+<configuration>
+  <property>
+    <name>hive.metastore.uris</name>
+    <value>thrift://dw1:9083,thrift://dw2:9083</value>
+  </property>
+  <property>
+    <name>hive.metastore.client.socket.timeout</name>
+    <value>300</value>
+  </property>
+  <property>
+    <name>hive.metastore.warehouse.dir</name>
+    <value>/user/hive/warehouse</value>
+  </property>
+</configuration>
 
 
-core-site.xml
->ln -s $HIVE_HOME/conf/core-site.xml $SPARK_HOME/conf/core-site.xml
+2. spark-env.sh
 
-
-yarn-site.xml
->ln -s $HIVE_HOME/conf/yarn-site.xml $SPARK_HOME/conf/yarn-site.xml
-
-
-``` xml
-<!-- 设置 metastore thrift 地址 -->
-<property>
-  <name>hive.metastore.uris</name>
-  <value>thrift://hostname1:9083,thrift://hostname2:9083</value>
-</property>
+export HADOOP_HOME=/opt/cloudera/parcels/CDH/lib/hadoop
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export SPARK_LIBRARY_PATH=$SPARK_LIBRARY_PATH:$HADOOP_HOME/lib/native:$HADOOP_HOME/lib
 ```
+
 
 
 

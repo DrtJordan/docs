@@ -279,6 +279,9 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
   S 共享锁
   X 互斥锁
   SHOW LOCKS db_name.tb_name extended;
+
+27) 修复表(根据文件修复分区)
+  MSCK REPAIR TABLE table_name
 ```
 
 

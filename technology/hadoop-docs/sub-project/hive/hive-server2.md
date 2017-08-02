@@ -18,21 +18,27 @@
 
 ## 二、HiveServer2 Clients
 
-通过 beeline 客户端连接 HiveServer2
+### 1. 配置说明
+
+``` conf
+hive.server2.transport.mode          – 默认值为binary（TCP），可选值HTTP。  
+hive.server2.thrift.http.port        – HTTP的监听端口，默认值为10001。  
+hive.server2.thrift.http.path        – 服务的端点名称，默认为 cliservice。  
+hive.server2.thrift.http.min.worker.threads     – 服务池中的最小工作线程，默认为5。  
+hive.server2.thrift.http.max.worker.threads     – 服务池中的最大工作线程，默认为500。
+```
+
+
+### 2. beeline 客户端连接 HiveServer2
 
 - https://cwiki.apache.org/confluence/display/Hive/HiveServer2+Clients
 
-### beeline 连接 HiveServer2
-
 ``` sh
-beeline
-beeline> !connect jdbc:hive2://hostname:10000 hadoop org.apache.hive.jdbc.HiveDriver
+1. tcp 默认方式
+beeline -u jdbc:hive2://hostname:10000/default -nhadoop -phadoop
 
-  show databases;
-
-或
-
-beeline -u jdbc:hive2://hostname:10002/default -nhadoop -phadoop
+2. http 方式
+!connect jdbc:hive2://hostname:10000/default?hive.server2.transport.mode=http;hive.server2.thrift.http.path=cliservice
 ```
 
 
@@ -40,18 +46,18 @@ beeline -u jdbc:hive2://hostname:10002/default -nhadoop -phadoop
 
 ``` sh
 1、重启 hive-server2
-sudo service hive-server2 restart
+    sudo service hive-server2 restart
 
-脚本启动
-ps -aux | grep hiveserver2
-kill -15 删除进程号
-sudo nohup nice -n 0 /opt/cloudera/parcels/CDH/bin/hive --service hiveserver2 10000 >> /tmp/hiver-server2.log 2>&1 &
+  脚本启动
+    ps -aux | grep hiveserver2
+    kill -15 删除进程号
+    sudo nohup nice -n 0 /opt/cloudera/parcels/CDH/bin/hive --service hiveserver2 10000 >> /tmp/hiver-server2.log 2>&1 &
 
 2、重启元数据
-sudo service hive-metastore restart
+  sudo service hive-metastore restart
 
 
 3、hive debug 模式
-hive --hiveconf  hive.root.logger=DEBUG,console
+  hive --hiveconf  hive.root.logger=DEBUG,console
 
 ```

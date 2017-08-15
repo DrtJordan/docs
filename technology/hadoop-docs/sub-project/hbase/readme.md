@@ -46,7 +46,7 @@ version
 
 * 增加列族
   disable 'member'
-  alter 'member',{NAME => 'recommend', VERSIONS => 1}
+  alter 'member',{NAME => 'recommend', VERSIONS => 3}  表示存储 3 个版本数据
   enable 'member'
 
 * 删除表 :
@@ -100,8 +100,12 @@ version
 * 根据获取 2 个版本数据 :
   1) 修改前时间戳数据
     get 'member','jason',{COLUMN=>'info:age',TIMESTAMP=>1456068948812}
+
   2) 修改后时间戳数据
     get 'member','jason',{COLUMN=>'info:age',TIMESTAMP=>1456069279146}
+
+  3) 获取三个版本数据
+    get 'member','jason',{COLUMN=>'info:age',VERSIONS=>3}
 
 * 全表扫描(显示所有 row-key,列族) :
   scan 'member'

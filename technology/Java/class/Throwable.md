@@ -92,7 +92,7 @@ public class FileFormatException extends IOException{
         return s;
     }
 
-    public void aa (){
+    public void test (){
 
         try {
             this.抛出异常("13");

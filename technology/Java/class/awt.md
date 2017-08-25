@@ -35,4 +35,9 @@ public class MyFlowLayout extends JFrame{
 }
 
 
+Pattern p=Pattern.compile("^on_t1ime");
+        Matcher m=p.matcher(aa);
+        System.out.println(m.find());
+
+
 ```

@@ -377,13 +377,13 @@ map 数组
   tomorrow=`date -d "1 day" +"%Y%m%d"`; #明天日期
 
 当前时分秒
-  echo $(date -d today +"%Y-%m-%d %H:%M:%S");
+  echo $(date -d today "+%Y-%m-%d %H:%M:%S");
 
 当前时间戳
-  echo $(date -d today +"%s");
+  echo $(date -d today "+%s");
 
 转换日期为时间戳
-  echo $(date -d "2010-10-18 00:00:00" +"%s");
+  echo $(date -d "2010-10-18 00:00:00" "+%s");
 
 时间戳转换为日期 ，格式为 2010-10-17 23:58:40
   echo $(date -d "@1287331120" "+%F %T");

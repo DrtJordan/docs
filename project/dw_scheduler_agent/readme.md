@@ -36,7 +36,7 @@ create /dw_scheduler/locks "调度系统分布式启动锁"
 create /dw_scheduler/testlocks "调度系统Test分布式启动锁"
 
 ```
-/data/log/dwlogs/schedule_log
+
 ### 2.环境搭建
 
 ``` sh

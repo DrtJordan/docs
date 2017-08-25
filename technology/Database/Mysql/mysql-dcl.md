@@ -45,6 +45,9 @@ CREATE USER 'username'@'host' IDENTIFIED BY 'password';
   GRANT SELECT ON pm.* TO 'dev'@'%' WITH GRANT OPTION
 
 
+4) 授权指定权限给函数权限
+  GRANT execute ON database.* to readonly@'%';
+
 ```
 
 # 三、用户操作

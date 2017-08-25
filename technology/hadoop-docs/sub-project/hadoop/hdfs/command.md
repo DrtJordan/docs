@@ -74,15 +74,32 @@
   hdfs dfsadmin -report
 
 16) balancer 存储平衡器
-  设置负载的带宽 (字节)
+  设置负载的带宽 (字节), 500 MB
   hdfs dfsadmin -setBalancerBandwidth 524288000
 
   开始均衡 threshold 一般5， 即各个节点与集群总的存储使用率相差不超过10%，我们可将其设置为5%
   $HADOOP_HOME/sbin/start-balancer.sh -threshold 5
 
-17) 查看文件系统中的文件由哪些块组成
-  hdfs fsck /  -files -blocks
+  cloudera 上运行 balancer:
+    sudo -u hdfs hdfs balancer -threshold 5
 
+17) 块和复本
+  hdfs 块:
+    hdfs fsck <目录>  <参数>
+
+    hdfs fsck /  -files -blocks  查看文件系统中的文件由哪些块组成
+
+    hdfs fsck /  检查块丢失情况
+
+    hdfs fsck <目录>  -delete  对失败的块做删错操作，慎用
+
+    hdfs fsck -list-corruptfileblocks   查看失败块信息
+    hdfs fsck / | egrep -v '^\.+$' | grep -v eplica    查看失败块信息
+
+  hdfs 副本:
+    hdfs dfs -setrep -w 3 文件地址        对文件重新生成副本
+
+    hdfs dfs -setrep -w 3 -R 目录地址     对目录重新生成副本
 
 18) 归档 (减少小文件, 不能解决压缩格式问题)
   hadoop archive -archiveName [归档名.har] -p [需要归档的父目录] [归档的文件] [归档存放目录]

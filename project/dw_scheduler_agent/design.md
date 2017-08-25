@@ -10,7 +10,7 @@ StartScheduler 入口函数
      |--- 在 zookeeper 注册 server 节点/dw_scheduler/scheduler_servers
      |--- 在 zookeeper 获取互斥锁 /dw_scheduler/locks
 |--- SchdulerWorkerFactory 创建调度 worker 工厂, 用来控制调度的所有启动流程
-     |--- JobExecutorPool 创建 Job 并发控制池 , 使用 java.util.concurrent 并发控制模块实现, 使用集合 executorMap<Integer, JobExecutor>
+     |--- JobExecutorPool 创建 Job 并发控制池 , 使用 java.util.concurrent 并发控制模块实现, 使用集合 executorMap<Integer, JobExecutor>, 数据结构: ConcurrentHashMap
           |--- 开启线程池 ExecutorService , 创建一个线程池, 具体 slotCount 数由配置决定
           |--- 对线程池中的 executorMap<Integer, JobExecutor> 执行任务队列, 设置、新增、kill 等操作
           |--- JobExecutor 具体执行单个任务的封装
@@ -22,8 +22,9 @@ StartScheduler 入口函数
           |--- 提交任务, 若当前任务在运行, 则设置成为重复提交, 把任务从 executorMap<Integer, JobExecutor> 队列中删除
           |--- 把 JobExecutor 封装好, 提交给 JobExecutorPool 去负责控制执行
      |--- JobDBPool 初始化 job db 池
-     |--- QuartzScheduler  Scheduler 定时任务控制模块
-          |---
+     |--- QuartzScheduler  Scheduler 触发来自手动、DB变动、人为控制的 job, 并提交给线程池
+          |--- QuartzJob 把 Quartz 出发的 job 放到线程池中
+              |--- JobDetail  Quartz 抽闲任务的封装
      |--- JobMonitorFromDB 监控 job 在 db 的变化做出处理, 自动、手动
           |--- 把 db 中所有需要运行的 Job 加入到 QuartzScheduler 模块中
           |--- 把手动运行的 job 添加到执行列队中 executorJob<Integer, DWJob>

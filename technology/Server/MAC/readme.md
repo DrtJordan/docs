@@ -13,3 +13,17 @@ Mac系统的环境变量，加载顺序为
 
 
 命令 lsof -i tcp:port  （port替换成端口号，比如6379）可以查看该端口被什么程序占用，并显示PID，方便KILL
+
+
+清理 Mac
+/Users/jack/Library/Containers/com.tencent.qq/Data/Library/Application\ Support/QQ/492103904/ImageQQ/
+
+/Users/jack/Library/Containers/com.tencent.xinWeChat/Data/Library/Application\ Support/com.tencent.xinWeChat
+
+/Users/jack/Library/Containers/com.tencent.QQMusicMac/Data/Library/Application\ Support/QQMusicMac/iAlbum
+
+/Users/jack/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application\ Support/WXWork/Temp/ScreenCapture
+
+/Users/jack/Library/Containers/com.tencent.WeWorkMac/Data/Library/Application\ Support/WXWork/Data
+
+/Users/jack/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches/com.tencent.xinWeChat

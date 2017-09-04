@@ -61,11 +61,11 @@ mysql>create table t_range(
 	id int(11),
 	money int(11) unsigned not null,
 	date datetime
-)
+) partition BY RANGE (date) (
 	partition p2007 values less than (2008),
 	partition p2008 values less than (2009),
 	partition p2009 values less than (2010)
-			　　partition p2010 values less than maxvalue
+	partition p2010 values less than maxvalue
 );
 
 ```
@@ -82,8 +82,7 @@ list分区
 mysql>create table t_list(
 	a int(11),
 	b int(11)
-)
-partition by list (b)
+) partition by list (b)
 partition p0 values in (1,3,5,7,9),
 partition p1 values in (2,4,6,8,0)
 );
@@ -103,8 +102,7 @@ hash分区
 mysql>create table t_hash(
 　a int(11),
 　b datetime
-)
-partition by hash (YEAR(b) )
+) partition by hash (YEAR(b) )
 partitions 4;		//表示分配到4张表存储
 
 ```

@@ -147,3 +147,43 @@ $SPARK_HOME/sbin/start-thriftserver.sh \
 
 - Hive UDF 与 Spark UDF 通用
 - [UDF](technology/hadoop-docs/sub-project/hive/hive-udf.md)
+
+
+
+## 四、Spark Sql 编程
+
+``` java
+package com.dw2345.machine_learn.combination.sql;
+
+// $example on:spark_hive$
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
+// $example off:spark_hive$
+
+object TestSparkSql {
+    def main(args: Array[String]) {
+        // warehouseLocation points to the default location for managed databases and tables
+        var warehouseLocation = "hdfs://nameservice1/user/hive/warehouse"
+
+        val spark = SparkSession
+          .builder()
+          .master("local")
+          .appName("Spark Hive Example")
+          .config("spark.sql.warehouse.dir", warehouseLocation)
+          //.config("dfs.ha.namenodes.nameservice1", "namenode103,namenode95")
+          //.config("dfs.namenode.rpc-address.nameservice1.namenode103", "dw1:8020")  
+          //.config("dfs.namenode.rpc-address.nameservice1.namenode95", "dw2:8020")
+          .enableHiveSupport()
+          .getOrCreate()
+
+        import spark.implicits._
+        import spark.sql
+
+        // Queries are expressed in HiveQL
+        sql("SELECT * FROM web_logs_text LIMIT 10").show()
+        // sql("SELECT * FROM dm_db.dm_channel_inst_compete WHERE p_dt='2017-06-30' AND p_hours='11' LIMIT 10").show()
+        // sql("SELECT * FROM ods.ods_pic_use WHERE p_type='2' AND p_dt='2017-08-28' AND p_hours='23' LIMIT 10").show()
+
+    }
+}
+```

@@ -131,7 +131,7 @@
       lib_managed         : 工程所依赖的 jar 文件。会在sbt更新的时候添加到该目录
 ```
 
-### 2. build.sbt 依赖配置文件
+### 2.1 build.sbt 实际案例配置
 
 ``` sbt
 import AssemblyKeys._
@@ -161,6 +161,7 @@ EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource
 unmanagedResourceDirectories in Compile += { baseDirectory.value / "src/main/resources" }
 
 // 相关依赖
+// provided 关键字, 不会把 provided 关键字的依赖，打入到 jar 中.
 libraryDependencies ++= Seq(
     // scala-library
     "org.scala-lang" % "scala-library" % "2.10.6",
@@ -254,6 +255,79 @@ resolvers ++= Seq(
 
 ```
 
+### 2.2 assembly 打包 jar 冲突解决方案
+
+对于 jar 冲突具体有几个解决方案
+
+- 排除冲突的 package
+- 合并冲突的 class
+- 排除冲突的 jars
+
+``` sbt
+1. provided 关键字, 不把这个依赖包打入 jar 中
+例 1: 不加入打包法
+"org.apache.kafka" % "kafka-log4j-appender" % "0.9.0.0" % "provided"
+
+2. excludeAll 排除冲突
+例 1: 排除组织和包名法
+"org.apache.hadoop" % "hadoop-client" % "2.6.0" excludeAll(
+  // 排除名为 hive-metastore 的包
+  ExclusionRule(name = "hive-metastore"),
+  // 排除组织名为  com.sun.jdmk 的包
+  ExclusionRule(organization = "com.sun.jdmk")
+)
+
+3. mergeStrategy 合并策略, 对 class、文件做合并策略
+例 1: 对每个文件都有合并策略
+mergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) => {
+    case PathList("org", "slf4j", xs@_*) => MergeStrategy.last
+    // 排除 指定 class
+    case PathList(ps @ _*) if ps.last endsWith "ILoggerFactory.class"     => MergeStrategy.first
+    case PathList(ps@_*) if ps.last endsWith "pom.properties"             => MergeStrategy.last
+    case PathList(ps@_*) if ps.last endsWith ".class"                     => MergeStrategy.last
+    case PathList(ps@_*) if ps.last endsWith ".thrift"                    => MergeStrategy.last
+    case PathList(ps@_*) if ps.last endsWith ".xml"                       => MergeStrategy.last
+    case PathList(ps@_*) if ps.last endsWith ".css"                       => MergeStrategy.last
+    case PathList(ps@_*) if ps.last endsWith ".properties"                => MergeStrategy.last
+    case PathList("javax", "servlet", xs @ _*)                            => MergeStrategy.last
+    case x => old(x)
+  }
+}
+
+例 2: 强制合并策略, 对所有冲突使用一个合并策略
+mergeStrategy in assembly <<= (mergeStrategy in assembly) { mergeStrategy => {
+    case entry => {
+     val strategy = mergeStrategy(entry)
+     if (strategy == MergeStrategy.deduplicate) MergeStrategy.first
+     else strategy
+    }
+  }
+}
+
+4. 强制排除 jars 不打入依赖包
+例 1: 排除指定 jar, excludedJars(0.13 或者之前版本)
+excludedJars in assembly <<= (fullClasspath in assembly) map { cp =>
+  cp filter {_.data.getName == "hive-metastore-1.1.0.jar"}
+}
+
+例 2: 排除指定 jar, assemblyExcludedJars(0.13 之后版本, 详细见 github 文档):
+// 官方写法
+assemblyExcludedJars in assembly := {
+  val cp = (fullClasspath in assembly).value
+  cp filter {_.data.getName == "compile-0.1.0.jar"}
+}
+
+// 自定义写法
+assemblyExcludedJars in assembly := {
+  val cp = (fullClasspath in assembly).value
+  cp filter { f =>
+    f.data.getName.contains("spark-core") ||
+    f.data.getName == "spark-core_2.11-2.0.1.jar"
+  }
+}
+```
+
+
 ### 3. project/plugins.sbt 插件配置文件
 
 ``` sbt
@@ -267,6 +341,9 @@ addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.5.0")
 
 // 打包所有依赖的插件
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.11.2")
+
+// 依赖树 插件 dependencyTree, dependencyBrowseGraph
+addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.2")
 ```
 
 

@@ -152,6 +152,7 @@ $SPARK_HOME/sbin/start-thriftserver.sh \
 
 ## 四、Spark Sql 编程
 
+
 ``` java
 package com.dw2345.machine_learn.combination.sql;
 
@@ -165,6 +166,7 @@ object TestSparkSql {
         // warehouseLocation points to the default location for managed databases and tables
         var warehouseLocation = "hdfs://nameservice1/user/hive/warehouse"
 
+        // 需要 hive-site.xml 文件和 hdfs-site.xml 文件
         val spark = SparkSession
           .builder()
           .master("local")

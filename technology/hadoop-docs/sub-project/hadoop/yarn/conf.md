@@ -135,13 +135,13 @@ aclSubmitApps
 -- 可以管理队列的用户和/或组的列表, 例如: *,  hadoop,jason
 aclAdministerApps
 
--- 队列处在最小共享之下，在尝试抢占其他队列的资源之前的秒数。如果不设置，队列将会总其父队列继承这个值
+-- 最小共享量抢占时间。如果一个资源池在该时间内使用的资源量一直低于最小资源量，则开始抢占资源
 minSharePreemptionTimeout
 
--- 队列处在最小公平共享阈值之下，在尝试抢占其他队列的资源之前的秒数。如果不设置，队列将会总其父队列继承这个值
+-- 公平共享量抢占时间。如果一个资源池在该时间内使用资源量一直低于公平共享量的一半，则开始抢占资源
 fairSharePreemptionTimeout
 
--- 队列的公平共享抢占阈值,如果队列等待 fairSharePreemptionTimeout 之后没有接收到 fairSharePreemptionThreshold * fairShare 的资源,它被允许从其他队列抢占资源。如果不设置，队列将会总其父队列继承这个值
+-- 队列的公平共享抢占阈值,如果队列等待 fairSharePreemptionTimeout 之后没有接收到 fairSharePreemptionThreshold * fairShare 的资源,它被允许从其他队列抢占资源。如果不设置，队列将会总其父队列继承这个值, 默认 0.5
 fairSharePreemptionThreshold
 
 --- queue 元素 End ---

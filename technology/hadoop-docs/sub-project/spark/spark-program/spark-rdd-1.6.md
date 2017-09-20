@@ -567,5 +567,7 @@ export HADOOP_CONF_DIR=XXX
   --conf spark.dynamicAllocation.enabled=false \
   --conf spark.shuffle.service.enabled=false \
   --class com.xxx.xxx \
+  --files /etc/hive/conf/log4j.properties,/etc/hive/conf/hdfs-site.xml \
+  -D hadoop.tmp.dir=/tmp \
   /path/to/examples.jar 100
 ```

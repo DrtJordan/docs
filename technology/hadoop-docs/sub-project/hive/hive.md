@@ -282,6 +282,10 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 
 27) 修复表(根据文件修复分区)
   MSCK REPAIR TABLE table_name
+
+28) 设置提交任务提交队列 mapred-site.xml
+  mapreduce.job.queuename=root.default
+
 ```
 
 

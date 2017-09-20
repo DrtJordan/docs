@@ -372,8 +372,8 @@ map 数组
 
 ``` sh
 基本
-  yesterday=`date -d yesterday +"%Y%m%d"`; #昨天日期
-  today=`date -d today +"%Y%m%d"`;  #今天日期
+  yesterday=`date -d yesterday "+%Y%m%d"`; #昨天日期
+  today=`date -d today "+%Y%m%d"`;  #今天日期
   tomorrow=`date -d "1 day" +"%Y%m%d"`; #明天日期
 
 当前时分秒
@@ -399,8 +399,8 @@ map 数组
   done
 
 获取两个小时前日期
-  date -d '-2 hours'
-  $(date -d "-2 hours" +"%Y-%m-%d")
+  date -d "-2 hours"
+  $(date -d "-2 hours" "+%Y-%m-%d")
 
 ```
 
@@ -410,6 +410,7 @@ map 数组
 - [文章2](http://www.cnblogs.com/chengmo/archive/2010/10/02/1841355.html)
 
 ### 1、常用处理
+
 ``` sh
 字符串处理
   ${#string}	$string的长度
@@ -537,6 +538,14 @@ sed 正则表达:
 
   sed -r 's/ +/ /g' 貌似一行一行处理的
 
+```
+
+#### 2.2 tr 命令 用来从标准输入中通过替换/删除进行字符转换
+
+``` sh
+$(find /etc/hive/auxlib -name '*.jar' | sort | tr '\n' ',' | head -c -1)
+
+$(ls /etc/hive/conf/log4j.properties)
 ```
 
 

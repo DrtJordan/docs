@@ -111,7 +111,7 @@ set mapred.min.split.size.per.rack=300000000;
 
 ### 4、如果文件只有一个并且大小为1G设置如下
 
-```
+``` sql
 set mapred.reduce.tasks=10
 ```
 

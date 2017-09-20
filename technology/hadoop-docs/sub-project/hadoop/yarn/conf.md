@@ -52,7 +52,7 @@ yarn.scheduler.fair.user-as-default-queue=true;
 -- Fair Scheduler 优先权。是否抢占资源
 yarn.scheduler.fair.preemption=false;
 
--- Fair Scheduler 优先权利用率阈值。抢占之前的利用率阈值。利用率计算为所有资源中使用量与容量之间的最大比例。默认为0.8
+-- Fair Scheduler 优先权利用率阈值。抢占之前的利用率阈值。利用率计算为所有资源中使用量与容量之间的最大比例。默认为0.8, 到 80% 开始抢占资源
 yarn.scheduler.fair.preemption.cluster-utilization-threshold=0.8;
 
 -- 在一个队列内部分配资源时
@@ -136,7 +136,7 @@ aclSubmitApps
 aclAdministerApps
 
 -- 最小共享量抢占时间。如果一个资源池在该时间内使用的资源量一直低于最小资源量，则开始抢占资源
-minSharePreemptionTimeout
+minSharePreemptionTimeout=10
 
 -- 公平共享量抢占时间。如果一个资源池在该时间内使用资源量一直低于公平共享量的一半，则开始抢占资源
 fairSharePreemptionTimeout
@@ -269,5 +269,11 @@ reject
     <rule name="default" queue="sample_queue"/>
   </queuePlacementPolicy>
 </allocations>
+
+
+
+Allow Preemption From: 是否允许抢占
+勾选 true :  本资源池资源可以被抢占
+反选 false : 本资源池资源不可被抢占
 
 ```

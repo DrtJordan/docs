@@ -60,6 +60,8 @@
 1. 依赖管理
   1) unmanaged dependencies  非托管的依赖性
     a) jar 包放到 lib 目录下即可
+      // 非托管依赖
+      unmanagedBase := baseDirectory.value / "lib"
 
     b) 更改存放路径
       unmanagedBase <<= baseDirectory { base => base / "3rdlibs" }
@@ -159,6 +161,8 @@ EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource
 
 // 非托管资源目录
 unmanagedResourceDirectories in Compile += { baseDirectory.value / "src/main/resources" }
+// 非托管依赖(项目根目录 lib)
+unmanagedBase := baseDirectory.value / "lib"
 
 // 相关依赖
 // provided 关键字, 不会把 provided 关键字的依赖，打入到 jar 中.

@@ -281,6 +281,8 @@ LIMIT 1;
 3.unix_timestamp(string date, string pattern) 获取指定格式的时间戳
   案例
   unix_timestamp('2009-03-20', 'yyyy-MM-dd') = 1237532400
+
+4. date_sub(current_date(),1); 昨天日期
 ```
 
 ### 2、from_unixtime
@@ -313,7 +315,7 @@ LIMIT 1;
 
 
 
-2.  date_format 自定义的日期 UDF
+2. date_format 自定义的日期 UDF
 
  表分区格式: p_dt = '2017-02-18', p_hours = '11',
 

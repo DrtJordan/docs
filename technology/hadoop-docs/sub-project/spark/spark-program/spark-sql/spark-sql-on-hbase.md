@@ -35,10 +35,10 @@
 
 ```
 
+
 ## 二、命令
 
 ``` sh
-
 1. 注意事项
 
 配置好 hbase-site.xml, 配置好 --jars
@@ -53,4 +53,76 @@ spark-sql \
 --num-executors 1 \
 --files $HBASE_HOME/conf/hbase-site.xml \
 --jars file://$HBASE_HOME/lib/hbase-annotations-1.2.0-cdh5.9.2.jar,file://$HBASE_HOME/lib/hbase-spark-1.2.0-cdh5.9.2.jar,file://$HBASE_HOME/lib/hbase-common-1.2.0-cdh5.9.2.jar,file://$HBASE_HOME/lib/hbase-client-1.2.0-cdh5.9.2.jar,file://$HBASE_HOME/lib/hbase-server-1.2.0-cdh5.9.2.jar,file://$HBASE_HOME/lib/hbase-protocol-1.2.0-cdh5.9.2.jar,file://$HBASE_HOME/lib/guava-12.0.1.jar,file://$HBASE_HOME/lib/htrace-core-3.2.0-incubating.jar,file://$HBASE_HOME/lib/zookeeper.jar,file://$HBASE_HOME/lib/protobuf-java-2.5.0.jar,file://$HBASE_HOME/lib/hbase-hadoop2-compat-1.2.0-cdh5.9.2.jar,file://$HBASE_HOME/lib/hbase-hadoop-compat-1.2.0-cdh5.9.2.jar,file://$HBASE_HOME/lib/metrics-core-2.2.0.jar,file://$HIVE_HOME/lib/hive-hbase-handler-1.1.0-cdh5.9.0.jar
+```
+
+
+## 三、RDD 编程
+
+``` scala
+import org.apache.spark.sql.{SparkSession, DataFrame, SQLContext}
+import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.execution.datasources.hbase._
+
+/**
+ * SparkRDD 读取 HBase 数据
+ * 下载 git@github.com:hortonworks-spark/shc.git
+ *    git clone  git@github.com:hortonworks-spark/shc.git
+ * 选择 spark 和 hbase 对应版本, 切换到 v1.1.0-2.0 分支,  Hbase 1.1.0, spark 2.0, https://github.com/hortonworks-spark/shc/tree/v1.1.0-2.0
+ *    git fetch origin v1.1.0-2.0:v1.1.0-2.0
+ *    git checkout v1.1.0-2.0
+ * 打包编译, 修改 pom.xml 文件, 修改 spark 版本号信息为 2.0.2
+ *    mvn clean package
+ * 放到项目 lib 目录下即可
+ */
+object TestSparkHBase {
+
+     def main(args: Array[String]): Unit = {
+        // 初始化上下文
+        val sparkConf = new SparkConf()
+           //.setMaster("local")
+           .setAppName("HBaseExample")
+        val sc = new SparkContext(sparkConf)
+        val sqlContext = new SQLContext(sc)
+
+        // 隐式转换
+        import sqlContext.implicits._
+
+        // 装在 HBase 数据到 DataFrame
+        val df = withCatalog(sqlContext, catalog)
+
+        // 读取 RDD
+        df.take(10).foreach { x => println(x) }
+
+        // 读取hive
+        df.registerTempTable("user_profile")
+        sqlContext.sql("select col0,col1,col2,col3 from user_profile LIMIT 10").show
+
+
+    }
+
+     // 定义 HBase 信息
+    def catalog = s"""{
+       |"table":{"namespace":"default", "name":"user_profile"},
+       |"rowkey":"key",
+       |"columns":{
+         |"col0":{"cf":"rowkey", "col":"key", "type":"string"},
+         |"col1":{"cf":"browser", "col":"channel_id", "type":"string"},
+         |"col2":{"cf":"common", "col":"update_date", "type":"string"},
+         |"col3":{"cf":"pcsafe", "col":"gc_nav_click", "type":"string"}
+       |}
+     |}""".stripMargin
+
+     /**
+      * 装在 HBbase 数据
+      */
+     def withCatalog(sqlContext: SQLContext, cat: String): DataFrame = {
+        sqlContext
+            .read
+            .options(Map(HBaseTableCatalog.tableCatalog->cat))
+            .format("org.apache.spark.sql.execution.datasources.hbase")
+            .load()
+     }
+
+}
+
 ```

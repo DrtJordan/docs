@@ -172,9 +172,6 @@ object TestSparkSql {
           .master("local")
           .appName("Spark Hive Example")
           .config("spark.sql.warehouse.dir", warehouseLocation)
-          //.config("dfs.ha.namenodes.nameservice1", "namenode103,namenode95")
-          //.config("dfs.namenode.rpc-address.nameservice1.namenode103", "dw1:8020")  
-          //.config("dfs.namenode.rpc-address.nameservice1.namenode95", "dw2:8020")
           .enableHiveSupport()
           .getOrCreate()
 

@@ -24,15 +24,17 @@
   安装 socket.io 模块
   ./[node-versions]/bin/npm install --save socket.io
 
-3.启动 (一般已经配置好了，无需操作)
-  git clone tools 仓库代码后
+3.部署启动 (一般已经配置好了，无需操作)
+
+  # 软部署
+  sudo ln -s $DW_SCHEDULER_AGENT_HOME/scripts/node_socket_server/node_modules/socket.io  /usr/local/node/lib/node_modules/socket.io
 
   通过启动脚本
-    nodejs ~/app/dw_scheduler_agent/scripts/node_socket_server/node_server.js
+    nodejs $DW_SCHEDULER_AGENT_HOME/scripts/node_socket_server/node_server.js
 
   挂起服务
     mkdir -p /var/log/socket_log
-    ~/app/dw_scheduler_agent/scripts/node_socket_server/node_server_restart.sh
+    $DW_SCHEDULER_AGENT_HOME/scripts/node_socket_server/node_server_restart.sh
 
   查看进程
     ps -aux | grep node_server
@@ -52,4 +54,5 @@
           proxy_set_header Connection "Upgrade";
       }
   }
+
 ```

@@ -23,6 +23,32 @@
 
 ```
 
+## 公共部署
+
+### 1. host
+
+- /etc/hosts
+
+``` sh
+# dw_scheduler 数据库服务地址
+172.16.19.51  dw_scheduler_db  
+
+# dw_scheduler 调度服务地址部署地址
+172.16.19.33  dw_scheduler_agent
+```
+
+### 2. 数据库
+
+``` sql
+-- 创建数据库
+CREATE DATABASE `dw_scheduler_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
+-- 授权
+GRANT ALL PRIVILEGES ON dw_scheduler_db.* TO 'dw_service'@'%' WITH GRANT OPTION;
+-- 创新
+flush privileges;
+-- 导入数据库 dw_scheduler_db.sql 文件到 dw_scheduler_db 数据库中
+```
+
 ## 开发环境搭建以及注意事项
 
 ### 1.创建 zookeeper 节点 (一般已经创建好，不需要操作此步骤)
@@ -46,6 +72,7 @@ create /dw_scheduler/testlocks "调度系统Test分布式启动锁"
 
   mkdir -p /var/log/schedule_log/
   mkdir -p /var/log/schedule_log/excute_logs
+  mkdir -p /var/log/schedule_log/signal_file
 
 2. 克隆最新代码到本地
   dw_scheduler_agent 所在仓库
@@ -64,9 +91,10 @@ create /dw_scheduler/testlocks "调度系统Test分布式启动锁"
     # APP PATH
     export ANGEJIA_APP_PATH=~/app
     export DW_CONF=$ANGEJIA_APP_PATH/conf
-    export DW_SCHEDULER_AGENT_HOME=$ANGEJIA_APP_PATH/dw_scheduler_agent
+    #export DW_SCHEDULER_AGENT_HOME=$ANGEJIA_APP_PATH/dw_scheduler_agent
+    export DW_SCHEDULER_AGENT_HOME=$ANGEJIA_APP_PATH/dw_scheduler/dw_scheduler_agent
 
-  2) 配置 conf 仓库
+  2) 配置 conf 仓库(不用了)
     conf 仓库有 2 个分支，分别是 master 线上分支，和 develop 开发分支，分别放了线上和线下的配置参数, 软链配置目录
 
     ln -s $DW_CONF/dw_scheduler_agent/resources $DW_SCHEDULER_AGENT_HOME/resources
@@ -104,6 +132,7 @@ create /dw_scheduler/testlocks "调度系统Test分布式启动锁"
 
    5) 查看是否启动
     netstat -tunlp | grep 39800
+
 
 ```
 

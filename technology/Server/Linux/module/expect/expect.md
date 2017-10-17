@@ -6,7 +6,7 @@
 
 代码托管：http://sourceforge.net/projects/expect/?source=navbar
 
-expect的功能是很强大的，实现了无须人与系统交互的功能，
+expect 的功能是很强大的，实现了无须人与系统交互的功能，
 比如 ssh 需要输入密码，使用此工具则可以在代码中配置
 
 
@@ -14,7 +14,7 @@ expect的功能是很强大的，实现了无须人与系统交互的功能，
 
 * 需要先安装 Tcl,详细见 安装文档
 
-```
+``` sh
 tar -zxvf expect5.45.tar
 
 cd expect5.45
@@ -41,7 +41,7 @@ sudo ln -s /usr/local/tcl8.6.4/bin/tclsh8.6 /usr/local/bin/tclsh8.6
 
 ### 1、ssh 登录案例
 
-```
+``` sh
 expect << EOF
 
 #set timeout 5
@@ -61,7 +61,8 @@ EOF
 ### 2、高级处理
 
 #### 2.1、普通登录执行命令
-```
+
+``` sh
 #!/bin/bash
 auto_login_ssh_cmd () {
     ./expect  -c "
@@ -80,7 +81,8 @@ auto_login_ssh_cmd hadoop@192.168.160.44 angejia888 "bash -i ls /tmp";
 ```
 
 #### 2.2、传送文件
-```
+
+``` sh
 #!/bin/bash
 auto_login_scp_data () {
 

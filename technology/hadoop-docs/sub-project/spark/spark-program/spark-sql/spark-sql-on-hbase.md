@@ -58,7 +58,7 @@ spark-sql \
 
 ## 三、RDD 编程
 
-``` scala
+``` java
 import org.apache.spark.sql.{SparkSession, DataFrame, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.execution.datasources.hbase._

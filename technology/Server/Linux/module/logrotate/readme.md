@@ -41,7 +41,7 @@ Fedora，CentOS 或 RHEL 上
 
   rotate 5: 一次将存储5个归档日志。对于第六个归档，时间最久的归档将被删除。
 
-  size  当日志文件到达指定的大小时才转储，Size 可以指定 bytes (缺省)以及KB (sizek)或者MB (sizem).
+  size 1024M:  当日志文件到达指定的大小时才转储，Size 可以指定 bytes (缺省)以及KB (sizek)或者MB (sizem).
 
   compress: 在轮循任务完成后，已轮循的归档将使用gzip进行压缩。
 
@@ -80,6 +80,8 @@ Fedora，CentOS 或 RHEL 上
   noolddir 转储后的日志文件和当前日志文件放在同一个目录下
 
   tabootext [+] list 让logrotate 不转储指定扩展名的文件，缺省的扩展名是：.rpm-orig, .rpmsave, v, 和 ~
+
+  sharedscripts 表示 postrotate 脚本在压缩了日志之后只执行一次
 
   prerotate/endscript 在转储以前需要执行的命令可以放入这个对，这两个关键字必须单独成行
 
@@ -139,4 +141,22 @@ sudo vim /etc/logrotate.d/hive-server
 
 }
 
+```
+
+
+### 3. 系统 syslog 案例
+
+``` sh
+/var/log/cron
+/var/log/maillog
+/var/log/messages
+/var/log/secure
+/var/log/spooler
+{
+    # 表示 postrotate 脚本在压缩了日志之后只执行一次
+    sharedscripts
+    postrotate
+        /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}
 ```

@@ -794,6 +794,7 @@ serviceObject = className()
   3) 如果引发的异常不匹配第一个except，则会搜索第二个except，允许编写的except数量没有限制
   4) 如果所有的except都不匹配，则异常会传递到下一个调用本代码的最高层try代码中
   5) 如果没有发生异常，则执行else块代码
+
 try:
   status = True
 except Exception,ex:
@@ -803,9 +804,9 @@ else:
   xx
 
 2。try finally
-  1) 执行try下的代码
+  1) try 中无论有没有发生异常都要执行代码 finally 下的代码
   2) 如果发生异常，在该异常传递到下一级try时，执行finally中的代码
-  3) 如果没有发生异常，则执行finally中的代码
+  3) 如果没有发生异常，则也执行finally中的代码
 try:
    block
 finally:

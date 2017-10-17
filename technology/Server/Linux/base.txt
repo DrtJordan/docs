@@ -178,7 +178,7 @@ tock.stdtime.gov			//时间服务器
 			c) du -h --max-depth=1 /usr/*		//查询目录下文件的总大小
 
 		#一块新的硬盘，要先分区、
-	2、磁盘分区、格式化  、mkfs、mke2fs
+	2、磁盘分区、格式化(mkfs、mke2fs)
 		1)	fdisk 	磁盘分区设置(书本217)
 				#分区分为主分区，和逻辑分区
 			a)	fdisk -l 							//查看所有设备
@@ -201,18 +201,55 @@ tock.stdtime.gov			//时间服务器
 		2)	mkfs	磁盘格式化(书本223)
 			a) mkfs -t ext3 /dev/hdc6		//详细数据看书本
 
-		3)	mke2fs				//对Ext3 格式label、block、inode 的参数进行详细的设置(书本224)
+		3)	mke2fs				// 对Ext3 格式label、block、inode 的参数进行详细的设置(书本224)
 
 		4)	parted 				//对大于2TB以上磁盘进行分区 (244)
 
 
-	3、磁盘检查修复 fsck、badblocks  (书本225)
+	3、磁盘检查修复  (书本225)
 			1) fsck -C -f -t -ext3 /dev/hdc6	  	// 对出问题的文件系统进行检测修复
 				注意：
-				a)	当文件系统出现严重问题时，进入单用户维护模式，平时不建议使用，会对正常文件系统造成损坏
+				a) 当文件系统出现严重问题时，进入单用户维护模式，平时不建议使用，会对正常文件系统造成损坏
 				b) 被检查的分区不可以挂载在系统上
 
-			2) badblocks -sv /dev/hdc6	检查磁盘的扇区有没有坏道（mke2fs -c 设备名）
+			2) badblocks -sv /dev/hdc6
+				检查磁盘的扇区有没有坏道（mke2fs -c 设备名）
+
+			3) e2fsck 修复磁盘
+				执行 e2fsck 或 fsck 前请先 umount partition，否则有机会令档案系统毁损
+
+		  4) smartctl 磁盘健康检测工具
+
+				yum install smartmontools  安装
+
+				smartctl -help
+
+				----- 运行时选项 -----
+				-d TYPE, --device=TYPE  指定设备类型
+		         Specify device type to one of: ata, scsi, sat[,auto][,N][+TYPE], usbcypress[,X], usbjmicron[,x][,N], usbsunplus, marvell, areca,N/E, 3ware,N, hpt,L/M/N, megaraid,N, cciss,N, auto, test
+
+				----- 读取和显示数据选项 -----
+				-i <device> ：显示设备的身份信息，检查硬盘是否打开了SMART支持
+					显示 SMART support is: Enabled 表示硬盘支持, 若为 Disabled 则开启
+					开启: smartctl --smart=on --offlineauto=on --saveauto=on <device>
+
+				-H <device> ：查看硬盘的健康状况
+					PASSED 表示硬盘健康状态良好，如果为 Failure 要立刻更换硬盘
+
+				-A <device> ：显示设备 SMART 厂商属性和值, 显示设备智能供应商特有的属性和值
+
+				-l error <device> ：显示硬盘历史错误信息
+
+				-a <device> ：显示硬盘SMART的全部信息
+
+				----- 设备自检选项 -----
+				--test=TEST <device> ：硬盘自测
+					TEST 可取值：offline, short, long, conveyance, select,M-N, pending,N, afterselect,[on|off], scttempint,N[,p]
+
+				-X <device> 中断后台测试
+
+				-l selftest <device> ：显示硬盘测试信息
+
 
 
 	4、磁盘挂载与卸载设备和文件(文件也可以挂载哦。。) （226）
@@ -233,7 +270,6 @@ tock.stdtime.gov			//时间服务器
 			mount -o loop /mnt/Quota /home			//挂在一个大文件在home目录中
 
 
-
 	5、修改	挂载设备，卷标名称	(232)
 		e2label /dev/sda1 '/boot'
 
@@ -251,6 +287,8 @@ tock.stdtime.gov			//时间服务器
 		/mnt/big2_swap               swap           swap    defaults        0 0
 
 		UUID=77511feb-debe-4ea5-8d1e-bfa85acbe91c swap                    swap    defaults        0 0
+
+
 
 
 五、压缩与打包、数据备份
@@ -908,7 +946,7 @@ tock.stdtime.gov			//时间服务器
 				每天(0点,7 ~ 23 点之间,每隔30分钟,1 秒执行一次)
 
 				0 0 08-20/1 * * ? *
-				Quartz: 每天 (08:00 - 20:00) , 每隔一个小时跑一次 
+				Quartz: 每天 (08:00 - 20:00) , 每隔一个小时跑一次
 
 
 	13、程序与进程管理

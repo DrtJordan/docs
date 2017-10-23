@@ -63,7 +63,7 @@ object SparkStreamingTest {
 }
 
 // 提交 spark 到集群
-//spark-submit --name TestStreaming --class com.angejia.dw.spark.SparkStreamingTest --master local[2] ./spark-test.jar
+spark-submit --name TestStreaming --class com.angejia.dw.spark.SparkStreamingTest --master local[2] ./spark-test.jar
 
 
 ```

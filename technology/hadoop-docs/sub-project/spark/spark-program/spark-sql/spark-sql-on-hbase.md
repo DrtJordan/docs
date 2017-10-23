@@ -58,6 +58,20 @@ spark-sql \
 
 ## 三、RDD 编程
 
+使用 Spark On HBase 机制, 在不迁移数据的情况下，使用 Spark 嵌入 HBase 中分析查询，目前有如下几个方案:
+1.  hortonworks/shc - spark-on-hbase 方案
+   实现了 Spark Datasource API ， 直接使用 Spark Catalyst 引擎(spark 2.0 引入)进行查询优化，耦合低，由于使用 API 访问，后续 Spark 版本升级 Spark Catalyst 引擎被优化，性能也会跟着提升。
+
+2. Huawei-Spark/Spark-SQL-on-HBase - 华为 2015 入侵方案
+   在 Spark Catalyst 引擎内嵌入自己的查询优化计划, 将 RDD 发送到 HBase，入侵到 HBase 的 Coprocessors 协同处理器中执行任务，例如 Group By。由于此查询计划是自己实现功能的复杂性，不使用  Spark Catalyst 官方优化引擎，所以日后升级、补丁，不跟随 Spark 官方走，会导致日后维护难和不稳定
+
+3. nerdammer/spark-hbase-connector - nerdammer
+  对传统读写 Hbase TableInputFormat 和 TableOutputFormat 的封装
+
+4. cloudera-labs/SparkOnHBase - coluder 2015 方案 (使用 Spark 1.6 版本)
+  cloudera 提供的方案 2015 年方案
+
+
 ``` java
 import org.apache.spark.sql.{SparkSession, DataFrame, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}

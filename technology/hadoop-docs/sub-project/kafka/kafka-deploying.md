@@ -55,7 +55,7 @@ export PATH=$KAFKA_HOME/bin:$PATH
 
 2. 启动 Kafka broker 代理 (指定配置文件)
   1) 启动一个
-    $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_CONF_DIR/server.properties &
+    $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_CONF_DIR/server-1.properties &
 
 
     netstat -tunlp | grep 9092  查看是否启动

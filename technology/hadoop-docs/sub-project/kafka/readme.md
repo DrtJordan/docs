@@ -15,6 +15,7 @@
 - Consumer : 消息消费者，向Kafka broker读取消息的客户端。
 
 - Consumer Group : 每个Consumer属于一个特定的Consumer Group（可为每个Consumer指定group name，若不指定group name则属于默认的group）。
+ - Kafka 保证同一 Consumer Group 中只有一个 Consumer 会消费某条消息
 
 
 ### 1. Topic & Partition

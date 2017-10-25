@@ -131,8 +131,8 @@ replica.fetch.max.bytes=1048576
 
 ##### --- 消费者参数 Start --- #####
 
-# Consumer端核心的配置是 group.id、zookeeper.connect
-# 决定该Consumer归属的唯一组 ID, By setting the same group id multiple processes indicate that they are all part of the same consumer group.
+# Consumer 端核心的配置是 group.id、zookeeper.connect
+# 决定该 Consumer 归属的唯一组 ID, By setting the same group id multiple processes indicate that they are all part of the same consumer group.
 group.id
 
 # 消费者的ID, 若是没有设置的话, 会自增
@@ -141,7 +141,7 @@ consumer.id
 # 一个用于跟踪调查的ID , 最好同group.id相同
 client.id=<group_id>
 
-# 对于 zookeeper 集群的指定, 必须和broker使用同样的zk配置
+# 对于 zookeeper 集群的指定, 必须和 broker 使用同样的 zk 配置
 zookeeper.connect=hostname:2182,hostname:2182,hostname:2182
 
 # zookeeper 的心跳超时时间, 查过这个时间就认为是无效的消费者

@@ -70,17 +70,17 @@
 
 - 使用 Low Level Consumer (Simple Consumer) 的主要原因是，用户希望比 Consumer Group 更好的控制数据的消费。
  - 同一条消息读多次
- - 只读取某个Topic的部分Partition
+ - 只读取某个 Topic 的部分 Partition
  - 管理事务，从而确保每条消息被处理一次，且仅被处理一次
 
-- 与 Consumer Group 相比，Low Level Consumer要求用户做大量的额外工作。
- - 必须在应用程序中跟踪offset，从而确定下一条应该消费哪条消息
+- 与 Consumer Group 相比，Low Level Consumer 要求用户做大量的额外工作。
+ - 必须在应用程序中跟踪 offset，从而确定下一条应该消费哪条消息
  - 应用程序需要通过程序获知每个Partition的Leader是谁
  - 必须处理Leader的变化
 
-- 使用Low Level Consumer的一般流程如下
- - 查找到一个“活着”的Broker，并且找出每个Partition的Leader
- - 找出每个Partition的Follower
+- 使用 Low Level Consumer的 一般流程如下
+ - 查找到一个“活着”的Broker，并且找出每个 Partition 的 Leader
+ - 找出每个 Partition 的 Follower
  - 定义好请求，该请求应该能描述应用程序需要哪些数据
  - Fetch数据
  - 识别Leader的变化，并对之作出必要的响应

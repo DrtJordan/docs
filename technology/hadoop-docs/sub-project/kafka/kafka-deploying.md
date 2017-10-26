@@ -70,11 +70,11 @@ export PATH=$KAFKA_HOME/bin:$PATH
   1) 创建 Topic
     kafka-topics.sh --create --zookeeper zookeeper-hostname:2181 --replication-factor 1 --partitions 1 --topic test
 
-  2) 创建一个主题和 2 个复制因子(--replication-factor 不能超过 broker 服务的数量)
-    kafka-topics.sh --create --zookeeper zookeeper-hostname:2181 --replication-factor 2 --partitions 1 --topic my-replicated-topic
+  2) 创建一个主题和 3 个复制因子(--replication-factor 不能超过 broker 服务的数量)
+    kafka-topics.sh --create --zookeeper zookeeper-hostname:2181 --replication-factor 3 --partitions 3 --topic test
 
   3) 删除主题
-    kafka-serkafka-topics.sh --zookeeper zookeeper-hostname:2181 --delete --topic "clicki_info_topic"
+    kafka-topics.sh --zookeeper zookeeper-hostname:2181 --delete --topic "clicki_info_topic"
 
 
 2. 查看 Topic
@@ -82,31 +82,57 @@ export PATH=$KAFKA_HOME/bin:$PATH
     kafka-topics.sh --list --zookeeper zookeeper-hostname:2181
 
   2) 查看单个 Topic 详情
-    kafka-topics.sh --describe --zookeeper zookeeper-hostname:2181 --topic my-replicated-topic
+    kafka-topics.sh --describe --zookeeper zookeeper-hostname:2181 --topic test
 
       Leader : Leader 所在 Broker
       replicas : 副本所在 Broker
       Isr : 这个副本列表的子集目前活着的和以后的领导人
 
-
   3) Topic 增加 partition 数目 kafka-add-partitions.sh
-
     kafka-add-partitions.sh --topic test --partition 2   --zookeeper  192.168.197.170:2181,192.168.197.171:2181 （为topic test增加2个分区）
+
+  4） 查询 topic 中 offset 的最大和最小值
+    # 例如 -1 最大值
+    kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list broker-hostname:9092 --topic test --time -1
+
+    参数:
+      --time -1 最大 , -2 最小
+    结果:
+      主题 : 分区 : offset 最大值
+      test:2:29
+      test:1:27
+      test:0:26
+
+      kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --broker-list dw7:9092 --group test-consumer-group
 
 
 2. producer 生产者
   1) 向 Topic 生产数据
-    kafka-console-producer.sh --broker-list broker-1-hostname:9092 --topic test
+    kafka-console-producer.sh --broker-list broker-hostname:9092 --topic test
 
 
 3. consumer 消费者
   1) 从 Topic 消费数据
-    kafka-console-consumer.sh --zookeeper broker-1-hostname:2181 --topic test --from-beginning
+    # 从 zookeeper 中消费
+    kafka-console-consumer.sh --zookeeper zookeeper:2181 --topic test --from-beginning
+
+    # 从 broker 指定组消费数据
+    kafka-console-consumer.sh --bootstrap-server broker-hostname:9092 --topic test --consumer-property group.id=test-consumer-group
+
+    # 读取配置文件消费
+    kafka-console-consumer.sh --bootstrap-server broker-hostname:9092 --topic test --consumer.config $KAFKA_HOME/conf/consumer.properties
 
 
 4. consumer groups
   1) 查看 consumer groups
-   kafka-consumer-groups.sh --zookeeper namenode:2181 --list
+   # 查看保存在 zookeeper 中的组
+   kafka-consumer-groups.sh --zookeeper zookeeper:2181 --list
+
+   # 查看保存在 broker 中的组
+   kafka-consumer-groups.sh --bootstrap-server broker-hostname:9092 --list
+
+   # 查看保存在 broker 中的 group 的 offset 信息, 当前消费到的 CURRENT-OFFSET 和 LOG-END-OFFSET 值
+   kafka-consumer-groups.sh --bootstrap-server broker-hostname:9092 --group test-consumer-group --describe
 
 
 5. 使用卡夫卡连接到导入/导出数据

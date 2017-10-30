@@ -44,7 +44,7 @@
   export JAVA_OPTS="-Xms100m -Xmx2000m -Dcom.sun.management.jmxremote"
 
   # 启动
-  ${FLUME_HOME}/bin/flume-ng agent --conf ${FLUME_HOME}/conf/ -f ${FLUME_HOME}/conf/flume.conf -n agentBi0 -Dflume.root.logger=DEBUG,console
+  ${FLUME_HOME}/bin/flume-ng agent --conf ${FLUME_HOME}/conf/ -f ${FLUME_HOME}/conf/flume.conf -n agentDw -Dflume.root.logger=DEBUG,console
 ```
 
 
@@ -56,7 +56,7 @@
 - Agent：一个独立的Flume进程，包含组件Source、Channel、Sink
 - Source：用来消费传递到该组件的Event
 - Channel：中转Event的一个临时存储，保存有Source组件传递过来的Event
-- Sink：从Channel中读取并移除Event，将Event传递到Flow Pipeline中的下一个Agent（如果有的话）
+- Sink：从 Channel 中读取并移除 Event，将 Event 传递到 Flow Pipeline 中的下一个 Agent（如果有的话）
 
 - [Flume Source](http://flume.apache.org/FlumeUserGuide.html#flume-sources) 收集各种数据源
   - avro、exec、netcat、spooling-directory、syslog 等
@@ -93,90 +93,90 @@
 
 * Conf 配置
 
-agentBi0.sources = SrcAccessLog
-agentBi0.channels = ChAccesslog
-agentBi0.sinks = SinkAccesslog
+agentDw.sources = SrcAccessLog
+agentDw.channels = ChAccesslog
+agentDw.sinks = SinkAccesslog
 
 # set SrcAccessLog
 
 # SrcSafeClickLog Source 配置
-agentBi0.sources.SrcSafeClickLog.type = spooldir
-agentBi0.sources.SrcSafeClickLog.spoolDir = /data/log/uba/access_log
+agentDw.sources.SrcSafeClickLog.type = spooldir
+agentDw.sources.SrcSafeClickLog.spoolDir = /data/log/uba/access_log
 # 忽略文件正则
-agentBi0.sources.SrcSafeClickLog.ignorePattern = ^(.)*\\.tmp$
+agentDw.sources.SrcSafeClickLog.ignorePattern = ^(.)*\\.tmp$
 # 输入字符编码
-agentBi0.sources.SrcSafeClickLog.inputCharset = UTF-8
+agentDw.sources.SrcSafeClickLog.inputCharset = UTF-8
 # 反序列化方式
-agentBi0.sources.SrcSafeClickLog.deserializer = LINE
+agentDw.sources.SrcSafeClickLog.deserializer = LINE
 # 一行最大字数
-agentBi0.sources.SrcSafeClickLog.deserializer.maxLineLength = 204800
-agentBi0.sources.SrcSafeClickLog.deserializer.outputCharset = UTF-8
+agentDw.sources.SrcSafeClickLog.deserializer.maxLineLength = 204800
+agentDw.sources.SrcSafeClickLog.deserializer.outputCharset = UTF-8
 # 解码错误政策处理规则, FAIL(失效) || IGNORE(忽略)
-agentBi0.sources.SrcSafeClickLog.decodeErrorPolicy = IGNORE
+agentDw.sources.SrcSafeClickLog.decodeErrorPolicy = IGNORE
 # 完成删除文件 immediate | never
-agentBi0.sources.SrcSafeClickLog.deletePolicy = immediate
+agentDw.sources.SrcSafeClickLog.deletePolicy = immediate
 # 批处理条数
-agentBi0.sources.SrcSafeClickLog.batchSize = 1000
+agentDw.sources.SrcSafeClickLog.batchSize = 1000
 # 递归检测目录(必须开启)
-agentBi0.sources.SrcSafeClickLog.recursiveDirectorySearch = true
+agentDw.sources.SrcSafeClickLog.recursiveDirectorySearch = true
 # 上传文件的绝对路径(必须开启)
-agentBi0.sources.SrcSafeClickLog.fileHeader = true
-agentBi0.sources.SrcSafeClickLog.fileHeaderKey = file
+agentDw.sources.SrcSafeClickLog.fileHeader = true
+agentDw.sources.SrcSafeClickLog.fileHeaderKey = file
 # 上传的文件名(必须开启)
-agentBi0.sources.SrcSafeClickLog.basenameHeader = true
-agentBi0.sources.SrcSafeClickLog.basenameHeaderKey = basename
-agentBi0.sources.SrcSafeClickLog.channels = ChAccesslog
+agentDw.sources.SrcSafeClickLog.basenameHeader = true
+agentDw.sources.SrcSafeClickLog.basenameHeaderKey = basename
+agentDw.sources.SrcSafeClickLog.channels = ChAccesslog
 
 
 # set ChAccesslog
 # 保存类型
-agentBi0.channels.ChAccesslog.type = file
-agentBi0.channels.ChAccesslog.checkpointDir = /data/log/test/checkpoint
-agentBi0.channels.ChAccesslog.dataDirs = /data/log/test/data
+agentDw.channels.ChAccesslog.type = file
+agentDw.channels.ChAccesslog.checkpointDir = /data/log/test/checkpoint
+agentDw.channels.ChAccesslog.dataDirs = /data/log/test/data
 # 设置最大线程数
-agentBi0.channels.ChAccesslog.threads = 10
+agentDw.channels.ChAccesslog.threads = 10
 
 
 # SinkAccesslog 设置
-agentBi0.sinks.SinkAccesslog.type = hdfs
-agentBi0.sinks.SinkAccesslog.channel = ChDwAccesslog
-agentBi0.sinks.SinkAccesslog.hdfs.path = hdfs://uhadoop-ociicy-master2:8020/flume/test/access_log_%Y%m%d
+agentDw.sinks.SinkAccesslog.type = hdfs
+agentDw.sinks.SinkAccesslog.channel = ChDwAccesslog
+agentDw.sinks.SinkAccesslog.hdfs.path = hdfs://uhadoop-ociicy-master2:8020/flume/test/access_log_%Y%m%d
 # hdfs 创建文件前缀
-agentBi0.sinks.SinkAccesslog.hdfs.filePrefix = access_log
+agentDw.sinks.SinkAccesslog.hdfs.filePrefix = access_log
 # hdfs 创建文件后缀
-agentBi0.sinks.SinkAccesslog.hdfs.fileSuffix = .log
+agentDw.sinks.SinkAccesslog.hdfs.fileSuffix = .log
 
 # 临时写入时的前缀  
-agentBi0.sinks.SinkAccesslog.hdfs.inUsePrefix = .
-agentBi0.sinks.SinkAccesslog.hdfs.inUseSuffix = .tmp
+agentDw.sinks.SinkAccesslog.hdfs.inUsePrefix = .
+agentDw.sinks.SinkAccesslog.hdfs.inUseSuffix = .tmp
 
-# 时间戳应四舍五入
-agentBi0.sinks.SinkAccesslog.hdfs.round = true
+# 是否每隔一段时间, 生成一个新文件
+agentDw.sinks.SinkAccesslog.hdfs.round = true
 # 四舍五入到最高的倍数
-agentBi0.sinks.SinkAccesslog.hdfs.roundValue = 10
+agentDw.sinks.SinkAccesslog.hdfs.roundValue = 10
 # 下舍入值的单位 second, minute or hour.
-agentBi0.sinks.SinkAccesslog.hdfs.roundUnit = minute
+agentDw.sinks.SinkAccesslog.hdfs.roundUnit = minute
 
 # 复制块, 用于控制滚动大小
-agentBi0.sinks.SinkAccesslog.hdfs.minBlockReplicas=1
+agentDw.sinks.SinkAccesslog.hdfs.minBlockReplicas=1
 # 文件大小来触发滚动(字节), 0: 永远不触发
-agentBi0.sinks.SinkAccesslog.hdfs.rollSize = 0
+agentDw.sinks.SinkAccesslog.hdfs.rollSize = 0
 # 文件条数来触发滚动(数量), 0:永远不触发
-agentBi0.sinks.SinkAccesslog.hdfs.rollCount = 0
+agentDw.sinks.SinkAccesslog.hdfs.rollCount = 0
 # 滚动前等待的秒数(秒), 0:没有时间间隔, 每隔多少秒产生一个新文件
-agentBi0.sinks.SinkAccesslog.hdfs.rollInterval = 60
+agentDw.sinks.SinkAccesslog.hdfs.rollInterval = 60
 
 # 写入格式
-agentBi0.sinks.SinkAccesslog.hdfs.writeFormat = Text
+agentDw.sinks.SinkAccesslog.hdfs.writeFormat = Text
 # 文件格式 :  SequenceFile, DataStream(数据不会压缩输出文件) or CompressedStream(压缩输出,需要选择一个压缩/解码器)
-agentBi0.sinks.SinkAccesslog.hdfs.fileType = DataStream
+agentDw.sinks.SinkAccesslog.hdfs.fileType = DataStream
 
 # 批处理达到这个上限, 写到 HDFS
-agentBi0.sinks.SinkAccesslog.hdfs.batchSize = 100
+agentDw.sinks.SinkAccesslog.hdfs.batchSize = 100
 # hdfs 打开、写、刷新、关闭的超时时间, 毫秒
-agentBi0.sinks.SinkAccesslog.hdfs.callTimeout = 60000
+agentDw.sinks.SinkAccesslog.hdfs.callTimeout = 60000
 # 使用本地时间
-agentBi0.sinks.SinkAccesslog.hdfs.useLocalTimeStamp = true
+agentDw.sinks.SinkAccesslog.hdfs.useLocalTimeStamp = true
 
 ```
 
@@ -188,27 +188,27 @@ agentBi0.sinks.SinkAccesslog.hdfs.useLocalTimeStamp = true
 
 ``` sh
 
-agentBi0.sources = SrcUbaAppActionLog
-agentBi0.channels = ChUbaAppActionLog
-agentBi0.sinks = SinkUbaAppActionLog
+agentDw.sources = SrcUbaAppActionLog
+agentDw.channels = ChUbaAppActionLog
+agentDw.sinks = SinkUbaAppActionLog
 
 # UbaAppActionLog source 配置
-agentBi0.sources.SrcUbaAppActionLog.type = syslogtcp
-agentBi0.sources.SrcUbaAppActionLog.port = 10001
-agentBi0.sources.SrcUbaAppActionLog.host = 0.0.0.0
-agentBi0.sources.SrcUbaAppActionLog.channels = ChUbaAppActionLog
+agentDw.sources.SrcUbaAppActionLog.type = syslogtcp
+agentDw.sources.SrcUbaAppActionLog.port = 10001
+agentDw.sources.SrcUbaAppActionLog.host = 0.0.0.0
+agentDw.sources.SrcUbaAppActionLog.channels = ChUbaAppActionLog
 
 # UbaAppActionLog channels 配置
-agentBi0.channels.ChUbaAppActionLog.type = file
-agentBi0.channels.ChUbaAppActionLog.checkpointDir = /var/log/flume/uba_app_action/checkpoint
-agentBi0.channels.ChUbaAppActionLog.dataDirs = /var/log/flume/uba_app_action/data
-agentBi0.channels.ChUbaAppActionLog.threads = 2
+agentDw.channels.ChUbaAppActionLog.type = file
+agentDw.channels.ChUbaAppActionLog.checkpointDir = /var/log/flume/uba_app_action/checkpoint
+agentDw.channels.ChUbaAppActionLog.dataDirs = /var/log/flume/uba_app_action/data
+agentDw.channels.ChUbaAppActionLog.threads = 2
 
 # UbaAppActionLog sinks 配置
-agentBi0.sinks.SinkUbaAppActionLog.channel = ChUbaAppActionLog
-agentBi0.sinks.SinkUbaAppActionLog.type = thrift
-agentBi0.sinks.SinkUbaAppActionLog.hostname = log1
-agentBi0.sinks.SinkUbaAppActionLog.port = 18889
+agentDw.sinks.SinkUbaAppActionLog.channel = ChUbaAppActionLog
+agentDw.sinks.SinkUbaAppActionLog.type = thrift
+agentDw.sinks.SinkUbaAppActionLog.hostname = log1
+agentDw.sinks.SinkUbaAppActionLog.port = 18889
 ```
 
 
@@ -320,97 +320,97 @@ a2.sources.r1.channels = c1 c2
 ```
 
 
-### 5. 负载均衡和故障转义
+### 5. 负载均衡和故障转移
 
 ``` sh
 
 # 配置需要处理的 srouce channels slinks
-agentBi0.sources = SrcDwAccessLog
-agentBi0.channels = ChDwAccesslog
-agentBi0.sinks = SinkDwAccesslog1 SinkDwAccesslogKafka
+agentDw.sources = SrcDwAccessLog
+agentDw.channels = ChDwAccesslog
+agentDw.sinks = SinkDwAccesslog1 SinkDwAccesslogKafka
 
 # 对所有的出口 slink 做 Load balancing Sink Processor 负载平衡处理器配置, 防止远端单点故障
-agentBi0.sinkgroups = SinkGroupSinkDwAccesslog
+agentDw.sinkgroups = SinkGroupSinkDwAccesslog
 
 
 # --- DwAccessLog  配置 Start --- #
 
 # SrcDwAccessLog source 配置
-agentBi0.sources.SrcDwAccessLog.type = syslogudp
-agentBi0.sources.SrcDwAccessLog.port = 10004
-agentBi0.sources.SrcDwAccessLog.host = 0.0.0.0
-agentBi0.sources.SrcDwAccessLog.channels = ChDwAccesslog
+agentDw.sources.SrcDwAccessLog.type = syslogudp
+agentDw.sources.SrcDwAccessLog.port = 10004
+agentDw.sources.SrcDwAccessLog.host = 0.0.0.0
+agentDw.sources.SrcDwAccessLog.channels = ChDwAccesslog
 
 # SrcDwAccessLog Interceptors 配置
-agentBi0.sources.SrcDwAccessLog.interceptors = in1 in2
+agentDw.sources.SrcDwAccessLog.interceptors = in1 in2
 # SrcDwAccessLog Search and Replace Interceptor 配置
-agentBi0.sources.SrcDwAccessLog.interceptors.in1.type = search_replace
+agentDw.sources.SrcDwAccessLog.interceptors.in1.type = search_replace
 # 正则替换 ^[a-zA-Z_]+\:[ ]{1} 或者 ^lb_access\:[ ]{1}
-agentBi0.sources.SrcDwAccessLog.interceptors.in1.searchPattern = ^[a-zA-Z_]+\:[ ]{1}
-agentBi0.sources.SrcDwAccessLog.interceptors.in1.replaceString =
-agentBi0.sources.SrcDwAccessLog.interceptors.in1.charset = UTF-8
+agentDw.sources.SrcDwAccessLog.interceptors.in1.searchPattern = ^[a-zA-Z_]+\:[ ]{1}
+agentDw.sources.SrcDwAccessLog.interceptors.in1.replaceString =
+agentDw.sources.SrcDwAccessLog.interceptors.in1.charset = UTF-8
 # SrcDwAccessLog Timestamp Interceptor 配置
-agentBi0.sources.SrcDwAccessLog.interceptors.in2.type = timestamp
-agentBi0.sources.SrcDwAccessLog.interceptors.in2.preserveExisting = true
+agentDw.sources.SrcDwAccessLog.interceptors.in2.type = timestamp
+agentDw.sources.SrcDwAccessLog.interceptors.in2.preserveExisting = true
 
 # ChDwAccesslog channels 配置
-agentBi0.channels.ChDwAccesslog.type = file
-agentBi0.channels.ChDwAccesslog.checkpointDir = /var/log/flume/dw_access_log/checkpoint
-agentBi0.channels.ChDwAccesslog.dataDirs = /var/log/flume/dw_access_log/data
-agentBi0.channels.ChDwAccesslog.capacity = 10000
-agentBi0.channels.ChDwAccesslog.threads = 2
+agentDw.channels.ChDwAccesslog.type = file
+agentDw.channels.ChDwAccesslog.checkpointDir = /var/log/flume/dw_access_log/checkpoint
+agentDw.channels.ChDwAccesslog.dataDirs = /var/log/flume/dw_access_log/data
+agentDw.channels.ChDwAccesslog.capacity = 10000
+agentDw.channels.ChDwAccesslog.threads = 2
 
 # SinkDwAccesslog To File sinks 配置
-#agentBi0.sinks.SinkDwAccesslog.channel = ChDwAccesslog
-#agentBi0.sinks.SinkDwAccesslog.type = file_roll
-#agentBi0.sinks.SinkDwAccesslog.sink.directory = /var/log/flume/dw_access_log/test
+#agentDw.sinks.SinkDwAccesslog.channel = ChDwAccesslog
+#agentDw.sinks.SinkDwAccesslog.type = file_roll
+#agentDw.sinks.SinkDwAccesslog.sink.directory = /var/log/flume/dw_access_log/test
 
 # SinkDwAccesslogKafka To Kafka 配置
-#agentBi0.sinks.SinkDwAccesslogKafka.channel = ChDwAccesslog
-#agentBi0.sinks.SinkDwAccesslogKafka.type = org.apache.flume.sink.kafka.KafkaSink
-#agentBi0.sinks.SinkDwAccesslogKafka.kafka.bootstrap.servers = bi4:9092
-#agentBi0.sinks.SinkDwAccesslogKafka.kafka.topic = accessLogTest
-#agentBi0.sinks.SinkDwAccesslogKafka.kafka.flumeBatchSize = 20
-#agentBi0.sinks.SinkDwAccesslogKafka.kafka.producer.acks = 1
-#agentBi0.sinks.SinkDwAccesslogKafka.kafka.producer.linger.ms = 1
+#agentDw.sinks.SinkDwAccesslogKafka.channel = ChDwAccesslog
+#agentDw.sinks.SinkDwAccesslogKafka.type = org.apache.flume.sink.kafka.KafkaSink
+#agentDw.sinks.SinkDwAccesslogKafka.kafka.bootstrap.servers = bi4:9092
+#agentDw.sinks.SinkDwAccesslogKafka.kafka.topic = accessLogTest
+#agentDw.sinks.SinkDwAccesslogKafka.kafka.flumeBatchSize = 20
+#agentDw.sinks.SinkDwAccesslogKafka.kafka.producer.acks = 1
+#agentDw.sinks.SinkDwAccesslogKafka.kafka.producer.linger.ms = 1
 
 # SinkDwAccesslog0 To thrift sinks 配置
-agentBi0.sinks.SinkDwAccesslog0.channel = ChDwAccesslog
-agentBi0.sinks.SinkDwAccesslog0.type = thrift
-agentBi0.sinks.SinkDwAccesslog0.hostname = log0
-agentBi0.sinks.SinkDwAccesslog0.port = 18889
+agentDw.sinks.SinkDwAccesslog0.channel = ChDwAccesslog
+agentDw.sinks.SinkDwAccesslog0.type = thrift
+agentDw.sinks.SinkDwAccesslog0.hostname = log0
+agentDw.sinks.SinkDwAccesslog0.port = 18889
 # 批量提交的个数
-agentBi0.sinks.SinkDwAccesslog0.batch-size = 1000
+agentDw.sinks.SinkDwAccesslog0.batch-size = 1000
 # 请求超时时间, 单位毫秒
-agentBi0.sinks.SinkDwAccesslog0.request-timeout = 20000
+agentDw.sinks.SinkDwAccesslog0.request-timeout = 20000
 # 连接超时时间, 单位毫秒
-agentBi0.sinks.SinkDwAccesslog0.connect-timeout = 3000
+agentDw.sinks.SinkDwAccesslog0.connect-timeout = 3000
 # 重新连接 source 的时间, 单位秒, 用于后端负载均衡的轮询时间
 # 重接秒数, 如在故障转移模式时, 当前的 slinks 故障时间超过阈值, 就会转移到另外一个 slinks 处理
-agentBi0.sinks.SinkDwAccesslog0.connection-reset-interval = 300
+agentDw.sinks.SinkDwAccesslog0.connection-reset-interval = 300
 
 # SinkDwAccesslog1 To thrift sinks 配置
-agentBi0.sinks.SinkDwAccesslog1.channel = ChDwAccesslog
-agentBi0.sinks.SinkDwAccesslog1.type = thrift
-agentBi0.sinks.SinkDwAccesslog1.hostname = log1
-agentBi0.sinks.SinkDwAccesslog1.port = 18889
-agentBi0.sinks.SinkDwAccesslog1.batch-size = 1000
-agentBi0.sinks.SinkDwAccesslog1.request-timeout = 20000
-agentBi0.sinks.SinkDwAccesslog1.connect-timeout = 3000
-agentBi0.sinks.SinkDwAccesslog1.connection-reset-interval = 300
+agentDw.sinks.SinkDwAccesslog1.channel = ChDwAccesslog
+agentDw.sinks.SinkDwAccesslog1.type = thrift
+agentDw.sinks.SinkDwAccesslog1.hostname = log1
+agentDw.sinks.SinkDwAccesslog1.port = 18889
+agentDw.sinks.SinkDwAccesslog1.batch-size = 1000
+agentDw.sinks.SinkDwAccesslog1.request-timeout = 20000
+agentDw.sinks.SinkDwAccesslog1.connect-timeout = 3000
+agentDw.sinks.SinkDwAccesslog1.connection-reset-interval = 300
 
 # SinkGroupSinkDwAccesslog 负载均衡
-#agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.sinks = SinkDwAccesslog0 SinkDwAccesslog1
-#agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.processor.type = load_balance
-#agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.processor.backoff = true
-#agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.processor.selector = random
+#agentDw.sinkgroups.SinkGroupSinkDwAccesslog.sinks = SinkDwAccesslog0 SinkDwAccesslog1
+#agentDw.sinkgroups.SinkGroupSinkDwAccesslog.processor.type = load_balance
+#agentDw.sinkgroups.SinkGroupSinkDwAccesslog.processor.backoff = true
+#agentDw.sinkgroups.SinkGroupSinkDwAccesslog.processor.selector = random
 
 # SinkGroupSinkDwAccesslog 故障转义
-agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.sinks = SinkDwAccesslog0 SinkDwAccesslog1
-agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.processor.type = failover
-agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.processor.priority.SinkDwAccesslog0 = 1
-agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.processor.priority.SinkDwAccesslog1 = 100
-agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.processor.maxpenalty = 10000
+agentDw.sinkgroups.SinkGroupSinkDwAccesslog.sinks = SinkDwAccesslog0 SinkDwAccesslog1
+agentDw.sinkgroups.SinkGroupSinkDwAccesslog.processor.type = failover
+agentDw.sinkgroups.SinkGroupSinkDwAccesslog.processor.priority.SinkDwAccesslog0 = 1
+agentDw.sinkgroups.SinkGroupSinkDwAccesslog.processor.priority.SinkDwAccesslog1 = 100
+agentDw.sinkgroups.SinkGroupSinkDwAccesslog.processor.maxpenalty = 10000
 
 # --- DwAccessLog  配置 End --- #
 
@@ -420,42 +420,42 @@ agentBi0.sinkgroups.SinkGroupSinkDwAccesslog.processor.maxpenalty = 10000
 ### 6. hdfs sink 参数说明
 
 ```sh
-agentBi0.sinks.SinkDwAccesslog1.type = hdfs
-agentBi0.sinks.SinkDwAccesslog1.channel = ChDwAccesslog
+agentDw.sinks.SinkDwAccesslog1.type = hdfs
+agentDw.sinks.SinkDwAccesslog1.channel = ChDwAccesslog
 # 写入目录和文件规则
-agentBi0.sinks.SinkDwAccesslog1.hdfs.path = hdfs://uhadoop-ociicy-master2:8020/flume/dw_access_log/dw_access_log_%Y%m%d
-agentBi0.sinks.SinkDwAccesslog1.hdfs.filePrefix = dw_access_log
-agentBi0.sinks.SinkDwAccesslog1.hdfs.fileSuffix = .log
+agentDw.sinks.SinkDwAccesslog1.hdfs.path = hdfs://uhadoop-ociicy-master2:8020/flume/dw_access_log/dw_access_log_%Y%m%d
+agentDw.sinks.SinkDwAccesslog1.hdfs.filePrefix = dw_access_log
+agentDw.sinks.SinkDwAccesslog1.hdfs.fileSuffix = .log
 
 # 写入文件前缀规则
-agentBi0.sinks.SinkDwAccesslog1.hdfs.inUsePrefix = .
-agentBi0.sinks.SinkDwAccesslog1.hdfs.inUseSuffix = .tmp
+agentDw.sinks.SinkDwAccesslog1.hdfs.inUsePrefix = .
+agentDw.sinks.SinkDwAccesslog1.hdfs.inUseSuffix = .tmp
 #
-agentBi0.sinks.SinkDwAccesslog1.hdfs.round = true
+agentDw.sinks.SinkDwAccesslog1.hdfs.round = true
 # 时间上进行”舍弃”的单位，包含：second,minute,hour
-agentBi0.sinks.SinkDwAccesslog1.hdfs.roundUnit = minute
+agentDw.sinks.SinkDwAccesslog1.hdfs.roundUnit = minute
 # 时间上进行“舍弃”的值, 2015-10-16 17:38:59 会被舍弃成  17:35, 5 分钟内的时间都被舍弃掉
-agentBi0.sinks.SinkDwAccesslog1.hdfs.roundValue = 5
+agentDw.sinks.SinkDwAccesslog1.hdfs.roundValue = 5
 
 # 复制块, 用于控制滚动大小
-agentBi0.sinks.SinkDwAccesslog1.hdfs.minBlockReplicas=1
+agentDw.sinks.SinkDwAccesslog1.hdfs.minBlockReplicas=1
 # hdfs 间隔多长将临时文件重命名成最终目标文件, 并新打开一个临时文件来写入数据, 0 则表示不根据时间来滚动文件 (单位秒)
-agentBi0.sinks.SinkDwAccesslog1.hdfs.rollInterval = 300
+agentDw.sinks.SinkDwAccesslog1.hdfs.rollInterval = 300
 # hdfs 临时文件达到 rollSize 值, 则滚动成目标文件, 0 则表示不根据临时文件大小来滚动文件(单位：bytes)
-agentBi0.sinks.SinkDwAccesslog1.hdfs.rollSize = 0
+agentDw.sinks.SinkDwAccesslog1.hdfs.rollSize = 0
 #events 数据达到该数量时候，将临时文件滚动成目标文件, 0 则表示不根据 events 数据来滚动文件
-agentBi0.sinks.SinkDwAccesslog1.hdfs.rollCount = 0
+agentDw.sinks.SinkDwAccesslog1.hdfs.rollCount = 0
 
 
 # 写入格式(必须 Text)
-agentBi0.sinks.SinkDwAccesslog1.hdfs.writeFormat = Text
+agentDw.sinks.SinkDwAccesslog1.hdfs.writeFormat = Text
 
 # 不压缩
 # 文件格式 :  SequenceFile, DataStream(数据不会压缩输出文件) or CompressedStream(压缩 Stream)
-agentBi0.sinks.SinkDwAccesslog1.hdfs.fileType = DataStream  
+agentDw.sinks.SinkDwAccesslog1.hdfs.fileType = DataStream  
 
 # 设置压缩方式(当使用 CompressedStream 时,保存文件为压缩格式): gzip, bzip2, lzo, lzop, snappy
-agentBi0.sinks.SinkAccesslog.hdfs.codeC = snappy
+agentDw.sinks.SinkAccesslog.hdfs.codeC = snappy
 
 
 # 这个拦截器写事件输出流的身体没有任何转换或修改, 事件标题将被忽略
@@ -465,12 +465,12 @@ agentDw.sinks.SinkSafeClickLog.sink.serializer.appendNewline = true
 
 
 # 每个批次刷新到 HDFS上 的 events 数量
-agentBi0.sinks.SinkDwAccesslog1.hdfs.batchSize = 10000
+agentDw.sinks.SinkDwAccesslog1.hdfs.batchSize = 10000
 # hdfs 打开、写、刷新、关闭的超时时间, 毫秒
-agentBi0.sinks.SinkDwAccesslog1.hdfs.callTimeout = 60000
+agentDw.sinks.SinkDwAccesslog1.hdfs.callTimeout = 60000
 # 当目前被打开的临时文件在该参数指定的时间（秒）内，没有任何数据写入，则将该临时文件关闭并重命名成目标文件
-agentBi0.sinks.SinkDwAccesslog1.hdfs.idleTimeout = 0
+agentDw.sinks.SinkDwAccesslog1.hdfs.idleTimeout = 0
 # 使用本地时间
-agentBi0.sinks.SinkDwAccesslog1.hdfs.useLocalTimeStamp = true
+agentDw.sinks.SinkDwAccesslog1.hdfs.useLocalTimeStamp = true
 
 ```

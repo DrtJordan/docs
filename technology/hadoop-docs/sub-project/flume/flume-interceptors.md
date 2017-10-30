@@ -56,7 +56,7 @@ agentDw.sources.SrcBrowserUseLog.interceptors.in1.type = com.angejia.dw.flume.so
 # 拦截则正则规则
 agentDw.sources.SrcBrowserUseLog.interceptors.in1.regex = browser_use/monitor/([A-Za-z0-9/._-]+)/
 agentDw.sources.SrcBrowserUseLog.interceptors.in1.extractorHeader = true
-# 拦截的 header key
+# 拦截的 header key (来自 source)
 agentDw.sources.SrcBrowserUseLog.interceptors.in1.extractorHeaderKey = file
 # browser_use/monitor/(.*)$ 正则匹配后的映射 s1 -> log_path , 以此类推
 agentDw.sources.SrcBrowserUseLog.interceptors.in1.serializers = s1

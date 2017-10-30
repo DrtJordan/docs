@@ -103,8 +103,6 @@ export PATH=$KAFKA_HOME/bin:$PATH
       test:1:27
       test:0:26
 
-      kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --broker-list dw7:9092 --group test-consumer-group
-
 
 2. producer 生产者
   1) 向 Topic 生产数据

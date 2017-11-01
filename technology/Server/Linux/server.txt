@@ -292,10 +292,12 @@
 			图形接口捕获器
 			yum install wireshark wireshark-gnome
 
-		14) nc 与 netcat  						//其他测试端口的命令有些系统会改名为netcat
+		14) nc 与 netcat(独立到 module 中)  						//其他测试端口的命令有些系统会改名为netcat
 			 a) yum install nc
 			 	 nc -l [ip|host] [port]  		//测试一个端口连接
 				 nc -l 192.168.160.49 10001   // 检测发送到这个端口的数据, 注意系统端口、注册端口、私有动态端口
+
+				 echo -n "Hello World" | nc -4u -w1 127.0.0.1 10012			// 发送 UDP 数据到端口中
 
 		15) nmap 								//探测主机开启的端口
 			a) yum install nmap 			//安装

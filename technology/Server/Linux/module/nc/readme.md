@@ -22,3 +22,14 @@
 
 - [NC 文档](http://www.tuicool.com/articles/m67Z3m)
 - [NC 文档](http://www.cnblogs.com/sunddenly/p/4031322.html?utm_source=tuicool&utm_medium=referral)
+
+``` sh
+
+a) yum install nc
+  nc -l [ip|host] [port]  		 // 测试一个端口连接
+
+  nc -l 192.168.160.49 10001   // 检测发送到这个端口的数据, 注意系统端口、注册端口、私有动态端口
+
+  echo -n "Hello World" | nc -4u -w1 127.0.0.1 10012			// 发送 UDP 数据到端口中
+
+```

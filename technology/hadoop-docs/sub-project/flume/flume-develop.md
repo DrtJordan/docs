@@ -10,7 +10,7 @@
 - 收集日志发送到 HDFS,Kafka,本地文件
 
 
-## 二、安装
+## 二、部署 Flume
 
 ``` sh
 1. 下载 flume
@@ -45,6 +45,10 @@
 
   # 启动
   ${FLUME_HOME}/bin/flume-ng agent --conf ${FLUME_HOME}/conf/ -f ${FLUME_HOME}/conf/flume.conf -n agentDw -Dflume.root.logger=DEBUG,console
+
+
+6. 工具
+  echo -n "Hello World" | nc -4u -w1 [ip] [端口号]			// 发送 UDP 数据到端口中, 可用于测试 flume syslogudp 端口
 ```
 
 

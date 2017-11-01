@@ -13,6 +13,7 @@ SET spark.logConf=false;
 --- 应用属性 End ---
 
 
+
 --- 执行器行为（Execution Behavior）Start ---
 
 -- 设置每个 stage 的默认 task 数量, 不设置可能会直接影响你的 Spark 作业性能。公式 (num-executors * executor-cores)*3
@@ -21,8 +22,22 @@ SET spark.default.parallelism=18;
 --- 执行器行为（Execution Behavior）End ---
 
 
+
 --- 内存管理（Memory Management） Start ---
 
+----- 一个 Executor 对应一个JVM进程，Executor 占用的内存分为两大部分：ExecutorMemory 和 MemoryOverhead -----
+
+-- ExecutorMemory 即 --executor-memory
+spark.executor.memory
+
+-- memoryStore 用于缓存 Executor 中的 RDD 数据
+-- 默认 (ExecutorMemory - MEMORY_USED_BY_RUNTIME) * spark.storage.memoryFraction * spark.storage.safetyFraction, 不建议自己配置
+spark.storage.memoryFraction, spark.storage.safetyFraction
+
+-- MemoryOverhead 在 JVM 进程中除 Java 堆以外占用的空间大小，包括方法区（永久代）、Java虚拟机栈、本地方法栈、JVM进程本身所用的内存、直接内存（Direct Memory）等,  单位 MB
+-- 默认（math.max((MEMORY_OVERHEAD_FACTOR * executorMemory).toInt,MEMORY_OVERHEAD_MIN）, 例如 1024 MB * 0.07 = 72 MB
+-- MEMORY_OVERHEAD_FACTOR = 0.07,  MEMORY_OVERHEAD_MIN = 384
+spark.yarn.executor.memoryOverhead =
 
 
 --- 内存管理（Memory Management） End ---

@@ -118,7 +118,7 @@ export PATH=$KAFKA_HOME/bin:$PATH
     kafka-console-consumer.sh --bootstrap-server broker-hostname:9092 --topic test --consumer-property group.id=test-consumer-group
 
     # 读取配置文件消费
-    kafka-console-consumer.sh --bootstrap-server broker-hostname:9092 --topic test --consumer.config $KAFKA_HOME/conf/consumer.properties
+    kafka-console-consumer.sh --bootstrap-server broker-hostname:9092 --topic test --consumer.config $KAFKA_HOME/config/consumer.properties
 
 
 4. consumer groups

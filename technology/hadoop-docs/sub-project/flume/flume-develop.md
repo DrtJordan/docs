@@ -150,9 +150,7 @@ agentDw.sinks.SinkAccesslog.hdfs.fileSuffix = .log
 agentDw.sinks.SinkAccesslog.hdfs.inUsePrefix = .
 agentDw.sinks.SinkAccesslog.hdfs.inUseSuffix = .tmp
 
-# 是否每隔一段时间, 生成一个新文件
 agentDw.sinks.SinkAccesslog.hdfs.round = true
-# 四舍五入到最高的倍数
 agentDw.sinks.SinkAccesslog.hdfs.roundValue = 10
 # 下舍入值的单位 second, minute or hour.
 agentDw.sinks.SinkAccesslog.hdfs.roundUnit = minute
@@ -163,7 +161,7 @@ agentDw.sinks.SinkAccesslog.hdfs.minBlockReplicas=1
 agentDw.sinks.SinkAccesslog.hdfs.rollSize = 0
 # 文件条数来触发滚动(数量), 0:永远不触发
 agentDw.sinks.SinkAccesslog.hdfs.rollCount = 0
-# 滚动前等待的秒数(秒), 0:没有时间间隔, 每隔多少秒产生一个新文件
+# 滚动前等待的秒数(秒), 0:没有时间间隔, 每隔多少秒产生一个新文件, 案例为 60 喵
 agentDw.sinks.SinkAccesslog.hdfs.rollInterval = 60
 
 # 写入格式
@@ -430,7 +428,7 @@ agentDw.sinks.SinkDwAccesslog1.hdfs.fileSuffix = .log
 # 写入文件前缀规则
 agentDw.sinks.SinkDwAccesslog1.hdfs.inUsePrefix = .
 agentDw.sinks.SinkDwAccesslog1.hdfs.inUseSuffix = .tmp
-#
+# hdfs 舍弃时间
 agentDw.sinks.SinkDwAccesslog1.hdfs.round = true
 # 时间上进行”舍弃”的单位，包含：second,minute,hour
 agentDw.sinks.SinkDwAccesslog1.hdfs.roundUnit = minute

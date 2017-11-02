@@ -267,7 +267,7 @@ resolvers ++= Seq(
 - 合并冲突的 class
 - 排除冲突的 jars
 
-``` sbt
+``` sh
 1. provided 关键字, 不把这个依赖包打入 jar 中
 例 1: 不加入打包法
 "org.apache.kafka" % "kafka-log4j-appender" % "0.9.0.0" % "provided"
@@ -309,12 +309,12 @@ mergeStrategy in assembly <<= (mergeStrategy in assembly) { mergeStrategy => {
 }
 
 4. 强制排除 jars 不打入依赖包
-例 1: 排除指定 jar, excludedJars(0.13 或者之前版本)
+例 1: 排除指定 jar, excludedJars(sbt 0.13 或者之前版本)
 excludedJars in assembly <<= (fullClasspath in assembly) map { cp =>
   cp filter {_.data.getName == "hive-metastore-1.1.0.jar"}
 }
 
-例 2: 排除指定 jar, assemblyExcludedJars(0.13 之后版本, 详细见 github 文档):
+例 2: 排除指定 jar, assemblyExcludedJars(sbt 0.13 之后版本, 详细见 github 文档):
 // 官方写法
 assemblyExcludedJars in assembly := {
   val cp = (fullClasspath in assembly).value

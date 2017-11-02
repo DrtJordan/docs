@@ -153,6 +153,7 @@
   sudo yum install python-pip
 
 3.Centos
+  sudo yum -y install epel-release  如果找不到就
   sudo yum install python-pip
 
 4.使用

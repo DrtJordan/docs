@@ -11,6 +11,8 @@
 
 - 需要安装 nagios
 
+- 用来执行远程命令
+
 ## 一、NRPE daemon 和 check_nrpe 安装
 
 ``` sh
@@ -99,7 +101,7 @@ define command{
         # 这是定义实际运行的插件程序
         # -c 后的 $ARG1$ 参数是传给 nrpe daemon 执行的检测命令
         # nrpe.cfg 配置文件: command[check_load]=/usr/local/nagios/libexec/check_load -w 15,10,5 -c 30,25,20
-        # serivce.conf 配置文件:  check_command   check_nrpe!check_load
+        # serivce.cfg 配置文件:  check_command   check_nrpe!check_load
         command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
 }
 

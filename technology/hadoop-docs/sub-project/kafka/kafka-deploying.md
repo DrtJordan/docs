@@ -109,6 +109,10 @@ export PATH=$KAFKA_HOME/bin:$PATH
     kafka-console-producer.sh --broker-list broker-hostname:9092 --topic test
 
 
+  2) 从文件读取数据
+    kafka-console-producer.sh --broker-list broker-hostname:9092 --topic test < file-input.txt
+
+
 3. consumer 消费者
   1) 从 Topic 消费数据
     # 从 zookeeper 中消费
@@ -130,7 +134,10 @@ export PATH=$KAFKA_HOME/bin:$PATH
    kafka-consumer-groups.sh --bootstrap-server broker-hostname:9092 --list
 
    # 查看保存在 broker 中的 group 的 offset 信息, 当前消费到的 CURRENT-OFFSET 和 LOG-END-OFFSET 值
-   kafka-consumer-groups.sh --bootstrap-server broker-hostname:9092 --group test-consumer-group --describe
+   kafka-consumer-groups.sh --bootstrap-server broker-hostname:9092 --describe --group test-consumer-group
+
+  2) 重置 offset
+   kafka-consumer-groups.sh  --bootstrap-server dw7:9092,dw8:9092,dw9:9092  --reset-offsets --group test-consumer-group --topic test --to-offset  1
 
 
 5. 使用卡夫卡连接到导入/导出数据
@@ -140,4 +147,7 @@ export PATH=$KAFKA_HOME/bin:$PATH
     $KAFKA_CONF_DIR/connect-file-source.properties
 
   2) kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --group accessLogBase  --topic accessLog  --zookeeper uhadoop-ociicy-master1:2181/kafka
+
+
+6. kafka-configs 配置 Kafka 参数
 ```

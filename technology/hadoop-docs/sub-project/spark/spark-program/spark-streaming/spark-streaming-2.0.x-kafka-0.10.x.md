@@ -69,7 +69,7 @@ import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe;
 
 
         directKafkaStream.foreachRDD{ (rdd, time) =>
-            println(rdd + " --- " + time)
+            println("------ " + "RDD : " + rdd + " , Time: " + time + " --------- ")
 
             // 循环分区
             rdd.foreachPartition { partitionIterator =>
@@ -100,13 +100,153 @@ import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe;
         }
 
 
-        // 启动流计算环境 StreamingContext 并等待它"完成"
+        // 启动流计算环境 StreamingContext 并等待它完成"
         ssc.start()
         // 等待作业完成
         ssc.awaitTermination()
 
     }
 
+```
 
+
+## 三、案例 Demo
+
+### 1. Kafka Streaming 直流模式 操作 SparkSQL
+
+``` java
+package com.dw2345.dw_realtime.safe_log
+
+import org.apache.spark.SparkConf
+import org.apache.spark.TaskContext
+
+import org.apache.spark.sql.{SparkSession, DataFrame, SQLContext}
+import org.apache.spark.storage.StorageLevel
+import org.apache.spark.rdd.RDD
+
+import org.apache.spark.streaming.{Seconds, StreamingContext, Time}
+import org.apache.spark.streaming.kafka010._
+import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
+import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
+
+import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.apache.kafka.common.serialization.StringDeserializer;
+
+
+object SafeRealtimeClickLog {
+
+    /** Case class for converting RDD to DataFrame */
+    case class Record(line: String)
+
+    def main(args: Array[String]) {
+        val sparkConf = new SparkConf()
+        sparkConf.setMaster("local[2]")
+        sparkConf.setAppName("SafeRealTimeClickLog")
+
+        val sparkContext = new StreamingContext(sparkConf, Seconds(3))
+
+        val kafkaBrokers = "dw7:9092,dw8:9092,d9:9092"
+        val topics = Array("test")
+        val consumerId = "safe-realtime-click-log"
+        val groupId = "test-consumer-group"
+
+        val kafkaParams = Map[String, Object](
+          "bootstrap.servers" -> kafkaBrokers,
+          "key.deserializer" -> classOf[StringDeserializer],
+          "value.deserializer" -> classOf[StringDeserializer],
+          "consumer.id" -> consumerId,
+          "group.id" -> groupId,
+          "auto.offset.reset" -> "latest",
+          // 是否自动提交 offset
+          "enable.auto.commit" -> (false: java.lang.Boolean)
+        )
+
+        val directKafkaStream = KafkaUtils.createDirectStream[String, String](
+          sparkContext,
+          PreferConsistent,
+          Subscribe[String, String](topics, kafkaParams)
+        )
+
+        directKafkaStream.foreachRDD{ (rdd: RDD[ConsumerRecord[String, String]], time: Time) =>
+            println("------ " + "RDD : " + rdd + " , Time: " + time + " --------- ")
+
+            println("------ " + "PartitionsNum : " + rdd.getNumPartitions + " --------- ")
+
+            // Get the singleton instance of SparkSession
+            val spark = SparkSessionSingleton.getInstance(rdd.sparkContext.getConf)
+            import spark.implicits._
+
+            // Convert RDD[ConsumerRecord[String, String]] to RDD[String]
+            val consumerRecordValueRDD = rdd.map(consumerRecord => consumerRecord.value())
+
+            // Convert RDD[String] to RDD[case class]
+            val consumerRecordCase = consumerRecordValueRDD.map(line=>Record(line))
+
+            // RDD[case class] to DataFrame
+            val consumerDataFrame = consumerRecordCase.toDF()
+
+            // Creates a temporary view using the DataFrame
+            consumerDataFrame.createOrReplaceTempView("record")
+
+            // Query Sql
+            val wordCountsDataFrame = spark.sql("SELECT line FROM record")
+            wordCountsDataFrame.show()
+        }
+
+
+        // 启动流计算环境 StreamingContext 并等待它"完成"
+        sparkContext.start()
+        // 等待作业完成
+        sparkContext.awaitTermination()
+    }
+
+}
+
+/** Lazily instantiated singleton instance of SparkSession
+*/
+object SparkSessionSingleton {
+
+  // 在JVM中为transient字段，非序列化的一部分，常用语临时保存的缓存数据，或易于重新计算的数据。
+  @transient  private var instance: SparkSession = _
+
+  def getInstance(sparkConf: SparkConf): SparkSession = {
+    if (instance == null) {
+      instance = SparkSession
+        .builder
+        .config(sparkConf)
+        //.config("spark.sql.warehouse.dir", warehouseLocation)
+        //.enableHiveSupport()
+        .getOrCreate()
+    }
+    instance
+  }
+}
+
+
+```
+
+
+### 2. Kafka Streaming 直流模式 操作 SparkSQL
+
+``` java
+val directKafkaStream = KafkaUtils.createDirectStream[String, String](
+  sparkContext,
+  PreferConsistent,
+  Subscribe[String, String](topics, kafkaParams)
+)
+
+// 自动提交 offset 案例
+directKafkaStream.foreachRDD{ (rdd, time) =>
+      val offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
+
+      rdd.foreachPartition { iter =>
+          val o: OffsetRange = offsetRanges(TaskContext.get.partitionId)
+
+          println(s"${o.topic} ${o.partition} ${o.fromOffset} ${o.untilOffset}")
+      }
+
+      // 提交 offset
+      //stream.asInstanceOf[CanCommitOffsets].commitAsync(offsetRanges)
+}
 
 ```

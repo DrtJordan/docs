@@ -109,7 +109,7 @@ object TestSparkHBase {
 
         // 读取hive
         df.registerTempTable("user_profile")
-        sqlContext.sql("select col0,col1,col2,col3 from user_profile LIMIT 10").show
+        sqlContext.sql("SELECT col0,col1,col2,col3 from user_profile LIMIT 10").show
 
 
     }

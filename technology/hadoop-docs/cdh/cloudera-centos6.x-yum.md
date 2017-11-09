@@ -333,6 +333,8 @@ export PATH=${JAVA_HOME}/bin:$PATH
   # 修改 baseurl 属性中的 url (url 可以指定版本)
   baseurl=https://archive.cloudera.com/cdh5/redhat/6/x86_64/cdh/5.9.0/
 
+yum update
+
 ```
 
 ### 1. 安装 Flume

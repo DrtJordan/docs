@@ -59,6 +59,18 @@ SET spark.shuffle.spill.compress=true;
 
 
 
+--- Networking 网络 Start ---
+
+-- 所有块管理器监听的端口。 这些都存在于 driver 和 executors 上。
+spark.blockManager.port=random
+
+-- 所有网络交互的默认超时。 如果未配置此项，将使用此配置替换 spark.core.connection.ack.wait.timeout, spark.storage.blockManagerSlaveTimeoutMs, spark.shuffle.io.connectionTimeout, spark.rpc.askTimeout or spark.rpc.lookupTimeout。
+spark.network.timeout=120s
+
+--- Shuffle 行为（Behavior） End ---
+
+
+
 --- 压缩和序列化（Compression and Serialization） Start ---
 
 -- 是否在发送广播变量前压缩

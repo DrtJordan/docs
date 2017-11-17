@@ -201,3 +201,12 @@ SET spark.sql.default.fileformat=orc;
 
 
 ## 三、Spark Streaming 优化
+
+``` sql
+-- saprk 与 kafka 连接超时参数
+spark.streaming.kafka.consumer.poll.ms=10000
+
+-- 最大行参数, 配置在 kafka 中
+max.poll.records=5000
+
+```

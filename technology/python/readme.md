@@ -65,6 +65,7 @@ print "hello world";
   import time, datetime;
   http://www.cnblogs.com/linjiqin/p/3608541.html
 
+  time.sleep()
 ```
 
 

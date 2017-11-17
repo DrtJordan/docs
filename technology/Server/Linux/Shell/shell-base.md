@@ -567,7 +567,7 @@ $(ls /etc/hive/conf/log4j.properties)
   done
 
 
-一行行处理文件
+循环一行行处理文件
   案例 1: (需要有实体文件,可以在循环中累加)
     while read line;
     do

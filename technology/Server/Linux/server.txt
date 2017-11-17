@@ -370,7 +370,10 @@
 		$ curl -d "user=nickwolfe&password=12345" http://www.linuxidc.com/login.cgi
 
 		//模拟请求
-		curl -X PUT -H "Content-Type:application/x-www-form-urlencoded" -H "Token:NBLP57Z0gypsHjbb4QW9DgFL8GMx1i/eas7t4+m/r6EPfXTxxb+q3ih8kqs34LPI" http://mobi.box.com/contact/1/forbid
+		curl -X PUT -H "Content-Type:application/x-www-form-urlencoded;charset=UTF-8" -H "Token:NBLP57Z0gypsHjbb4QW9DgFL8GMx1i/eas7t4+m/r6EPfXTxxb+q3ih8kqs34LPI" http://mobi.box.com/contact/1/forbid
+
+		// 模糊 http json 请求
+		curl -X POST -H "Content-Type:application/json;charset=UTF-8" -d '{"custom_ip":"192.168.1.1","host":"random_host.example.com"}' http://log1:10010
 
 	12. scp 从本地传送文件到远程服务器
 		//本地文件传送到远程

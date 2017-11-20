@@ -140,7 +140,7 @@ HotSpot 虚拟机中，对象有 3 个区域:
 
 ### 4. OutOfMemoryError 内存溢出异常区域
 
-- Java 堆溢出: Java 堆用于存储对象实例，只要不断的创建对象就有可能存在内存溢出, 但是要确认是哪种情况
+- Java 堆溢出: Java 堆用于存储对象实例，只要不断的创建对象就有可能存在内存溢出, 但是要确认是哪种情况 (OutOfMemoryError)
   - 内出泄露: GC 收集器无法自动回收它们, 通过 GC Roots 的引用链定位问题
   - 内存溢出: 对象必须正常活着, 检查 -Xmx 和 -Xms 是否可以调大
 
@@ -149,17 +149,28 @@ HotSpot 虚拟机中，对象有 3 个区域:
   - OutOfMemoryError 异常: 在单线程下，无论由于<栈帧>太大还是<虚拟机栈>容量太小，当内存无法分配的时候
   - PS: 多线程导致的内存溢出，与栈空间是否足够大并不存在任何联系，这个时候每个线程的栈分配的内存越大，反而越容易产生内存溢出异常。解决的时候是在不能减少线程数或更换64为的虚拟机的情况下，就只能通过减少最大堆和减少栈容量来换取更多的线程
 
+- 方法区和运行时常量池溢出 (PermGen space)
+  - 由于<常量池分配在永久代>中，可以通过 -XX:PermSize 和 -XX:MaxPermSize 限制方法区大小，从而间接限制其中常量池的容量
 
-
-法区和运行时常量池溢出
+- 本机直接内存溢出: 此区域明显的特征是 Heap Dump 文件中不会看见明显的异常，程序中简介或者直接使用了 NIO
+  - -XX:MaxDirectMemorySize: 直接指定大小, 若不指定则与 Java 堆最大值(-Xmx)一样大
 
 ## * 内存参数
 
 ``` sh
--XX:+HeapDumpOnOutOfMemoryError  虚拟机出现内存溢出时 Dump 出内存堆转存储快照
+虚拟机出现内存溢出时 Dump 出内存堆转存储快照
+-XX:+HeapDumpOnOutOfMemoryError
 
--XX:+/-UseTLAB  开启 TLAB
+开启 TLAB
+-XX:+/-UseTLAB
 
+设置栈内存
+-Xss
 
--Xss  设置栈内存
+方法区大小
+-XX:PermSize=64M
+-XX:MaxPermSize=128M
+
+直接内存区大小
+-XX:MaxDirectMemorySize: 直接指定大小, 若不指定则与 Java 堆最大值(-Xmx)一样大
 ```

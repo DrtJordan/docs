@@ -38,7 +38,8 @@ commen.sh中注意一点是输出的格式：
 这个格式是由 nsca插件决定的
 
 
-Usage: /usr/local/nagios/bin/nsca -c <config_file> [mode
+
+Usage: nsca -c <config_file> [mode
 
 Options:
  <config_file> = Name of config file to use
@@ -48,3 +49,28 @@ Options:
    --single    = Run as a standalone single-process daemon (default)
 
 /usr/local/nagios/bin/nsca -c /usr/local/nagios/etc/nsca/nsca.cfg
+
+
+ps -axu | grep nsca
+
+netstat -tunlp | grep 5667
+
+
+
+
+
+cp /usr/local/src/nsca-2.9.2/src/send_nsca /usr/local/nagios/bin/
+
+
+Usage: send_nsca -H <host_address> [-p port] [-to to_sec] [-d delim] [-c config_file]
+
+Options:
+ <host_address> = The IP address of the host running the NSCA daemon
+ [port]         = The port on which the daemon is running - default is 5667
+ [to_sec]       = Number of seconds before connection attempt times out.
+                  (default timeout is 10 seconds)
+ [delim]        = Delimiter to use when parsing input (defaults to a tab)
+ [config_file]  = Name of config file to use
+
+
+echo -e "127.0.0.1,ServiceNsca,0,test" | ./send_nsca -H 127.0.0.1 -p 5667 -c /usr/local/nagios/etc/nsca/send_nsca.cfg -d ","

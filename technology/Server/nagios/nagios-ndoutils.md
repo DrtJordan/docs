@@ -3,11 +3,14 @@
 - 版本 2.x
 
 - NDOMOD
- - 接收 Program Logic、Frogram Data 数据, 或者监控信息，输出到: 标准文件、Unix 域套接字或者 TCP 套接字
+  - 接收 Program Logic、Frogram Data 数据, 或者监控信息，输出到: 标准文件、Unix 域套接字或者 TCP 套接字
+
 - NDO2DB
   - NDO2DB 进程将创建一个 TCP 套接字 或 Unix 域套接字以监听客户端, 接收来自 NDOMOD、LOG2NDO 的数据源，并保存到数据库中
+
 - LOG2NDO
   - 用来将 Nagios 的历史日志通过 NDO2DB 进程输出至数据库, 通讯方式是: 标准文件、Unix 域套接字或者 TCP 套接字
+
 - FILE2SOCK
   - 标准文件或标准输入 读取数据, 并输出至 Unix 域套接字或 TCP 套接字
   - 当 NDOMOD 或 LOG2NDO 将数据输出至标准文件时， 此工具则可用来将这些标准文件中数据读出并发送给 NDO2DB 进程监听的 TCP 套接字或 Unix 域套接字
@@ -63,7 +66,7 @@
     db_pass=nagios
 
 5. 安装数据库
-  1) 登录 Mysql 创建数据库
+  1) 登录 MySQL 创建数据库
     CREATE DATABASE nagios /*!40100 DEFAULT CHARACTER SET utf8 */;
     GRANT ALL PRIVILEGES ON nagios.* TO 'nagios'@'%' IDENTIFIED BY 'nagios' WITH GRANT OPTION;
 

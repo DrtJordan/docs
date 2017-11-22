@@ -182,6 +182,8 @@ set hive.default.fileformat=ORC;
 -- hive table 开启索引
 set hive.optimize.index.filter=true;
 
+-- 开启锁机制
+set hive.support.concurrency=true;
 --- Hive 优化 End ---
 
 

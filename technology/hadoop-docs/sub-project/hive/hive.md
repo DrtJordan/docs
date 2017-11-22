@@ -277,7 +277,14 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 26) LOCKS 查看表锁
   S 共享锁
   X 互斥锁
-  SHOW LOCKS db_name.tb_name extended;
+
+  SHOW LOCKS;  显示所有锁
+
+  SHOW LOCKS db_name.tb_name extended;  显示表锁
+
+  SHOW LOCKS db_name.tb_name PARTITION(p_dt='xx');  显示指定分区锁
+
+  UNLOCK TABLE dw_db.dw_product_safe_use_log PARTITION(p_dt='xx');  解锁分区
 
 27) 修复表(根据文件修复分区)
   MSCK REPAIR TABLE table_name

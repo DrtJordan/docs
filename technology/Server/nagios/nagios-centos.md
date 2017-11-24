@@ -1,5 +1,7 @@
 # nagios 监控服务安装
 
+- [框架图](https://www.processon.com/view/link/594c8780e4b0de9c566c828a)
+
 ## 一、nagios-core 安装
 
 - 版本 4.x
@@ -85,7 +87,7 @@
 ```
 
 
-## 二、nagios-core-plugins 安装
+## 二、nagios-plugins 安装
 
 ### 1. 安装
 
@@ -130,9 +132,37 @@
   http://host-name/nagios
 ```
 
+### 2. 插件宏
 
-2. 定义 etc/objects/commands.cfg 命令名称
-define command{
-        command_name    test
-        command_line    $USER1$/custom/test.sh $HOSTADDRESS$
-}
+``` sh
+联系人邮箱 Email: $CONTACTEMAIL$
+Type 报告类型: $NOTIFICATIONTYPE$
+Service 服务名称: $SERVICEDESC$
+Host 主机名: $HOSTALIAS$
+Address 主机地址: $HOSTADDRESS$
+State 状态: $SERVICESTATE$
+Date/Time 发生日期: $LONGDATETIME$
+Additional Info 额外附加信息: $SERVICEOUTPUT$ || $NOTIFICATIONTYPE$
+Service Alert 服务警报: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$
+```
+
+### 3. 插件用法
+
+``` sh
+# 系统负载
+check_load -r -w 1,5,15 -c 1,5,15
+
+# 远程主机执行命令
+check_by_ssh
+
+# 远程服务是否通畅
+check_tcp
+
+# 检查磁盘, 剩余多少百分比会报警
+check_disk
+-w：设定告警通知百分比数，空间低于该百分比则发出告警通知。
+-c：设定严重告警通知百分比数，空间低于该百分比则发出严重告警通知。
+-p：指定磁盘设备文件或则分区文件的绝对路径。
+
+/usr/local/nagios/libexec/check_disk -w 30% -c 20% -p  /
+```

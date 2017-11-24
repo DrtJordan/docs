@@ -26,6 +26,7 @@
   tar -zxvf nrpe-3.1.1.tar.gz
 
   cd nrpe-3.1.1
+  # –enable-command-args 参数很重要，如果要给NRPE传递参数的话，在安装配置NRPE时一定要加上该参数
   ./configure --prefix=/usr/local/nagios –enable-command-args
   # 编译
   make all
@@ -65,8 +66,11 @@
   nrpe_user=nagios
   nrpe_group=nagios
 
-  # 允许连接到 NRPE daemon 的 IP 列表, 多个 ip 使用逗号隔开，网段格式 192.168.1.0/24。
-  allowed_hosts=127.0.0.1,::1,host_name
+  # 记住打开支持传参
+  dont_blame_nrpe=1
+
+  # 允许连接到 NRPE daemon 的 IP 列表, 多个 ip 使用逗号隔开，网段格式 192.168.1.0/24。(可注释掉)
+  # allowed_hosts=127.0.0.1,::1,host_name
 
 6. 启动 NRPE daemon 任务(远程主机上操作)
   参数解说：
@@ -80,76 +84,97 @@
 
     tail -f /var/log/messages
 
+    netstat -tunlp | grep 5666
 ```
 
 
 ## 二、Nagios 远程操作 NRPE 案例
 
-### 1. nagios 主机配置 check_nrpe 插件
+- Nagions 调用流程: etc/objects/services.cfg -> etc/objects/commands.cfg -> 命令行方式流程
+- 命令行方式流程: libexec/check_nrpe 命令行 -> ssl -> NRPE 服务 -> etc/nrpe.cfg 中配置的<脚本名称>
+- <img src="imgs/plugins-nrpe-relation.png" width=500 height=256 />
+
+### 1. 配置文件部署案例, 服务端和客户端
 
 ``` sh
-1. commands.cfg 配置 check_nrpe 插件
-vim etc/objects/commands.cfg
+1. nagios 配置流程(服务端)
+# etc/objects/services.cfg 配置
+define service{
+        # 使用的模板
+        use                     service_base_template
 
-# 定义 check_nrpe 拆件
+        # 监控的 host 组
+        hostgroup_name          HadoopCluster
+        # 监控 service 描述
+        service_description     ClusterDisk
+        # 监控命令
+          # check_nrpe    <远程插件, 在 commands.cfg 中会说明>
+          # arg_script    <远程执行的脚本名称, 在 commands.cfg 中会说明>
+          # arg_abc       <远程执行的脚本参数, 在 commands.cfg 中会说明>
+        check_command           check_nrpe!arg_script!arg_abc
+
+        contact_groups          MonitorGroup
+        notifications_enabled   0
+}
+
+# etc/objects/commands.cfg 配置
 define command{
-        # 定义命令名称为 check_nrpe,在 services.cfg 中要使用这个名称.
+        # 脚本名称: 对应 services.cfg 中的 check_nrpe
         command_name    check_nrpe
 
-        # 这是定义实际运行的插件程序
-        # -H : 表示远程主机 NRPE daemon IP 地址
-        # -p : 表示远程主机 NRPE daemon 端口, 默认 5666
-        # -c $ARG1$ : check_nrpe 插件传给 NRPE daemon 上执行的 <脚本名称>, 例如: serivce.cfg 配置文件中的 check_command  check_nrpe!test, test 就是 <脚本名称>
-          # <脚本名称> 是在 NRPE daemon 远程主机中的 nrpe.cfg 配置文件中定义的, 例如: command[test]=/usr/local/nagios/libexec/custom/test.sh $ARG1$
-        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -p 5666 -c $ARG1$
+        # 远程脚本配置
+        # -c: <远程脚本名称>
+        # -a: $ARG1$ - $ARG999$: <远程参数列表>
+          # $ARG1$: 对应 services.cfg 中的 arg_script
+          # $ARG2$: 对应 services.cfg 中的 arg_abc
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -a $ARG2 $HOSTADDRESS$
 }
 
-
-2. services.cfg  配置一个 test 服务(案例)
-vim etc/objects/services.cfg
-
-# 定义一个服务, 使用 check_nrpe 插件执行 NRPE daemon 远程的<脚本名称>, 这里是 test
-define service{
-        # 执行命令的主机
-        host_name                       serverTest
-        # nagios 网页上的服务名
-        service_description             serverTest
-
-        # 通过 check_nrpe 插件远程执行 <host_name> 主机上的 <test> 脚本
-        check_command                   check_nrpe!test
-
-        # 重试次数
-        max_check_attempts      3
-        # 检查间隔
-        check_interval          1
-        # 重试间隔
-        retry_interval          1
-        # 主机在故障后 再次发送通知的间隔时间
-        notification_interval   10
-        # 监控时间范围
-        check_period            24x7
-        # 主机故障时发送通知的时间范围
-        notification_period     24x7
-        notification_options    w,u,c,r
-        contact_groups          MonitorGroup
-}
+# 修改完成
+重启 nagios
 
 
-3. 重启 nagios
-  service nagios restart
+2. NRPE daemon (客户端配置)
+# etc/nrpe.cfg
+
+# 开启允许长参数
+dont_blame_nrpe=1
+
+# 允许连接到 NRPE daemon 的 IP 列表, 多个 ip 使用逗号隔开，网段格式 192.168.1.0/24。(可注释掉)
+# allowed_hosts=127.0.0.1,::1,host_name
+
+# 单参数
+# $ARG1$: 对应 commands.cfg 中, -a 长参数选项的 $ARG2
+command[arg_script]=/usr/local/nagios/libexec/custom/test.sh $ARG1$
+
+# 多参数
+# $ARG1$: 对应 commands.cfg 中, -a 长参数选项的 $ARG2
+# $ARG2$: 对应 commands.cfg 中, -a 长参数选项的 $HOSTADDRESS$
+command[arg_script]=/usr/local/nagios/libexec/custom/test.sh -a $ARG1$ -b $ARG2$
+
+
+# 修改完成
+重启 nrpe
 ```
 
 
-### 2. 在 NRPE daemon 远程主机上配置 <脚本名称>
+### 2. 使用 check_nrpe 命令行测试
 
 ``` sh
-1. 配置 etc/nrpe.cfg, 添加 NRPE 脚本名称和路径
-  command[test]=/usr/local/nagios/libexec/custom/test.sh $ARG1$
+*. 建议脚本放在: libexec/custom 目录中
+
+1. check_nrpe 远程插件语法
+  # hostname: 远程 NRPE ip 地址
+  # script_name: 脚本名称, 配置在 etc/nrpe.cfg 中
+  # -a : ARG1 ~  ARGn:  需要传递的参数列表
+  libexec/check_nrpe -H [hostname] -c [script_name] -a [$ARG1$] [$ARG1$] [$ARG1$]
 
 
-2. 重启 nrpe
-  /usr/local/nagios/bin/nrpe -c /usr/local/nagios/etc/nrpe.cfg -d
+2. 使用插件 check_nrpe 远程测试调试(命令行方式)
+  libexec/check_nrpe -H hostname -c cluster_disk -a 11 bb cc
 
+  错误: 如果出现如下情况, 是因为权限不够 nagios 无法打开
+    NRPE: Unable to read output:
 ```
 
 
@@ -163,7 +188,7 @@ define service{
 ``` sh
 #!/bin/bash
 # 打印入参
-echo $1
+echo $0,$1,$2,$3
 # 打印返回值
 echo "Test: OK Total: test  - concurrent_count|USED=test;200;500;;"
 # 返回执行状态

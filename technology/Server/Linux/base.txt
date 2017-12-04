@@ -1026,9 +1026,11 @@ tock.stdtime.gov			//时间服务器
 
 		4) dmesg 	| more			//识别的系统硬件
 
-		5)  vmstat 1 3			//检测系统资源变化，内存、IO、CPU等
+		5) vmstat 1 3					//检测系统资源变化，内存、IO、CPU等
 
-		6)  cat /proc/cpuinfo //查看硬件信息， cpu cores 是cpu的核数
+		6) cat /proc/cpuinfo  //查看硬件信息， cpu cores 是cpu的核数
+
+		7) cat /proc/meminfo  //查看内存详细信息
 
 
 	15、SUID/SGID			权限

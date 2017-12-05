@@ -84,32 +84,3 @@ Reduce 端 :
     3) 这样做的目的是减少磁盘的数据量，因为最后一次总是合并到 reduce
 
 ```
-
-## 三、MapReduce 的类型与格式
-
-
-
-## 四、MapReduce 的特性
-
-
-## 五、基础命令
-
-
-``` sh
-
-1) 查看 job 任务
-  mapred job -list
-
-2) 将正在运行的 hadoop 作业kill掉
-  mapred job –kill [job-id]
-
-3) 查看 job 状态
-  mapred job -status [job-id]
-
-4) 内存
-  $HADOOP_HOME/conf/mapred-site.xml
-
-5) 重启 historyserver
-  service hadoop-mapreduce-historyserver start
-
-```

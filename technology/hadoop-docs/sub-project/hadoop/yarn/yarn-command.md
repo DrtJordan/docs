@@ -1,7 +1,5 @@
 # Yarn 命令 和 资源配置
 
-
-
 ## 一、 用户命令
 
 ``` json
@@ -63,6 +61,26 @@
 
 6) yarn classpath
   打印所需的类路径获取Hadoop jar和所需的库
+```
+
+MapReduce 命令:
+``` sh
+
+1) 查看 job 任务
+  mapred job -list
+
+2) 将正在运行的 hadoop 作业kill掉
+  mapred job –kill [job-id]
+
+3) 查看 job 状态
+  mapred job -status [job-id]
+
+4) 内存
+  $HADOOP_HOME/conf/mapred-site.xml
+
+5) 重启 historyserver
+  service hadoop-mapreduce-historyserver start
+
 ```
 
 

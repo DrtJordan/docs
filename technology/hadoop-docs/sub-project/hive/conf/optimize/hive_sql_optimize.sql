@@ -1,3 +1,6 @@
+-- 脚本名称
+set mapreduce.job.name=job_name;
+
 -- 缓冲区用于序列文件的大小, KB
 set io.file.buffer.size=131072;
 

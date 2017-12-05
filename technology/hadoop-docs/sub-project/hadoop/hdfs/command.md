@@ -108,7 +108,7 @@
 
 
 19) hadoop checknative -a
-  查看 native
+  查看 native, 指的压缩算法
 ```
 
 

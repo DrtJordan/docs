@@ -178,6 +178,8 @@
   # PS 这个包在 CM 的源中, 请转到下面的配置源方法中
   yum install oracle-j2sdk1.7
 
+  PS : 这里可以配置 JAVA 1.8 的版本, 安装好 CM 后, 启动 Web /cmf/hardware/hosts/config, 其中可以配置 JAVA Home 的目录
+
 1.2. 加入环境变量
 
 vim /etc/profile

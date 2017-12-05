@@ -5,12 +5,6 @@
 ### 1、[数据仓库框架](framework/)
 
 - [DW Service](framework/design/dw-service.md)
-- PPT 团队分享
- - [数据部 - 推荐系统](files/分享/数据部 - 推荐系统.pptx)
- - [数据部 hadoop 实践](files/分享/数据部 hadoop 实践)
- - [数据部 - DW现状](files/分享/数据部状况/数据部 - DW现状.pptx)
- - [数据部现状以及bi3.0规划](files/分享/数据部现状以及bi3.0规划.pptx)
- - [智能配盘配盘3.0](files/分享/数据部状况/智能配盘配盘3.0.pptx)
 
 ### 2、dw 数据仓库设计
 
@@ -24,19 +18,19 @@
 - [数据部 应用服务分布](https://www.processon.com/view/link/562894b7e4b070f8ccca5863)
 - [数据部 Flume 日志高可用收集](https://www.processon.com/view/link/5821bbd2e4b0826f839a4309)
 - 数据部推荐系统
- - [CBCF](https://www.processon.com/view/link/56d3b2e7e4b0f9ea1683e1e5)
- - [UBCF](https://www.processon.com/view/link/572b224be4b0c3c749748e14)
- - [IBCF](https://www.processon.com/view/link/57397e57e4b06d79095044ad)
+  - [CBCF](https://www.processon.com/view/link/56d3b2e7e4b0f9ea1683e1e5)
+  - [UBCF](https://www.processon.com/view/link/572b224be4b0c3c749748e14)
+  - [IBCF](https://www.processon.com/view/link/57397e57e4b06d79095044ad)
 - [数据部 数据部规划](https://www.processon.com/view/link/566a9d10e4b06272891e729b)
 - 数据部 DB 数据抽取
- - [数据部 db 数据抽取](https://www.processon.com/view/link/57d8e4ede4b0e72a8d042d45)
- - [数据部 抽取流程控制](https://www.processon.com/view/link/57e9eb82e4b06bcb4cdf380e)
+  - [数据部 db 数据抽取](https://www.processon.com/view/link/57d8e4ede4b0e72a8d042d45)
+  - [数据部 抽取流程控制](https://www.processon.com/view/link/57e9eb82e4b06bcb4cdf380e)
 - 数据平台
- - [Yarn 工作原理图解](https://www.processon.com/view/link/56643e61e4b026a7ca2ac271)
- - [HDFS 工作原理图解](https://www.processon.com/view/link/56629a87e4b01db999f2f337)
- - [Hadoop 1.x Mapreduce 原理图解](https://www.processon.com/view/link/5664347fe4b026a7ca2a71a6)
- - [Mapreduce Shuffle 原理图解](https://www.processon.com/view/link/566d79e4e4b0187009265f4a)
- - [Mapreduce 优化思维导图](https://www.processon.com/view/link/5662d493e4b01db999f419b1)
+  - [Yarn 工作原理图解](https://www.processon.com/view/link/56643e61e4b026a7ca2ac271)
+  - [HDFS 工作原理图解](https://www.processon.com/view/link/56629a87e4b01db999f2f337)
+  - [Hadoop 1.x Mapreduce 原理图解](https://www.processon.com/view/link/5664347fe4b026a7ca2a71a6)
+  - [Mapreduce Shuffle 原理图解](https://www.processon.com/view/link/566d79e4e4b0187009265f4a)
+  - [Mapreduce 优化思维导图](https://www.processon.com/view/link/5662d493e4b01db999f419b1)
 
 ## 一、[DW 服务相关文档](service)
 
@@ -62,17 +56,17 @@
 - [dw-explore](project/dw-explore) 查询系统
 - [dw_hive_server](project/dw_hive_server) Hive Server Master 服务
 - [dw_scheduler_agent](project/dw_scheduler_agent) 调度服务
- - [node_socket_server](project/dw_scheduler_agent/node_socket_server) nodeJS socket_server 服务, 提供查询调度运行日志的服务
+  - [node_socket_server](project/dw_scheduler_agent/node_socket_server) nodeJS socket_server 服务, 提供查询调度运行日志的服务
 - [dw_general_loader](project/dw_general_loader) 项目开发组件
 - [dw-hive-udf](project/dw-hive-udf)
 - [dw_webservice](project/dw_webservice/) (数据接口文档)
- - [api](project/dw_webservice/api.md) (数据接口文档)
+  - [api](project/dw_webservice/api.md) (数据接口文档)
 - [recommend](project/recommend/) (推荐系统 项目文档)
- - [user](project/recommend/user) (推荐系统 user 主题)
- - [inventory](project/recommend/inventory) (推荐系统 inventory 主题)
+  - [user](project/recommend/user) (推荐系统 user 主题)
+  - [inventory](project/recommend/inventory) (推荐系统 inventory 主题)
 - [bi-portal](project/bi-portal/) (bi-portal)
- - [bi-portal 首页](project/bi-portal/index.md)
- - [action-log 体系](project/bi-portal/action-log.md)
+  - [bi-portal 首页](project/bi-portal/index.md)
+  - [action-log 体系](project/bi-portal/action-log.md)
 - [report_design](project/report_design/) (成交地图项目)
 - [business](project/business) 成交数据
 - [finebi](project/finebi) finebi 报表工具

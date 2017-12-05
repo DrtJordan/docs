@@ -2,22 +2,22 @@
 
 - 安装流程
 
-- 1. 首选配置系统环境
+- 1 首先配置系统环境
 
-- 2. 安装 `Cloudera Manager Server`
+- 2 安装 `Cloudera Manager Server`
   - 2.1 配置 yum 源, 执行安装流程
   - 2.2 配置 SCM 数据库
   - 2.3 启动 Cloudera Manager Server 服务(监控报错日志)
   - 2.4 打开 http://hostname:7180 端口, 跳过所有安装步骤, 直接添加 Cloudera Management Service 服务
 
-- 4. Cloudera Manager Agent -> `Cloudera Manager Server 注册节点`
+- 4 Cloudera Manager Agent -> `Cloudera Manager Server 注册节点`
   - 4.1 配置 yum 源, 执行安装流程
   - 4.2 修改配置 Cloudera Manager Agent 服务指向 Cloudera Manager Server 服务所在的 host, 配置文件 /etc/cloudera-scm-agent/config.ini 的 server_host -> Cloudera Manager Server
   - 4.3 手动启动 Cloudera Manager Agent 服务(监控报错日志)
   - 4.4 注意第一次 Agent 注册到 Server 节点是没有 CDH 版本的, 需要在 Server 管理界面添加已经注册的主机(分发 CDH 版本的)
   - 4.5 Cloudera Manager Server 7180 -> 主机管理界面, 点击添加主机到集群中(选中已注册的节点), 这个时候才会有 CDH 版本信息
 
-- 5. CDH 组件 -> Cloudera Manager Server 和 Cloudera Manager Agent 安装完成后再配置 Hadoop 组件
+- 5 CDH 组件 -> Cloudera Manager Server 和 Cloudera Manager Agent 安装完成后再配置 Hadoop 组件
 
 ## * 系统环境配置
 

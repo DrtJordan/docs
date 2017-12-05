@@ -1,4 +1,4 @@
-# Cloudera 5.8 Yum 方式安装
+# Cloudera 5.8 - Yum 方式安装
 
 - 安装流程
 
